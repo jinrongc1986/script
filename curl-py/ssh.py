@@ -29,3 +29,5 @@ if __name__ == "__main__":
     ipaddr='192.168.1.104'
     main(execmd)  
     main(execmd,ipaddr)
+    #print 'success'
+
