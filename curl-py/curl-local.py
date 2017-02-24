@@ -64,16 +64,25 @@ print starttime
 sql_query="select uri from "+cachefile
 cursor.execute(sql_query)
 results=cursor.fetchall()
-print 'total uri is %d'%len(results)
+url_num=len(results)
+print 'total uri is %d'%url_num
 for i in range(times):
 	print 'round : %d'%(i+1) 
 	print 'running...'
+	percent=0
+	count=1
 	for result in results:
 		uri=result['uri']
 		cmd="curl -o /dev/null -L '"+uri+"' --user-agent '"+str(i+1)+"'"
 		p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 		time.sleep(seconds)
-	print 'round %d success'%(i+1)
+		percent=1.0*count/url_num*100
+		sys.stdout.write('\rcomplete percent:%10.4s%s'%(str(percent),'%'))
+		sys.stdout.flush()
+		#python 3.0方式
+		#print ('complete percent:%10.4s%s'%(str(percent),'%'),end='\r')
+		count+=1
+	print '\nround %d success'%(i+1)
 	print 'wait for %d second'%round_time
 	time.sleep(round_time)
 # 准备执行结果比较
