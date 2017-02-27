@@ -1,4 +1,5 @@
 import paramiko  
+import socket,fcntl,struct
   
 def sshclient_execmd(hostname, port, username, password, execmd):  
     paramiko.util.log_to_file("paramiko.log")  
@@ -14,9 +15,8 @@ def sshclient_execmd(hostname, port, username, password, execmd):
     s.close()  
     return output 
       
-def main(querycmd,execmd,ip='30.30.32.3'): 
+def cds_init(querycmd,execmd,ip,local_ip): 
     hostname = ip
-    #print hostname
     port = 22 
     username = 'root'  
     password = 'FxData!Cds@2016_'
@@ -24,15 +24,20 @@ def main(querycmd,execmd,ip='30.30.32.3'):
         password = '123'
     query_result=sshclient_execmd(hostname, port, username, password, querycmd)
     iptable_restart='service iptables restart'
-    if '-A INPUT -s 192.168.1.106 -p tcp -m state --state NEW -m tcp --dport 3306 -j ACCEPT' not in query_result:
+    if ('-A INPUT -s %s -p tcp -m state --state NEW -m tcp --dport 3306 -j ACCEPT')%local_ip not in query_result:
         sshclient_execmd(hostname, port, username, password, execmd)
         sshclient_execmd(hostname, port, username, password, iptable_restart)
 
+def get_ip(ifname):
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    return socket.inet_ntoa(fcntl.ioctl(s.fileno(), 0x8915, struct.pack('256s', ifname[:15]))[20:24])
 
 if __name__ == "__main__":  
-    querycmd="cat /etc/sysconfig/iptables"
-    execmd = "sed -i '6i -A INPUT -s 192.168.1.106 -p tcp -m state --state NEW -m tcp --dport 3306 -j ACCEPT' /etc/sysconfig/iptables"
-    ipaddr=['192.168.1.104','192.168.1.106','30.30.32.3','30.30.33.3'] 
+    ipaddr=['192.168.1.104'] 
+    local_ip=get_ip('br100')
+    print local_ip
     for ip in ipaddr:
 	print ip
-        main(querycmd,execmd,ip)
+        querycmd="cat /etc/sysconfig/iptables"
+        execmd = "sed -i '6i -A INPUT -s %s -p tcp -m state --state NEW -m tcp --dport 3306 -j ACCEPT' /etc/sysconfig/iptables"%local_ip
+        cds_init(querycmd,execmd,ip,local_ip)

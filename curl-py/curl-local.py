@@ -7,6 +7,14 @@ import MySQLdb
 import getopt
 import subprocess
 import ssh
+import socket,fcntl,struct
+import ssh_cds
+
+def get_ip(ifname):
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    return socket.inet_ntoa(fcntl.ioctl(s.fileno(), 0x8915, struct.pack('256s', ifname[:15]))[20:24])
+
+local_ip=get_ip('br100')
 #命令行参数设置
 opts,arts = getopt.getopt(sys.argv[1:],"hn:t:s:T:i:")
 cachetype="video"
@@ -42,6 +50,11 @@ logfile  =cachetype + '_service_log'
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
+#初始化数据库、防火墙信息
+querycmd="cat /etc/sysconfig/iptables"
+execmd = "sed -i '6i -A INPUT -s %s -p tcp -m state --state NEW -m tcp --dport 3306 -j ACCEPT' /etc/sysconfig/iptables"%local_ip
+ssh_cds.cds_init(querycmd,execmd,ipaddr,local_ip)
+
 # 连接数据库
 conn = MySQLdb.Connection(host=ipaddr, user="root", passwd="0rd1230ac", charset="UTF8")
 conn.select_db('cache')
@@ -73,7 +86,7 @@ for i in range(times):
 	count=1
 	for result in results:
 		uri=result['uri']
-		cmd="curl -o /dev/null -L '"+uri+"' --user-agent '"+str(i+1)+"'"
+		cmd="curl -o /dev/null -L '"+uri+"' --user-agent '"+str(i+1)+"'"+'--limit-rate 5M'
 		p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 		time.sleep(seconds)
 		percent=1.0*count/url_num*100
