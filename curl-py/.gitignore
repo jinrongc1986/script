@@ -1,2 +1,3 @@
 paramiko.log
 test
+*.pyc
