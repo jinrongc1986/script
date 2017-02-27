@@ -31,7 +31,7 @@ def main(querycmd,execmd,ip='30.30.32.3'):
 
 if __name__ == "__main__":  
     querycmd="cat /etc/sysconfig/iptables"
-    execmd = "sed -i '6i -A INPUT -s 192.168.1.106 -p tcp -m state --state NEW -m tcp --dport 3306 -j ACCEPT' /etc/sysconfig/iptables"
+    execmd = "sed -i '6i -A INPUT -s 30.30.32.2 -p tcp -m state --state NEW -m tcp --dport 3306 -j ACCEPT' /etc/sysconfig/iptables"
     ipaddr=['192.168.1.104','192.168.1.106','30.30.32.3','30.30.33.3'] 
     for ip in ipaddr:
 	print ip

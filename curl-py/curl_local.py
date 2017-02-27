@@ -14,7 +14,7 @@ def get_ip(ifname):
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     return socket.inet_ntoa(fcntl.ioctl(s.fileno(), 0x8915, struct.pack('256s', ifname[:15]))[20:24])
 
-local_ip=get_ip('br100')
+local_ip=get_ip('eth0')
 #命令行参数设置
 opts,arts = getopt.getopt(sys.argv[1:],"hn:t:s:T:i:")
 cachetype="video"
