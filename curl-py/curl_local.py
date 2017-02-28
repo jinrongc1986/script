@@ -6,22 +6,18 @@ import sys,time
 import MySQLdb
 import getopt
 import subprocess
-import ssh
 import socket,fcntl,struct
-import ssh_cds
+import ssh_cds,get_ip_all
 
-def get_ip(ifname):
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    return socket.inet_ntoa(fcntl.ioctl(s.fileno(), 0x8915, struct.pack('256s', ifname[:15]))[20:24])
-
-local_ip=get_ip('eth0')
+local_ip=get_ip_all.get_ip1()
 #命令行参数设置
-opts,arts = getopt.getopt(sys.argv[1:],"hn:t:s:T:i:")
+opts,arts = getopt.getopt(sys.argv[1:],"hn:t:s:T:i:y:")
 cachetype="video"
 times=2
 round_time=0
 seconds=1
-ipaddr='30.30.32.3'
+ipaddr=''
+redirect_ip=''
 for op,value in opts:
 	if op=="-n":
 		times=value
@@ -30,6 +26,8 @@ for op,value in opts:
 		cachetype=value
 	elif op=="-i":
 		ipaddr=value
+	elif op=="-y":
+		redirect_ip=value
 	elif op=="-T":
 		round_time=value
 		round_time=int(round_time)
@@ -45,6 +43,10 @@ cachefile=cachetype + '_cache'
 logfile  =cachetype + '_service_log'
 
 
+#终止程序
+if ipaddr=='':
+	print 'no resource ip input'
+	exit()
 
 # 设置默认编码为UTF-8，否则从数据库读出的UTF-8数据无法正常显示
 reload(sys)
@@ -54,17 +56,22 @@ sys.setdefaultencoding('utf-8')
 querycmd="cat /etc/sysconfig/iptables"
 execmd = "sed -i '6i -A INPUT -s %s -p tcp -m state --state NEW -m tcp --dport 3306 -j ACCEPT' /etc/sysconfig/iptables"%local_ip
 ssh_cds.cds_init(querycmd,execmd,ipaddr,local_ip)
+if redirect_ip!='':
+    ssh_cds.cds_init(querycmd,execmd,redirect_ip,local_ip)
 
 # 连接数据库
-conn = MySQLdb.Connection(host=ipaddr, user="root", passwd="0rd1230ac", charset="UTF8")
-conn.select_db('cache')
+conn_src = MySQLdb.Connection(host=ipaddr, user="root", passwd="0rd1230ac", charset="UTF8")
+conn_src.select_db('cache')
+conn_red = MySQLdb.Connection(host=redirect_ip, user="root", passwd="0rd1230ac", charset="UTF8")
+conn_red.select_db('cache')
 
 # 创建指针，并设置数据的返回模式为字典
-cursor = conn.cursor(MySQLdb.cursors.DictCursor)
+cursor_src = conn_src.cursor(MySQLdb.cursors.DictCursor)
+cursor_red = conn_red.cursor(MySQLdb.cursors.DictCursor)
 
 #检查icached capture uri数目
 ssh_cmd_icached='/home/icache/icached debug'
-ssh_result=ssh.main(ssh_cmd_icached)
+ssh_result=ssh_cds.main(ssh_cmd_icached,ipaddr,redirect_ip)
 cap_uri_str=int(ssh_result.split('capture uri:')[1].split("\n")[0].strip(" "))
 
 #启动时间
@@ -75,8 +82,8 @@ print starttime
 
 #执行curl动作
 sql_query="select uri from "+cachefile
-cursor.execute(sql_query)
-results=cursor.fetchall()
+cursor_src.execute(sql_query)
+results=cursor_src.fetchall()
 url_num=len(results)
 print 'total uri is %d'%url_num
 for i in range(times):
@@ -100,39 +107,46 @@ for i in range(times):
 	time.sleep(round_time)
 # 准备执行结果比较
 print 'stop curl & wait for result...'
-time.sleep(10)
+time.sleep(2)
 curl_num=times*len(results)
 
 #检查icached capture uri最新数目,并计算curl期间的uri数量
 ssh_cmd_icached='/home/icache/icached debug'
-ssh_result=ssh.main(ssh_cmd_icached)
+ssh_result=ssh_cds.main(ssh_cmd_icached,ipaddr,redirect_ip)
 cap_uri_end=int(ssh_result.split('capture uri:')[1].split("\n")[0].strip(" "))
 cap_uri_num=cap_uri_end-cap_uri_str
 
 #获取数据库日志条目数并比对curl执行数量，已确认服务是否全部成功
+#获取服务日志
 sql_query_1="select count(*) from "+logfile+" where create_time > '%s';"%(starttime)
-cursor.execute(sql_query_1)
-log_results=cursor.fetchall()
+cursor_src.execute(sql_query_1)
+log_results=cursor_src.fetchall()
 log_num=int(log_results[0]['count(*)'])
+#获取重定向日志
+sql_query_2="select count(*) from location_log where create_time > '%s' and client_ip='%s';"%(starttime,local_ip)
+if redirect_ip=='':
+	cursor_src.execute(sql_query_2)
+	location_results=cursor_src.fetchall()
+	location_num=int(location_results[0]['count(*)'])
+else :
+        cursor_red.execute(sql_query_2)
+        location_results=cursor_red.fetchall()
+        location_num=int(location_results[0]['count(*)'])
 
-sql_query_2="select count(*) from location_log where create_time > '%s' and client_ip='%s';"%(starttime,ipaddr)
-cursor.execute(sql_query_2)
-location_results=cursor.fetchall()
-location_num=int(location_results[0]['count(*)'])
-
+print 'The number of curls is %d'%curl_num
+print 'The number of captured curls is %d'%cap_uri_num
+print 'The number of location is %d'%location_num
+print 'The number of log is %d'%log_num
 if log_num==curl_num:
 	print 'all %d curls successfully!'%log_num
-else :
-	print 'The number of curls is %d'%curl_num
-	print 'The number of captured curls is %d'%cap_uri_num
-	print 'The number of location is %d'%location_num
-	print 'The number of log is %d'%log_num
 
 # 关闭指针
-cursor.close()
+cursor_src.close()
+cursor_red.close()
 
 # 关闭数据库连接
-conn.close()
+conn_src.close()
+conn_red.close()
 
 print 'finished'
 print time.strftime( ISOTIMEFORMAT, time.localtime() )

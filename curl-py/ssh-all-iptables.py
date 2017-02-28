@@ -20,11 +20,11 @@ def main(querycmd,execmd,ip='30.30.32.3'):
     port = 22 
     username = 'root'  
     password = 'FxData!Cds@2016_'
-    if ip=='30.30.33.3':
+    if ip=='30.30.33.3' or ip=='20.20.20.2':
         password = '123'
     query_result=sshclient_execmd(hostname, port, username, password, querycmd)
     iptable_restart='service iptables restart'
-    if '-A INPUT -s 192.168.1.106 -p tcp -m state --state NEW -m tcp --dport 3306 -j ACCEPT' not in query_result:
+    if '-A INPUT -s 30.30.32.2 -p tcp -m state --state NEW -m tcp --dport 3306 -j ACCEPT' not in query_result:
         sshclient_execmd(hostname, port, username, password, execmd)
         sshclient_execmd(hostname, port, username, password, iptable_restart)
 
@@ -32,7 +32,7 @@ def main(querycmd,execmd,ip='30.30.32.3'):
 if __name__ == "__main__":  
     querycmd="cat /etc/sysconfig/iptables"
     execmd = "sed -i '6i -A INPUT -s 30.30.32.2 -p tcp -m state --state NEW -m tcp --dport 3306 -j ACCEPT' /etc/sysconfig/iptables"
-    ipaddr=['192.168.1.104','192.168.1.106','30.30.32.3','30.30.33.3'] 
+    ipaddr=['192.168.1.104','30.30.32.3','20.20.20.2'] 
     for ip in ipaddr:
 	print ip
         main(querycmd,execmd,ip)
