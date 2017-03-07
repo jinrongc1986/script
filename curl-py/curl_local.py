@@ -57,20 +57,22 @@ querycmd="cat /etc/sysconfig/iptables"
 execmd = "sed -i '6i -A INPUT -s %s -p tcp -m state --state NEW -m tcp --dport 3306 -j ACCEPT' /etc/sysconfig/iptables"%local_ip
 ssh_cds.cds_init(querycmd,execmd,ipaddr,local_ip)
 if redirect_ip!='':
-    ssh_cds.cds_init(querycmd,execmd,redirect_ip,local_ip)
-
+	ssh_cds.cds_init(querycmd,execmd,redirect_ip,local_ip)
 # 连接数据库
 conn_src = MySQLdb.Connection(host=ipaddr, user="root", passwd="0rd1230ac", charset="UTF8")
 conn_src.select_db('cache')
-conn_red = MySQLdb.Connection(host=redirect_ip, user="root", passwd="0rd1230ac", charset="UTF8")
-conn_red.select_db('cache')
+if redirect_ip!='':
+	conn_red = MySQLdb.Connection(host=redirect_ip, user="root", passwd="0rd1230ac", charset="UTF8")
+	conn_red.select_db('cache')
 
 # 创建指针，并设置数据的返回模式为字典
 cursor_src = conn_src.cursor(MySQLdb.cursors.DictCursor)
-cursor_red = conn_red.cursor(MySQLdb.cursors.DictCursor)
+if redirect_ip!='':
+	cursor_red = conn_red.cursor(MySQLdb.cursors.DictCursor)
 
 #检查icached capture uri数目
 ssh_cmd_icached='/home/icache/icached debug'
+#import pdb;pdb.set_trace()
 ssh_result=ssh_cds.main(ssh_cmd_icached,ipaddr,redirect_ip)
 cap_uri_str=int(ssh_result.split('capture uri:')[1].split("\n")[0].strip(" "))
 
@@ -93,6 +95,10 @@ for i in range(times):
 	count=1
 	for result in results:
 		uri=result['uri']
+		'''
+		if '.apk' in uri:
+			continue
+		'''
 		cmd="curl -o /dev/null -L '"+uri+"' --user-agent '"+str(i+1)+"'"+'--limit-rate 5M'
 		p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 		time.sleep(seconds)
@@ -142,11 +148,13 @@ if log_num==curl_num:
 
 # 关闭指针
 cursor_src.close()
-cursor_red.close()
+if redirect_ip!='':
+	cursor_red.close()
 
 # 关闭数据库连接
 conn_src.close()
-conn_red.close()
+if redirect_ip!='':
+	conn_red.close()
 
 print 'finished'
 print time.strftime( ISOTIMEFORMAT, time.localtime() )

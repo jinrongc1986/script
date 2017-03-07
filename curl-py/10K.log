@@ -1,0 +1,12 @@
+# 1488434410281 Thu Mar  2 14:00:10 2017
+# msec_offset cycle_no url_no client_no (ip) indic info
+4 0 0 1 !! ERCL 404 HTTP/1.1 404 Not Found
+4 0 0 5 !! ERCL 404 HTTP/1.1 404 Not Found
+4 0 0 4 !! ERCL 404 HTTP/1.1 404 Not Found
+5 0 0 3 !! ERCL 404 HTTP/1.1 404 Not Found
+5 0 0 2 !! ERCL 404 HTTP/1.1 404 Not Found
+1007 0 0 8 !! ERCL 404 HTTP/1.1 404 Not Found
+1008 0 0 6 !! ERCL 404 HTTP/1.1 404 Not Found
+1008 0 0 7 !! ERCL 404 HTTP/1.1 404 Not Found
+1008 0 0 9 !! ERCL 404 HTTP/1.1 404 Not Found
+1008 0 0 10 !! ERCL 404 HTTP/1.1 404 Not Found

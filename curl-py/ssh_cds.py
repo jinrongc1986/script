@@ -20,9 +20,7 @@ def cds_init(querycmd, execmd, ip, local_ip):
     port = 22 
     username = 'root'  
     password = 'FxData!Cds@2016_'
-    if ip=='30.30.33.3':
-        password = '123'
-    if ip=='20.20.20.2':
+    if hostname=='30.30.33.3' or hostname =='20.20.20.2':
         password = '123'
     query_result=sshclient_execmd(hostname, port, username, password, querycmd)
     iptable_restart='service iptables restart'
@@ -39,7 +37,7 @@ def main(execmd, ip, location_ip=''):
     port = 22 
     username = 'root'  
     password = 'FxData!Cds@2016_'  
-    if ip=='30.30.33.3' or ip=='20.20.20.2':
+    if hostname=='30.30.33.3' or hostname =='20.20.20.2':
         password = '123'
     #execmd = "/home/icache/icached debug"  
     return sshclient_execmd(hostname, port, username, password, execmd) 
