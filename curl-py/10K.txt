@@ -1,7 +1,0 @@
-RunTime(sec),Appl,Clients,Req,1xx,2xx,3xx,4xx,5xx,Err,T-Err,D,D-2xx,Ti,To
-0, H/F   , 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-0, H/F/S , 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-*, *, *, *, *, *, *, *, *, *, *, *, *, *
-RunTime(sec),Appl,Clients,Req,1xx,2xx,3xx,4xx,5xx,Err,T-Err,D,D-2xx,Ti,To
-2, H/F   , 0, 10, 0, 0, 0, 10, 0, 0, 0, 3, 0, 1015, 875
-2, H/F/S , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
