@@ -99,7 +99,7 @@ for i in range(times):
 		if '.apk' in uri:
 			continue
 		'''
-		cmd="curl -o /dev/null -L '"+uri+"' --user-agent '"+str(i+1)+"'"+'--limit-rate 5M'
+		cmd="curl -o /dev/null -L '"+uri+"' --user-agent '"+str(i+1)+"'"+' --limit-rate 5M'
 		p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 		time.sleep(seconds)
 		percent=1.0*count/url_num*100
