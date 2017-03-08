@@ -45,15 +45,20 @@ def main(execmd, ip, location_ip=''):
 def get_ip(ifname):
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     return socket.inet_ntoa(fcntl.ioctl(s.fileno(), 0x8915, struct.pack('256s', ifname[:15]))[20:24])
+def get_ip1():
+    #注意外围使用双引号而非单引号,并且假设默认是第一个网卡,特殊环境请适当修改代码
+    ip = os.popen("ifconfig | grep 'inet addr:' | grep -v '127.0.0.1' | cut -d: -f2 | awk '{print $1}' | head -1").read().split('\n')[0]
+    return ip
 
 if __name__ == "__main__":  
     ipaddr=['192.168.1.104','30.30.32.3','20.20.20.2'] 
-    local_ip=get_ip('br100')
+    local_ip=get_ip1()
     print local_ip
     for ip in ipaddr:
-	print ip
         querycmd="cat /etc/sysconfig/iptables"
         execmd = "sed -i '6i -A INPUT -s %s -p tcp -m state --state NEW -m tcp --dport 3306 -j ACCEPT' /etc/sysconfig/iptables"%local_ip
         cds_init(querycmd,execmd,ip,local_ip)
+        execmd = "sed -i '6i -A INPUT -s 30.30.32.2 -p tcp -m state --state NEW -m tcp --dport 3306 -j ACCEPT' /etc/sysconfig/iptables"
+        cds_init(querycmd,execmd,ip,local_ip='30.30.32.2')
         execmd = "sed -i '6i -A INPUT -s 30.30.32.4 -p tcp -m state --state NEW -m tcp --dport 3306 -j ACCEPT' /etc/sysconfig/iptables"
-        cds_init(querycmd,execmd,ip,local_ip)
+        cds_init(querycmd,execmd,ip,local_ip='30.30.32.4')
