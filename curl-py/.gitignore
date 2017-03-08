@@ -2,3 +2,4 @@ paramiko.log
 test
 *.pyc
 test.py
+10K.*
