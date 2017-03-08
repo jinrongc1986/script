@@ -1,4 +1,6 @@
-import paramiko  
+#!/usr/bin/env python  
+#encoding: utf-8
+import paramiko,os 
 import socket,fcntl,struct
   
 def sshclient_execmd(hostname, port, username, password, execmd):  
@@ -53,7 +55,6 @@ def get_ip1():
 if __name__ == "__main__":  
     ipaddr=['192.168.1.104','30.30.32.3','20.20.20.2'] 
     local_ip=get_ip1()
-    print local_ip
     for ip in ipaddr:
         querycmd="cat /etc/sysconfig/iptables"
         execmd = "sed -i '6i -A INPUT -s %s -p tcp -m state --state NEW -m tcp --dport 3306 -j ACCEPT' /etc/sysconfig/iptables"%local_ip
