@@ -7,10 +7,10 @@ import getopt
 import paramiko
 # 参数输入
 opts,arts = getopt.getopt(sys.argv[1:],"hlru:n:c:i:")
-url="http://20.20.20.4/test/1.mp4?1"
+url="http://20.20.20.4/test/0001.mp4?0001"
 cycles='1'
 total=1
-client='4'
+client='100'
 location="local"
 for op,value in opts:
         if op=="-u":
@@ -41,6 +41,9 @@ def curl_bulk_exec(location):
 	if location=="local":
 		cmd = "/home/curl-loader-0.56/curl-loader -f /home/script/curl-py/curl_base.conf"
 		p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+		#p = subprocess.Popen(cmd, shell=True)
+		#p.communicate(input=None)
+		p.wait()
 	elif location=="remote":
 		ssh = paramiko.SSHClient()
 		ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -53,13 +56,14 @@ if __name__ == "__main__":
 	print 'running...'
 	for i in range(1,total+1):
 		print 'round:%d'%i
-		url="http://20.20.20.4/test/%d.mp4?%d"%(i,i)
+		a=str(i).zfill(4)
+		url="http://20.20.20.4/test/%s.mp4?%s"%(a,a)
 		curl_bulk_set(url,client,cycles)
 		curl_bulk_exec(location)
-		time.sleep(10)
+		time.sleep(1)
 		if i<1001:
 			print 'dup round:%d'%i
 			curl_bulk_exec(location)
-			time.sleep(10)
+			time.sleep(1)
 	print 'finished'
 	print time.strftime( ISOTIMEFORMAT, time.localtime() )
