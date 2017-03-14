@@ -10,7 +10,7 @@ opts,arts = getopt.getopt(sys.argv[1:],"hlru:n:c:i:")
 url="http://20.20.20.4/test/0001.mp4?0001"
 cycles='1'
 total=1
-client='100'
+client='3'
 location="local"
 for op,value in opts:
         if op=="-u":
@@ -60,10 +60,11 @@ if __name__ == "__main__":
 		url="http://20.20.20.4/test/%s.mp4?%s"%(a,a)
 		curl_bulk_set(url,client,cycles)
 		curl_bulk_exec(location)
-		time.sleep(1)
-		if i<1001:
+		time.sleep(0.2)
+		if 1000<i<2001:
 			print 'dup round:%d'%i
+			curl_bulk_set(url,'4',cycles)
 			curl_bulk_exec(location)
-			time.sleep(1)
+			time.sleep(0.2)
 	print 'finished'
 	print time.strftime( ISOTIMEFORMAT, time.localtime() )
