@@ -1,0 +1,57 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# 加载模块
+import sys
+import MySQLdb
+import getopt
+opts,arts = getopt.getopt(sys.argv[1:],"hi:cd")
+init=1
+for op,value in opts:
+	if op=="-i":
+		ipstart=value
+	elif op=="-c":
+		init=1
+	elif op=='-d':
+		init=0
+	elif op=="-h":
+		print "-c:创建 -d:删除"
+		sys.exit()
+
+# 设置默认编码为UTF-8，否则从数据库
+# 读出的UTF-8数据无法正常显示
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
+# 连接数据库
+conn = MySQLdb.Connection(host="20.20.20.2", user="root", passwd="0rd1230ac", charset="UTF8")
+conn.select_db('cache')
+
+# 创建指针，并设置数据的返回模式为字典
+cursor = conn.cursor(MySQLdb.cursors.DictCursor)
+
+# 执行SQL
+category=[1,2,3,4,5,6,7]
+for vcidd in range (1,5):
+	for hours in range(11,16):
+		for i in range (0,60):
+			minutes=str(i).zfill(2)
+			ctimed='2017-03-22 %d:%s:0%d'%(hours,minutes,vcidd)
+			play_idd='abcdefghijklmnopqrstuvwxyzid'+str(hours)+str(minutes)
+			md5d='abcdefghijklmnopqrstuvwxyzmd'+str(hours)+str(minutes)
+			if hours%2==0:
+				categoryd=category[i/10]
+			else :
+				categoryd=category[i/10+1]
+			titled='大制作m'+str(minutes)+'c'+str(categoryd)
+			play_timesd=1
+			if init==1:
+				sql="""insert into video_stat_top (ctime,play_id,md5,vcid,category,title,play_times) values ('%s','%s','%s','%s','%d','%s','%s')"""%(ctimed,play_idd,md5d,vcidd,categoryd,titled,play_timesd)
+			else :
+				sql="""delete from video_stat_top where ctime='%s'"""%(ctimed)
+			cursor.execute(sql)
+# 关闭指针
+cursor.close()
+
+# 关闭数据库连接
+conn.close()
