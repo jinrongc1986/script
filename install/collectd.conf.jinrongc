@@ -1,0 +1,127 @@
+Hostname FX_HOSTNAME
+FQDNLookup false
+Interval 60
+
+LoadPlugin uptime
+
+LoadPlugin nginx
+<Plugin "nginx">
+  URL "http://localhost/status"
+</Plugin>
+
+LoadPlugin logfile
+<Plugin logfile>
+	LogLevel info
+	File "/var/log/collectd.log"
+	Timestamp true
+	PrintSeverity true
+</Plugin>
+
+LoadPlugin network
+<Plugin network>
+server "30.30.32.4" "25826"
+</Plugin>
+
+#LoadPlugin "write_graphite"
+#<Plugin "write_graphite">
+# <Node "example">
+#   Host "192.168.1.27"
+#   Port "2003"
+#   Prefix "collectd."
+#   EscapeCharacter "_"
+#   SeparateInstances true
+#   StoreRates false
+#   AlwaysAppendDS false
+# </Node>
+#</Plugin>
+
+LoadPlugin df
+<Plugin "df">
+  FSType "devfs"
+  IgnoreSelected true
+  ReportByDevice true
+  ValuesPercentage true
+</Plugin>
+
+LoadPlugin cpu
+<Plugin "cpu">
+  ValuesPercentage true
+  ReportByCpu false
+  # reports per-state metrics, e.g. "system", "user" and "idle". When set to
+  # false, aggregates (sums) all non-idle states into one "active" metric.
+  ReportByState false
+</Plugin>
+
+LoadPlugin swap
+<Plugin "swap">
+  ValuesPercentage true
+</Plugin>
+
+LoadPlugin interface
+<Plugin "interface">
+  Interface "lo"
+  Interface "/^veth/"
+  Interface "/^vir/"
+  Interface "/^if-/"
+  Interface "/^tun[0-9]+/"
+  IgnoreSelected true
+</Plugin>
+
+LoadPlugin load
+
+LoadPlugin memory
+<Plugin "memory">
+  ValuesPercentage true
+</Plugin>
+
+LoadPlugin processes
+<Plugin "processes">
+  ProcessMatch "all" ".*"
+  ProcessMatch "collectd" "collectd "
+  ProcessMatch "icached" "icached"
+</Plugin>
+
+LoadPlugin disk
+<Plugin "disk">
+  Disk "/^sd.$/"
+  Disk "/^hd.$/"
+  Disk "/^vd.$/"
+</Plugin>
+
+LoadPlugin statsd
+<Plugin "statsd">
+  Host 127.0.0.1
+  Port 8125
+
+  DeleteCounters true
+  DeleteTimers true
+  DeleteGauges true
+  DeleteSets true
+
+  TimerPercentile 50
+  TimerPercentile 90
+  TimerPercentile 99
+  TimerCount true
+  TimerSum true
+  TimerLower true
+  TimerUpper true
+</Plugin>
+
+LoadPlugin virt
+<Plugin "virt">
+  Connection "qemu:///system"
+  HostnameFormat hostname
+</Plugin>
+
+LoadPlugin tcpconns
+<Plugin "tcpconns">
+  LocalPort 80
+  LocalPort 8000
+  LocalPort 443
+  AllPortsSummary true
+</Plugin>
+
+#LoadPlugin exec
+#<Plugin exec>
+#  Exec "admin" "/etc/collectd.conf.d/check_f2cdn.py"
+#</Plugin>
