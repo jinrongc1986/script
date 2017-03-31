@@ -15,8 +15,8 @@ def json_body_create(dict_p):
 	},
 	"time":dict_p['time'],
 	"fields":{
-	"percent":str(dict_p['percent']),
-	"value":str(dict_p['value'])
+	"percent":float(dict_p['percent']),
+	"value":float(dict_p['value'])
 	}
 	}
 	]
@@ -30,7 +30,7 @@ select
 from
     df_value
 where
-    time > now() - 5m
+    time >= now() - 5m
 group by
     time(1m),
     instance
@@ -50,9 +50,9 @@ select
 from
     df_value
 where
-    time < now() - 1m
+    time < now()
     and
-    time > now() - 5m
+    time >= now() - 5m
 '''
 
 ret1 = inf.query(iql_1)
@@ -63,9 +63,7 @@ for p in ret1.get_points():
         #p['time']=p['time'].split('.')[0]+'Z'
     except Exception:
         continue
-    #pprint(p)
     json_body=json_body_create(p)
-    print '#####################'
-    print json_body
+    #print '#####################'
+    #print json_body
     inf.write_points(json_body)
-    break
