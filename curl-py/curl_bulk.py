@@ -58,6 +58,7 @@ if __name__ == "__main__":
 		print 'round:%d'%i
 		a=str(i).zfill(4)
 		url="http://20.20.20.4/test/%s.mp4?%s"%(a,a)
+		print url
 		curl_bulk_set(url,client,cycles)
 		curl_bulk_exec(location)
 		time.sleep(0.2)
