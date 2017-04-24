@@ -26,7 +26,7 @@ for op,value in opts:
         port=int(port)
 
 def check_dns(cnc_domain,port=53):
-    cmd='dig %s @192.168.1.109 -p %d'%(cnc_domain,port)
+    cmd='dig %s @30.30.32.3 -p %d'%(cnc_domain,port)
     p=subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
     stdout=p.stdout.read()
     global x
