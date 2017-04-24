@@ -5,6 +5,7 @@ import json
 
 #默认参数选择
 filedomain='domain_cnc_video_demand.txt'
+server_ip='30.30.32.3'
 port=53
 x=0
 y=0
@@ -13,7 +14,7 @@ fail_noanswer=[]
 fail_notlocal=[]
 
 #参数选择
-opts,arts = getopt.getopt(sys.argv[1:],"lvhp:")
+opts,arts = getopt.getopt(sys.argv[1:],"lvhp:i:")
 for op,value in opts:
     if op=="-l":
         filedomain='domain_cnc_video_live.txt'
@@ -21,12 +22,14 @@ for op,value in opts:
         filedomain='domain_cnc_video_demand.txt'
     elif op=="-h":
         filedomain='domain_cnc_http.txt'
+    elif op=="-i":
+        server_ip=value
     elif op=="-p":
         port=value
         port=int(port)
 
-def check_dns(cnc_domain,port=53):
-    cmd='dig %s @30.30.32.3 -p %d'%(cnc_domain,port)
+def check_dns(cnc_domain,server_ip,port=53):
+    cmd='dig %s @%s -p %d'%(cnc_domain,server_ip,port)
     p=subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
     stdout=p.stdout.read()
     global x
@@ -51,7 +54,7 @@ domainlist=f.readlines()
 dllen=len(domainlist)
 for i in range(dllen):
     domain=domainlist[i].split('\n')[0]
-    result=check_dns(domain,port)
+    result=check_dns(domain,server_ip,port)
     print result
 print 'total domain counter : %d'%dllen
 print 'total sucess : %d'%x
