@@ -53,8 +53,8 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 #初始化数据库、防火墙信息
-querycmd="cat /etc/sysconfig/iptables"
-execmd = "sed -i '6i -A INPUT -s %s -p tcp -m state --state NEW -m tcp --dport 3306 -j ACCEPT' /etc/sysconfig/iptables"%local_ip
+querycmd="cat /etc/icache/iptables"
+execmd = "sed -i '6i -A INPUT -s %s -p tcp -m state --state NEW -m tcp --dport 3306 -j ACCEPT' /etc/icache/iptables"%local_ip
 ssh_cds.cds_init(querycmd,execmd,ipaddr,local_ip)
 if redirect_ip!='':
     ssh_cds.cds_init(querycmd,execmd,redirect_ip,local_ip)
