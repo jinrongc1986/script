@@ -4,7 +4,7 @@ import paramiko,os
 import socket,fcntl,struct
   
 def sshclient_execmd(hostname, port, username, password, execmd):  
-    paramiko.util.log_to_file("paramiko.log")  
+    paramiko.util.log_to_file("/home/git/script/curl-py/paramiko.log")  
       
     s = paramiko.SSHClient()  
     s.set_missing_host_key_policy(paramiko.AutoAddPolicy())  
