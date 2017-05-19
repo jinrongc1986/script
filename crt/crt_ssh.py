@@ -22,6 +22,8 @@ def main():
 	else :
 		cmd=" /SSH2 /L %s /PASSWORD %s /C 3DES /M MD5 %s /P %s"%(user,passwd,host,port)
 		crt.Session.ConnectInTab(cmd)
+		objTab = crt.GetActiveTab()
+		objTab.Caption = port
 		#crt.Dialog.MessageBox ("登陆成功","成功", 0 | 0)
 
 main()  
