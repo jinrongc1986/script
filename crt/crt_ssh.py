@@ -6,8 +6,8 @@ host = 'rhelp.fxdata.cn'
 # ssh用户名
 user = 'root'
 # ssh密码
-# passwd = 'FxData!Cds@2016_'
-passwd = '123'
+passwd = 'FxData!Cds@2016_'
+
 
 # f=open("rhelp.txt",'r')
 # ssh_port=f.read()
