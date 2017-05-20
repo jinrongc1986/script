@@ -1,6 +1,7 @@
 # $language = "python"
 # $interface = "1.0"
 
+crt.Screen.Synchronous = True
 # 你要连接的ssh服务器ip
 host = 'rhelp.fxdata.cn'
 # ssh用户名
@@ -8,15 +9,11 @@ user = 'root'
 # ssh密码
 passwd = 'FxData!Cds@2016_'
 
-
-# f=open("rhelp.txt",'r')
-# ssh_port=f.read()
 def main():
 	ssh_port=None
 	i=0
 	while (ssh_port==None ):
 		ssh_port=crt.Dialog.Prompt("请输入端口号","CDS设备ssh连接","",False)
-		#ssh_port="57275"
 		if not len(ssh_port)==5:
 			ssh_port=None
 			i+=1
