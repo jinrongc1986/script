@@ -1,25 +1,34 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# 加载模块
 import MySQLdb
 
+def get_cds_info(sn='CAS0510000147'):
+    # mysql -h 192.168.1.12 -uselector -pfxdata_Select-2016 -P 3305
+    # 连接数据库
+    conn = MySQLdb.Connection(host="192.168.1.12", user="selector", passwd="fxdata_Select-2016", charset="UTF8",port=3305)
+    conn.select_db('ordoac')
+    # 创建指针，并设置数据的返回模式为字典
+    cursor = conn.cursor(MySQLdb.cursors.DictCursor)
+    sql="select rhelp from feedback where sn='%s'"%sn
+    cursor.execute(sql)
+    rhelp_port=cursor.fetchall()
+    # 关闭指针
+    cursor.close()
+    # 关闭数据库连接
+    conn.close()
+    if rhelp_port:
+        ssh_port=rhelp_port[0].get("rhelp").split(':')[2]
+        f=open('rhelp.txt','w')
+        f.write(ssh_port)
+        f.close
+        return "get ssh_port success"
+    else :
+        print "rhelp not exist"
+        ssh_port=""
+        f=open('rhelp.txt','w')
+        f.write(ssh_port)
+        f.close
+        return "get ssh_port failed"
 
-# 连接数据库
-conn = MySQLdb.Connection(host="192.168.1.12", user="selector", passwd="fxdata_Select-2016", charset="UTF8")
-conn.select_db('ordoac')
-
-# 创建指针，并设置数据的返回模式为字典
-cursor = conn.cursor(MySQLdb.cursors.DictCursor)
-
-sql="select rhelp from feedback where sn='CAS0510000147'"
-cursor.execute(sql)
-rhelp_port=cursor.fetchall()
-print rhelp_port
-
-
-# 关闭指针
-cursor.close()
-
-# 关闭数据库连接
-conn.close()
+if __name__=='__main__':
+    print get_cds_info("CAS0510000147")

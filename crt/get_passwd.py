@@ -13,8 +13,8 @@ def main():
 			break
 	else :
 		cmd="curl -k -g 'https://192.168.1.232:5534/getadmin?sn="+sn
-		crt.Screen.Send(cmd + "' \r")
-		crt.Screen.Send VbCr
+		crt.Screen.Send (cmd + "' \r")
+		crt.Screen.Send (" \r")
 	#crt.Dialog.MessageBox ("请复制token","成功", 0 | 0)
 
 main() 
