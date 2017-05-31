@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
+import sys
 import MySQLdb
 
+sn=sys.argv[1]
 def get_cds_info(sn='CAS0510000147'):
     # mysql -h 192.168.1.12 -uselector -pfxdata_Select-2016 -P 3305
     # 连接数据库
@@ -30,5 +32,5 @@ def get_cds_info(sn='CAS0510000147'):
         f.close
         return "get ssh_port failed"
 
-if __name__=='__main__':
-    print get_cds_info("CAS0510000147")
+#if __name__=='__main__':
+get_cds_info(sn)

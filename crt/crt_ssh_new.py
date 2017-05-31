@@ -15,7 +15,7 @@ host = 'rhelp.fxdata.cn'
 user = 'root'
 # ssh密码
 #passwd = 'FxData!Cds@2016_'
-passwd = '123'
+passwd = 'FxData!Cds@2016_'
 
 
 BASE_DIR = os.path.dirname(__file__)

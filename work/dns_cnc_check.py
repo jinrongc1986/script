@@ -14,12 +14,14 @@ fail_noanswer=[]
 fail_notlocal=[]
 
 #参数选择
-opts,arts = getopt.getopt(sys.argv[1:],"lvhp:i:")
+opts,arts = getopt.getopt(sys.argv[1:],"lvhop:i:")
 for op,value in opts:
     if op=="-l":
         filedomain='domain_cnc_video_live.txt'
     elif op=="-v":
         filedomain='domain_cnc_video_demand.txt'
+    elif op=="-o":
+        filedomain='host.txt'
     elif op=="-h":
         filedomain='domain_cnc_http.txt'
     elif op=="-i":
@@ -48,7 +50,7 @@ def check_dns(cnc_domain,server_ip,port=53):
         fail_notlocal.append('%s'%cnc_domain)
         return '###########################%s is NotLocal'%cnc_domain
 
-f=open(r"/home/git/script/work/%s"%filedomain,"r+")
+f=open(r"e:/workspace/script/work/%s"%filedomain,"r+")
 domainlist=[]
 domainlist=f.readlines()
 dllen=len(domainlist)
