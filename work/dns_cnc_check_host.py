@@ -4,26 +4,27 @@ import sys,getopt
 import json
 
 #默认参数选择
-filedomain='domain_cnc_video_demand.txt'
-server_ip='30.30.32.3'
+filedomain='match_cp_host.conf'
+server_ip='114.114.114.114'
 port=53
 x=0
 y=0
 z=0
 fail_noanswer=[]
 fail_notlocal=[]
+mode='all'
 
 #参数选择
-opts,arts = getopt.getopt(sys.argv[1:],"lvhop:i:")
+opts,arts = getopt.getopt(sys.argv[1:],"lvhap:i:")
 for op,value in opts:
     if op=="-l":
-        filedomain='domain_cnc_video_live.txt'
+        mode='live'
     elif op=="-v":
-        filedomain='domain_cnc_video_demand.txt'
-    elif op=="-o":
-        filedomain='host.txt'
+        mode='demand'
+    elif op=="-a":
+        mode='all'
     elif op=="-h":
-        filedomain='domain_cnc_http.txt'
+        mode='http'
     elif op=="-i":
         server_ip=value
     elif op=="-p":
@@ -50,17 +51,25 @@ def check_dns(cnc_domain,server_ip,port=53):
         fail_notlocal.append('%s'%cnc_domain)
         return '###########################%s is NotLocal'%cnc_domain
 
-f=open(r"e:/workspace/script/work/%s"%filedomain,"r+")
+f=open(r"/home/git/script/work/%s"%filedomain,"r+")
+data=json.load(f)
 domainlist=[]
-domainlist=f.readlines()
+if mode=='all':
+    domainlist=[i['host'] for i in data['zones']]
+elif mode=='live':
+    domainlist=[i['host'] for i in data['zones'] if i['type']=='cnc_live']
+elif mode=='demand':
+    domainlist=[i['host'] for i in data['zones'] if i['type']=='cnc_demand']
+elif mode=='http':
+    domainlist=[i['host'] for i in data['zones'] if i['type']=='cnc_http']
 dllen=len(domainlist)
 for i in range(dllen):
-    domain=domainlist[i].split('\n')[0]
+    domain=domainlist[i]
     result=check_dns(domain,server_ip,port)
     print result
 print 'total domain counter : %d'%dllen
 print 'total sucess : %d'%x
 print 'total not local : %d'%z
 print fail_notlocal
-print 'total no answer : %d'%y
+print 'total no A answer : %d'%y
 print fail_noanswer
