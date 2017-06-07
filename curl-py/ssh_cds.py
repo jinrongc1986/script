@@ -23,7 +23,21 @@ def cds_init(querycmd, execmd, ip, local_ip):
     port = 22 
     username = 'root'  
     password = 'FxData!Cds@2016_'
-    if hostname=='30.30.33.3' or hostname =='20.20.20.2':
+    if hostname=='30.30.33.3' or hostname =='20.20.20.2' or hostname=='192.168.1.106':
+        password = '123'
+    query_result=sshclient_execmd(hostname, port, username, password, querycmd)
+    iptable_restart='/home/icache/configd config iptables'
+    judgecmd=execmd.split("'")[1].split(' ',1)[1]
+    if judgecmd not in query_result:
+        sshclient_execmd(hostname, port, username, password, execmd)
+        sshclient_execmd(hostname, port, username, password, iptable_restart)
+
+def cds_init_test(querycmd, execmd, ip, local_ip): 
+    hostname = ip
+    port = 22 
+    username = 'root'  
+    password = 'FxData!Cds@2016_'
+    if hostname=='30.30.33.3' or hostname =='20.20.20.2' or hostname=='192.168.1.106':
         password = '123'
     query_result=sshclient_execmd(hostname, port, username, password, querycmd)
     iptable_restart='/home/icache/configd config iptables'
@@ -70,13 +84,9 @@ def get_ip1():
 
 if __name__ == "__main__":  
     #ipaddr=['30.30.32.5','30.30.32.3','20.20.20.2'] 
-    ipaddr=['30.30.32.3','20.20.20.2'] 
+    ipaddr=['30.30.32.3','20.20.20.2','192.168.1.102','192.168.1.107'] 
     local_ip=get_ip1()
     for ip in ipaddr:
         querycmd="cat /etc/icache/iptables"
-        execmd = "sed -i '6i -A INPUT -s %s -p tcp -m state --state NEW -m tcp --dport 3306 -j ACCEPT' /etc/icache/iptables"%local_ip
-        cds_init(querycmd,execmd,ip,local_ip)
-        execmd = "sed -i '6i -A INPUT -s 30.30.32.2 -p tcp -m state --state NEW -m tcp --dport 3306 -j ACCEPT' /etc/icache/iptables"
-        cds_init(querycmd,execmd,ip,local_ip='30.30.32.2')
-        execmd = "sed -i '6i -A INPUT -s 30.30.32.4 -p tcp -m state --state NEW -m tcp --dport 3306 -j ACCEPT' /etc/icache/iptables"
-        cds_init(querycmd,execmd,ip,local_ip='30.30.32.4')
+        execmd = "sed -i '6i -A INPUT -p tcp -m state --state NEW -m tcp --dport 3306 -j ACCEPT' /etc/icache/iptables"
+        cds_init_test(querycmd,execmd,ip,local_ip='30.30.32.2')
