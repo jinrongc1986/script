@@ -39,7 +39,7 @@ def check_dns(cnc_domain,server_ip,port=53):
     global y
     global z
     global faillist
-    if '192.168.1.17' in stdout:
+    if '222.30.49.25' in stdout:
         x = x + 1
         return '%s is OK'%(cnc_domain)
     elif 'ANSWER: 0, AUTHORITY' in stdout:
@@ -67,9 +67,11 @@ for i in range(dllen):
     domain=domainlist[i]
     result=check_dns(domain,server_ip,port)
     print result
+print "failed:"
+print fail_notlocal
+print "noanswer:"
+print fail_noanswer
 print 'total domain counter : %d'%dllen
 print 'total sucess : %d'%x
 print 'total not local : %d'%z
-print fail_notlocal
 print 'total no A answer : %d'%y
-print fail_noanswer
