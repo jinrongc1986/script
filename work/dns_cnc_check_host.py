@@ -39,7 +39,7 @@ def check_dns(cnc_domain,server_ip,port=53):
     global y
     global z
     global faillist
-    if '222.30.49.25' in stdout:
+    if '10.10.10.' in stdout or '20.20.1.1' in stdout:
         x = x + 1
         return '%s is OK'%(cnc_domain)
     elif 'ANSWER: 0, AUTHORITY' in stdout:
@@ -51,7 +51,7 @@ def check_dns(cnc_domain,server_ip,port=53):
         fail_notlocal.append('%s'%cnc_domain)
         return '###########################%s is NotLocal'%cnc_domain
 
-f=open(r"/home/git/script/work/%s"%filedomain,"r+")
+f=open(r"./%s"%filedomain,"r+")
 data=json.load(f)
 domainlist=[]
 if mode=='all':
