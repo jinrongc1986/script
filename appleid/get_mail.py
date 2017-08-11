@@ -27,7 +27,7 @@ pops = {'126.com':'pop.126.com','163.com':'pop.163.com','qq.com':'pop.qq.com', '
 # password 密码
 # limit    获取邮件数量
 #
-def get_mail(email, password, limit=1):
+def get_mail(email, password='Xmx&qb3', limit=1):
     pop3_server = ''
     st = email.split('@')[1]
     if st and (st in pops):
@@ -87,9 +87,11 @@ def get_mail(email, password, limit=1):
         except:
             pass
     for message in messages:
-        if 'x-ds-vetting-token' in message:
+        if 'x-ds-vetting-token' in message.decode('utf-8'):
             #print message
             token=message[-6:]
+            token_new=str(token)[2:-1]
+            print(token_new)
             break
         else :
             continue
@@ -103,7 +105,6 @@ def get_mail(email, password, limit=1):
     #     pass
     #return msgAll
     return token
-
 '''
 只需要一行代码就可以把邮件内容解析为Message对象：
 
@@ -154,7 +155,7 @@ def print_info(msg, data, indent=0):
             # 附件
             # print('%sAttachment: %s' % ('  ' * indent, content_type))
             data['attach'] = ''
-        data['content_type'] = content_type
+        data['content_type'] = content_typemessage
     return data
 
 #邮件的Subject或者Email中包含的名字都是经过编码后的str，要正常显示，就必须decode：
@@ -263,7 +264,7 @@ if __name__ == "__main__":
 
     print('all ok:%s' % time.strftime("%Y-%m-%d %H:%M:%S"))
     '''
-    code = get_mail('xmxqb_531@nbsky55.com','Xmx&qb3', 2)
+    code = get_mail('xmxqb_555@nbsky55.com','Xmx&qb3', 1)
     # code = get_apple_code('liukelin_5@163.com','qq6280734', 3)
     print(code)
     #pass
