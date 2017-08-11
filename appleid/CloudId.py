@@ -16,20 +16,25 @@ from time import sleep
 
 import time
 
+import get_mail
+
+
 driver=webdriver.Chrome()
 
 driver.get("https://www.icloud.com/")
 
+print ("1")
 
 sleep(10)
 driver.find_element_by_link_text("现在创建一个。") .click()
 #driver.find_element_by_xpath("//a[@herf='https://www.icloud.com']").click()
+sleep(5)
 
+
+driver.switch_to.frame(driver.find_element_by_xpath("//div[@role='dialog']/div[3]/div/iframe"))
 #name
-
 driver.find_element_by_xpath("//last-name-input/div/input").send_keys("Zrcredit")
-
-driver.find_element_by_xpath("//first-name-input/div/input").send_keys("贷")
+driver.find_element_by_xpath("//first-name-input/div/input").send_keys(u"贷")
 
 #china select
 
@@ -59,21 +64,21 @@ question1=Select(driver.find_element_by_xpath("//div[@class='form-group qa-conta
 
 question1.select_by_value('130')
 
-driver.find_element_by_xpath("//security-answer[@answer-number='1']/div/input").send_keys("第一财经")
+driver.find_element_by_xpath("//security-answer[@answer-number='1']/div/input").send_keys(u"第一财经")
 
 
 question1=Select(driver.find_element_by_xpath("//div[@class='form-group qa-container qa-set1 ']/security-question/div/div/select"))
 
 question1.select_by_value('137')
 
-driver.find_element_by_xpath("//security-answer[@answer-number='2']/div/input").send_keys("万华化学")
+driver.find_element_by_xpath("//security-answer[@answer-number='2']/div/input").send_keys(u"万华化学")
 
 
 question1=Select(driver.find_element_by_xpath("//div[@class='form-group qa-container qa-set2 ']/security-question/div/div/select"))
 
 question1.select_by_value('143')
 
-driver.find_element_by_xpath("//security-answer[@answer-number='3']/div/input").send_keys("三聚环保")
+driver.find_element_by_xpath("//security-answer[@answer-number='3']/div/input").send_keys(u"三聚环保")
 
 
 #image identification
