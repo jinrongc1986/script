@@ -48,7 +48,7 @@ def get_mail(email, password='Xmx&qb3', limit=1):
         server.set_debuglevel(set_debuglevel)
 
         # 可选:打印POP3服务器的欢迎文字:
-        # print(server.getwelcome().decode('utf-8'))
+        print(server.getwelcome().decode('utf-8'))
 
         # 身份认证:
         server.user(email)
@@ -264,7 +264,8 @@ if __name__ == "__main__":
 
     print('all ok:%s' % time.strftime("%Y-%m-%d %H:%M:%S"))
     '''
-    code = get_mail('xmxqb_555@nbsky55.com','Xmx&qb3', 1)
+    print("1")
+    code = get_mail('xmxqb_562@nbsky55.com','Xmx&qb3', 1)
     # code = get_apple_code('liukelin_5@163.com','qq6280734', 3)
     print(code)
     #pass
