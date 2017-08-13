@@ -2,3 +2,4 @@ paramiko.log
 *.pyc
 rhelp.txt
 *.jpg
+debug.log
