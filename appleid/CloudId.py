@@ -91,6 +91,10 @@ def create_cloudid(mailname,mailpasswd):
             if os.path.exists(imgname):
                 os.remove(imgname)
                 print('remove:', imgname)
+            with open("dama.txt", "a") as f:
+                timenow=(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
+                damaok='PASS'
+                f.write(timenow + ' '+ damaok)
             print('发送邮件中。。。。等待30秒')
         except:
             attempts += 1
@@ -100,6 +104,10 @@ def create_cloudid(mailname,mailpasswd):
             if os.path.exists(imgname):
                 os.rename(imgname, imgname.split('.')[0] + '_' + val + '.jpg')
                 print(验证码失败)
+            with open("dama.txt", "a") as f:
+                timenow=(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
+                damaok='FAIL'
+                f.write(timenow + ' '+ damaok + val)
             # 验证码自动化
             imgurl = driver.find_element_by_xpath('//idms-captcha/div/img[@alt="安全提示图片"]').get_attribute('src')
             request.urlretrieve(imgurl, imgname)
