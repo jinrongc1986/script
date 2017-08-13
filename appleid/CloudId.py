@@ -21,6 +21,7 @@ def create_cloudid(mailname,mailpasswd):
     imgname=mailname.split('@')[0]+'.jpg'
     print(mailname)
     driver=webdriver.Chrome()
+    #driver=webdriver.Firefox()
     driver.get("https://www.icloud.com/")
     print(driver.current_window_handle)
     print(driver.title)

@@ -11,7 +11,7 @@ with open("mail.txt", "r") as f:  # 读取开始尝试id
     sn = f.readline()
 mailstart = "xmxqb_" + sn + "@nbsky55.com"
 
-for i in range(0,10):
+for i in range(0,1):
     with open("mail.txt", "r") as f: #读取当前尝试id
         sn = f.readline()
     # 请设置邮箱信息
