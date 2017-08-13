@@ -16,7 +16,7 @@ from urllib import request
 import lianzhong_api
 
 timestart=time.time()
-username="xmxqb_602@nbsky55.com"
+username="xmxqb_603@nbsky55.com"
 imgname=username.split('@')[0]+'.jpg'
 print(username)
 driver=webdriver.Chrome()
@@ -90,7 +90,7 @@ val=result.split(":")[2].split(",")[0][1:-1]
 
 driver.find_element_by_xpath('//captcha-input/div/input[@id="captchaInput"]').send_keys(val)
 #image identification
-sleep(20)
+sleep(1)
 #继续
 driver.find_element_by_xpath("//idms-toolbar/div/div/button").click()
 
@@ -116,22 +116,6 @@ WebDriverWait(driver,10,0.5).until(EC.presence_of_element_located((By.XPATH,"//h
 #WebDriverWait(driver,15,0.5).until(EC.presence_of_element_located((By.LINK_TEXT,"同意")))
 sleep(2)
 driver.find_element_by_xpath("//html/body/div[@role='dialog']/div[3]/div/div[3]/div[2]").click()
-'''
-try:
-    driver.find_element_by_xpath("//html/body/div[@role='dialog']/div[3]/div/div[3]/div[2]").click()
-    print("b")
-except:
-    print("b nok")
-try:
-    driver.find_element_by_xpath("//html/body/div[@role='dialog']/div[3]/div/div[3]/div[2]/label").click()
-    print("a")
-except:
-    print("a nok")
-try:
-    driver.find_element_by_link_text("同意").parent.click()
-except:
-    print("c nok")
-'''
 print("同意1")
 sleep(1)
 
@@ -144,7 +128,7 @@ sleep(1)
 #开始使用iCloud
 #startuse=WebDriverWait(driver,10,0.5).until(EC.presence_of_element_located((By.XPATH,"//div[@role='main']/div[2]/label")))
 startuse=WebDriverWait(driver,10,0.5).until(EC.presence_of_element_located((By.XPATH,"//div[@role='main']/div[2]")))
-sleep(1)
+sleep(2)
 startuse.click()
 print("点击开始使用iCloud成功")
 sleep(1)
@@ -156,6 +140,9 @@ WebDriverWait(driver,5,0.5).until(EC.presence_of_element_located((By.LINK_TEXT,"
 sleep(2)
 driver.close()
 driver.quit()
+if os.path.exists(imgname):
+    os.remove(imgname)
+    print('remove:',imgname)
 timeend=time.time()
 timecost=timeend-timestart
 print(("耗时%f秒")%timecost)

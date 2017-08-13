@@ -1,5 +1,5 @@
 #coding=utf-8
-import time
+import time,os
 timestart=time.time()
 timeend=time.time()
 timecost=timeend-timestart
@@ -13,3 +13,7 @@ print (imgname)
 result='{"data":{"val":"EVLW","id":8622908227},"result":true}'
 val=result.split(":")[2].split(",")[0][1:-1]
 print(val[0])
+imgname='xmxqb_603.jpg'
+if os.path.exists(imgname):
+    os.remove(imgname)
+    print('remove:',imgname)
