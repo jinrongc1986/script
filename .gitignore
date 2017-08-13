@@ -4,3 +4,9 @@ rhelp.txt
 *.jpg
 debug.log
 *.xml
+appleid/.idea/misc.xml
+appleid/.idea/appleid.iml
+appleid/.idea/misc.xml
+appleid/.idea/workspace.xml
+*.iml
+.idea/
