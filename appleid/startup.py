@@ -1,5 +1,5 @@
 #coding=utf-8
-from CloudId2 import create_cloudid
+from CloudId import create_cloudid
 from time import sleep
 import time
 
