@@ -90,8 +90,8 @@ def get_mail(email, password='Xmx&qb3', limit=1):
         if 'x-ds-vetting-token' in message.decode('utf-8'):
             #print message
             token=message[-6:]
-            token_new=str(token)[2:-1]
-            print(token_new)
+            #token_new=str(token)[2:-1]
+            #print(token_new)
             break
         else :
             continue
@@ -265,9 +265,10 @@ if __name__ == "__main__":
     print('all ok:%s' % time.strftime("%Y-%m-%d %H:%M:%S"))
     '''
     print("1")
-    code = get_mail('xmxqb_562@nbsky55.com','Xmx&qb3', 1)
+    token = get_mail('xmxqb_562@nbsky55.com','Xmx&qb3', 1)
+    print(str(token)[2:-1])
     # code = get_apple_code('liukelin_5@163.com','qq6280734', 3)
-    print(code)
+    # print(code)
     #pass
             
 

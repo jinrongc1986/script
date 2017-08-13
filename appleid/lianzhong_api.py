@@ -45,7 +45,7 @@ def main(file_name,api_username="jinrongc", api_password="FxData!Cds@2016_", api
     s = requests.session()
     # r = s.post(api_post_url, headers=headers, data=data, files=files, verify=False, proxies=proxies)
     r = s.post(api_post_url, headers=headers, data=data, files=files, verify=False)
-    print(r.text)
+    #print(r.text)  #{"data":{"val":"FAA4","id":8631454506},"result":true}
     return(r.text)
 
 

@@ -24,88 +24,64 @@ def create_cloudid(mailname,mailpasswd):
     driver.get("https://www.icloud.com/")
     print(driver.current_window_handle)
     print(driver.title)
-    #sleep(10)
     create_element=WebDriverWait(driver,10,0.5).until(EC.presence_of_element_located((By.LINK_TEXT,"现在创建一个。")))
     create_element.click()
-    #driver.find_element_by_link_text("现在创建一个。").click()
-
-    #sleep(5)
     #switch to frame
     switch_frame=WebDriverWait(driver,10,0.5).until(EC.presence_of_element_located((By.XPATH,"//div[@role='dialog']/div[3]/div/iframe")))
     driver.switch_to.frame(switch_frame)
     #driver.switch_to.frame(driver.find_element_by_xpath("//div[@role='dialog']/div[3]/div/iframe"))
 
+    #账号信息页面
     WebDriverWait(driver,10,0.5).until(EC.presence_of_element_located((By.XPATH,"//security-answer[@answer-number='3']/div/input")))
+    sleep(1)
     #name
     driver.find_element_by_xpath("//last-name-input/div/input").send_keys("Zrcredit")
     driver.find_element_by_xpath("//first-name-input/div/input").send_keys(u"贷")
-
     #china select
-
     country_select=Select(driver.find_element_by_id('countryOptions'))
     country_select.select_by_value('CHN')
-
     #birthday
     sleep(1)
     driver.find_element_by_xpath("//idms-error-wrapper/div/input").send_keys("19891212")
-
     #email
-
     driver.find_element_by_xpath("//idms-error-wrapper/div/div/input").send_keys(mailname)
-
     #password
-
     driver.find_element_by_xpath("//password-input/input").send_keys("21B12a5&")
-
     driver.find_element_by_xpath("//confirm-password-input/div/input").send_keys("21B12a5&")
-
-
     #questions
-
     question1=Select(driver.find_element_by_xpath("//div[@class='form-group qa-container qa-set0 ']/security-question/div/div/select"))
-
     question1.select_by_value('130')
-
     driver.find_element_by_xpath("//security-answer[@answer-number='1']/div/input").send_keys(u"第一财经")
-
-
     question1=Select(driver.find_element_by_xpath("//div[@class='form-group qa-container qa-set1 ']/security-question/div/div/select"))
-
     question1.select_by_value('137')
-
     driver.find_element_by_xpath("//security-answer[@answer-number='2']/div/input").send_keys(u"万华化学")
-
-
     question1=Select(driver.find_element_by_xpath("//div[@class='form-group qa-container qa-set2 ']/security-question/div/div/select"))
-
     question1.select_by_value('143')
-
     driver.find_element_by_xpath("//security-answer[@answer-number='3']/div/input").send_keys(u"三聚环保")
-    print("请开始验证码，并提交")
-    '''
+    print("开始验证码自动识别")
     #验证码自动化
     imgurl=driver.find_element_by_xpath('//idms-captcha/div/img[@alt="安全提示图片"]').get_attribute('src')
     request.urlretrieve(imgurl,imgname)
     result=lianzhong_api.main(file_name=imgname)
+    val=result.split(":")[2].split(",")[0][1:-1]
+    print (val)
     if os.path.exists(imgname):
         os.remove(imgname)
         print('remove:',imgname)
-    #print(type(result))
-    val=result.split(":")[2].split(",")[0][1:-1]
-    print (val)
     driver.find_element_by_xpath('//captcha-input/div/input[@id="captchaInput"]').send_keys(val)
     #image identification
-    sleep(15)
+    sleep(5)
     #继续
     driver.find_element_by_xpath("//idms-toolbar/div/div/button").click()
     '''
     #手工验证模式
     print('第一次人工验证')
     sleep(15)
-
+    #手工验证模式结束
+    '''
     attempts = 0
     success=False
-    while attempts < 2 and not success:
+    while attempts < 3 and not success:
         try:
             WebDriverWait(driver,10,0.5).until(EC.presence_of_element_located((By.XPATH,"//input[@id='char0']")))
             success = True
@@ -113,8 +89,7 @@ def create_cloudid(mailname,mailpasswd):
         except:
             attempts += 1
             if attempts ==3:
-                return (4)
-            '''
+                return (2) #2表示图片验证尝试次数过多
             # 验证码自动化
             imgurl = driver.find_element_by_xpath('//idms-captcha/div/img[@alt="安全提示图片"]').get_attribute('src')
             request.urlretrieve(imgurl, imgname)
@@ -127,16 +102,18 @@ def create_cloudid(mailname,mailpasswd):
             print(val)
             driver.find_element_by_xpath('//captcha-input/div/input[@id="captchaInput"]').send_keys(val)
             # image identification
-            sleep(15)
+            sleep(5)
             # 继续
             driver.find_element_by_xpath("//idms-toolbar/div/div/button").click()
             '''
             # 手工验证模式
             print('第%d次人工验证'%(attempts+1))
             sleep(15)
+            # 手工验证模式结束
+            '''
     sleep(30)
     token=get_mail.get_mail(mailname,mailpasswd)
-    print(token)
+    print(str(token)[2:-1])
     #verification
     token_new=str(token)[2:-1]
     driver.find_element_by_xpath("//input[@id='char0']").send_keys(token_new[0])
@@ -145,33 +122,32 @@ def create_cloudid(mailname,mailpasswd):
     driver.find_element_by_xpath("//input[@id='char3']").send_keys(token_new[3])
     driver.find_element_by_xpath("//input[@id='char4']").send_keys(token_new[4])
     driver.find_element_by_xpath("//input[@id='char5']").send_keys(token_new[5])
-
     #继续
     driver.find_element_by_xpath("//step-verify-code/idms-step/div/div/div/div[3]/idms-toolbar/div/div[1]/button[1]").click()
     sleep(1)
+    #服务器开始拒绝服务
     '''
     try:
-        WebDriverWait(driver,10,0.5).until(EC.presence_of_element_located((By.LINK_TEXT,"发生未知错误。")))
-        print("gg")
-        return 2
+        WebDriverWait(driver,2,0.5).until(EC.presence_of_element_located((By.LINK_TEXT,"发生未知错误。"))) #没有生效？？
+        print("gg1")
+        return 3 #3表示服务器拒绝服务
     except:
         pass
+    '''
     try:
-        WebDriverWait(driver, 10, 0.5).until(EC.presence_of_element_located(
+        WebDriverWait(driver, 2, 0.5).until(EC.presence_of_element_located(
             (By.XPATH,'//step-verify-code/idms-step/div/div/div/div[2]/div/div/div[2]/security-code/div/idms-popover/div/div/div/div')))
-        print("gg")
-        return 3
+        print("gg...未知错误")
+        return 3 #3表示服务器拒绝服务
     except:
         pass
-    '''
     #同意条款1
-    WebDriverWait(driver,10,0.5).until(EC.presence_of_element_located((By.XPATH,"//html/body/div[@role='dialog']/div[3]/div/div[3]/div[2]/label")))
+    WebDriverWait(driver,5,0.5).until(EC.presence_of_element_located((By.XPATH,"//html/body/div[@role='dialog']/div[3]/div/div[3]/div[2]/label")))
     #WebDriverWait(driver,15,0.5).until(EC.presence_of_element_located((By.LINK_TEXT,"同意")))
     sleep(2)
     driver.find_element_by_xpath("//html/body/div[@role='dialog']/div[3]/div/div[3]/div[2]").click()
-    print("同意1")
+    print("同意条款1成功")
     sleep(1)
-
     #同意条款2
     tongyi2=WebDriverWait(driver,5,0.5).until(EC.presence_of_element_located((By.XPATH,"//div[@role='alertdialog']/div/div/div[2]")))
     sleep(1)

@@ -1,27 +1,33 @@
 #coding=utf-8
-import os
-import re
+from CloudId2 import create_cloudid
 
-sn=612
-mailname = "xmxqb_"+str(sn)+"@nbsky55.com"
-print(mailname)
-mailpasswd = "Xmx&qb3"
-a=0
-if a==0:
-    with open("startup.py","rb+") as f:
-        save_list=f.readlines()
-    for num,line in enumerate(save_list):
-        if "sn=" in str(line):
-            snnow = str(line).split("=")[1].split("\\r")[0]
-            snnew = str(int(snnow)+1)
-            snnow = bytes(snnow,encoding='utf-8')
-            snnew = bytes(snnew, encoding='utf-8')
-            line = re.sub(snnow, snnew, line)
-            save_list[num] = line
-            break
-    with open("startup.py", "w") as f:
-        for line in save_list:
-            f.write(str(line)[2:-5]+'\n')
+for i in range(0,5):
+    with open("mail.txt", "r") as f: #读取当前尝试id
+        sn = f.readline()
+    # 请设置邮箱信息
+    mailname = "xmxqb_" + sn + "@nbsky55.com"
+    mailpasswd = "Xmx&qb3"
+    a = create_cloudid(mailname,mailpasswd)
+    if a == 1:
+        with open("mail.txt","w") as f:
+            sn = str(int(sn)+1)
+            f.write(sn)
+        with open("result.txt","a") as f:
+            result = mailname + " PASS\n"
+            f.write(result)
+    elif a == 2:
+        with open("result.txt","a") as f:
+            result = mailname + " FAIL\n"
+            f.write(result)
+        with open("mail.txt","w") as f: #跳过此sn，开始下一个
+            sn = str(int(sn)+1)
+            f.write(sn)
+    elif a == 3:
+        with open("result.txt","a") as f:
+            result = mailname + " FAIL server gg.....\n"
+            f.write(result)
+        break #结束进程
+
 
 #a = create_cloudid(mailname, mailpasswd)
 
