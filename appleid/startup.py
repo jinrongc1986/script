@@ -11,7 +11,7 @@ with open("mail.txt", "r") as f:  # 读取开始尝试id
     sn = f.readline()
 mailstart = "xmxqb_" + sn + "@nbsky55.com"
 
-for i in range(0,1):
+for i in range(0,175):
     with open("mail.txt", "r") as f: #读取当前尝试id
         sn = f.readline()
     # 请设置邮箱信息
@@ -34,14 +34,15 @@ for i in range(0,1):
             sn = str(int(sn)+1)
             f.write(sn)
         nokcnt_yzm += 3
-        if  nokcnt_yzm > 8 :
+        if  nokcnt_yzm > 18 :
             break
     elif a == 3: #服务器报未知错误
         with open("result.txt","a") as f:
             result = mailname + " FAIL server gg.....\n"
             f.write(result)
         nokcnt += 1
-        break #结束进程
+        sleep(1200)
+        #break #结束进程
     elif a == 4: #网络差，打不开网页
         with open("result.txt","a") as f:
             result = mailname + " FAIL 网络超时\n"

@@ -19,10 +19,19 @@ def create_cloudid(mailname,mailpasswd):
     mailname=mailname
     mailpasswd=mailpasswd
     imgname=mailname.split('@')[0]+'.jpg'
+    print("开始新一轮注册")
+    print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
     print(mailname)
     driver=webdriver.Chrome()
-    #driver=webdriver.Firefox()
+    # driver=webdriver.Firefox()
     driver.get("https://www.icloud.com/")
+    #删除cookie
+    #driver.delete_all_cookies()
+    #获取网页cookie
+    #cookie = [item["name"] + "=" + item["value"] for item in driver.get_cookies()]
+    #cookiestr = ';'.join(item for item in cookie)
+    #print(cookiestr)
+    #获取网页
     print(driver.current_window_handle)
     print(driver.title)
     try:
