@@ -109,6 +109,8 @@ def create_cloudid(mailname,mailpasswd):
         except:
             attempts += 1
             if attempts ==3:
+                driver.close()
+                driver.quit()
                 return 2 #2表示图片验证尝试次数过多
             #记录错误的打码
             if os.path.exists(imgname):
@@ -163,6 +165,8 @@ def create_cloudid(mailname,mailpasswd):
         WebDriverWait(driver, 2, 0.5).until(EC.presence_of_element_located(
             (By.XPATH,'//step-verify-code/idms-step/div/div/div/div[2]/div/div/div[2]/security-code/div/idms-popover/div/div/div/div')))
         print("gg...未知错误")
+        driver.close()
+        driver.quit()
         return 3 #3表示服务器拒绝服务
     except:
         pass
