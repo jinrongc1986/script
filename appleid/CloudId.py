@@ -16,7 +16,7 @@ from urllib import request
 import lianzhong_api
 
 timestart=time.time()
-username="xmxqb_603@nbsky55.com"
+username="xmxqb_604@nbsky55.com"
 imgname=username.split('@')[0]+'.jpg'
 print(username)
 driver=webdriver.Chrome()
