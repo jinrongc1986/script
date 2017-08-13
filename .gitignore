@@ -3,3 +3,4 @@ paramiko.log
 rhelp.txt
 *.jpg
 debug.log
+*.xml
