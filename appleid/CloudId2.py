@@ -46,7 +46,7 @@ def create_cloudid(mailname,mailpasswd):
     country_select.select_by_value('CHN')
 
     #birthday
-
+    sleep(1)
     driver.find_element_by_xpath("//idms-error-wrapper/div/input").send_keys("19891212")
 
     #email
@@ -82,21 +82,58 @@ def create_cloudid(mailname,mailpasswd):
 
     driver.find_element_by_xpath("//security-answer[@answer-number='3']/div/input").send_keys(u"三聚环保")
     print("请开始验证码，并提交")
+    '''
     #验证码自动化
-    #imgurl=driver.find_element_by_xpath('//idms-captcha/div/img[@alt="安全提示图片"]').get_attribute('src')
-    #request.urlretrieve(imgurl,imgname)
-    #result=lianzhong_api.main(file_name=imgname)
+    imgurl=driver.find_element_by_xpath('//idms-captcha/div/img[@alt="安全提示图片"]').get_attribute('src')
+    request.urlretrieve(imgurl,imgname)
+    result=lianzhong_api.main(file_name=imgname)
+    if os.path.exists(imgname):
+        os.remove(imgname)
+        print('remove:',imgname)
     #print(type(result))
-    #val=result.split(":")[2].split(",")[0][1:-1]
-    #driver.find_element_by_xpath('//captcha-input/div/input[@id="captchaInput"]').send_keys(val)
+    val=result.split(":")[2].split(",")[0][1:-1]
+    print (val)
+    driver.find_element_by_xpath('//captcha-input/div/input[@id="captchaInput"]').send_keys(val)
     #image identification
-    sleep(30)
+    sleep(15)
     #继续
-    #driver.find_element_by_xpath("//idms-toolbar/div/div/button").click()
+    driver.find_element_by_xpath("//idms-toolbar/div/div/button").click()
+    '''
+    #手工验证模式
+    print('第一次人工验证')
+    sleep(15)
 
-    WebDriverWait(driver,15,0.5).until(EC.presence_of_element_located((By.XPATH,"//input[@id='char0']")))
-    print('发送邮件中。。。。等待30秒')
-    #发送邮件中。。。。
+    attempts = 0
+    success=False
+    while attempts < 2 and not success:
+        try:
+            WebDriverWait(driver,10,0.5).until(EC.presence_of_element_located((By.XPATH,"//input[@id='char0']")))
+            success = True
+            print('发送邮件中。。。。等待30秒')
+        except:
+            attempts += 1
+            if attempts ==3:
+                return (4)
+            '''
+            # 验证码自动化
+            imgurl = driver.find_element_by_xpath('//idms-captcha/div/img[@alt="安全提示图片"]').get_attribute('src')
+            request.urlretrieve(imgurl, imgname)
+            result = lianzhong_api.main(file_name=imgname)
+            if os.path.exists(imgname):
+                os.remove(imgname)
+                print('remove:', imgname)
+            # print(type(result))
+            val = result.split(":")[2].split(",")[0][1:-1]
+            print(val)
+            driver.find_element_by_xpath('//captcha-input/div/input[@id="captchaInput"]').send_keys(val)
+            # image identification
+            sleep(15)
+            # 继续
+            driver.find_element_by_xpath("//idms-toolbar/div/div/button").click()
+            '''
+            # 手工验证模式
+            print('第%d次人工验证'%(attempts+1))
+            sleep(15)
     sleep(30)
     token=get_mail.get_mail(mailname,mailpasswd)
     print(token)
@@ -112,6 +149,7 @@ def create_cloudid(mailname,mailpasswd):
     #继续
     driver.find_element_by_xpath("//step-verify-code/idms-step/div/div/div/div[3]/idms-toolbar/div/div[1]/button[1]").click()
     sleep(1)
+    '''
     try:
         WebDriverWait(driver,10,0.5).until(EC.presence_of_element_located((By.LINK_TEXT,"发生未知错误。")))
         print("gg")
@@ -125,6 +163,7 @@ def create_cloudid(mailname,mailpasswd):
         return 3
     except:
         pass
+    '''
     #同意条款1
     WebDriverWait(driver,10,0.5).until(EC.presence_of_element_located((By.XPATH,"//html/body/div[@role='dialog']/div[3]/div/div[3]/div[2]/label")))
     #WebDriverWait(driver,15,0.5).until(EC.presence_of_element_located((By.LINK_TEXT,"同意")))
@@ -154,15 +193,12 @@ def create_cloudid(mailname,mailpasswd):
     sleep(2)
     driver.close()
     driver.quit()
-    if os.path.exists(imgname):
-        os.remove(imgname)
-        print('remove:',imgname)
     timeend=time.time()
     timecost=timeend-timestart
     print(("耗时%f秒")%timecost)
     return 1
 if __name__=='__main__':
-    mailname="xmxqb_606@nbsky55.com"
+    mailname="xmxqb_612@nbsky55.com"
     mailpasswd="Xmx&qb3"
     a=create_cloudid(mailname,mailpasswd)
     print(a)
