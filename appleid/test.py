@@ -20,3 +20,7 @@ if os.path.exists(imgname):
 
 a=123.456789
 print ('%.f'%a)
+
+imgname="xmxqb_601.jpg"
+val='EVLW'
+os.rename(imgname,imgname.split('.')[0]+'_'+val+'.jpg')
