@@ -1,4 +1,5 @@
 #coding=utf-8
+import time
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
@@ -11,25 +12,29 @@ import sys
 from time import sleep
 import time
 import get_mail
+from urllib import request
+import lianzhong_api
 
-username="xmxqb_584@nbsky55.com"
+timestart=time.time()
+username="xmxqb_602@nbsky55.com"
+imgname=username.split('@')[0]+'.jpg'
 print(username)
 driver=webdriver.Chrome()
 driver.get("https://www.icloud.com/")
 print(driver.current_window_handle)
 print(driver.title)
 #sleep(10)
-create_element=WebDriverWait(driver,15,0.5).until(EC.presence_of_element_located((By.LINK_TEXT,"现在创建一个。")))
+create_element=WebDriverWait(driver,10,0.5).until(EC.presence_of_element_located((By.LINK_TEXT,"现在创建一个。")))
 create_element.click()
 #driver.find_element_by_link_text("现在创建一个。").click()
 
 #sleep(5)
 #switch to frame
-switch_frame=WebDriverWait(driver,15,0.5).until(EC.presence_of_element_located((By.XPATH,"//div[@role='dialog']/div[3]/div/iframe")))
+switch_frame=WebDriverWait(driver,10,0.5).until(EC.presence_of_element_located((By.XPATH,"//div[@role='dialog']/div[3]/div/iframe")))
 driver.switch_to.frame(switch_frame)
 #driver.switch_to.frame(driver.find_element_by_xpath("//div[@role='dialog']/div[3]/div/iframe"))
 
-WebDriverWait(driver,15,0.5).until(EC.presence_of_element_located((By.XPATH,"//security-answer[@answer-number='3']/div/input")))
+WebDriverWait(driver,10,0.5).until(EC.presence_of_element_located((By.XPATH,"//security-answer[@answer-number='3']/div/input")))
 #name
 driver.find_element_by_xpath("//last-name-input/div/input").send_keys("Zrcredit")
 driver.find_element_by_xpath("//first-name-input/div/input").send_keys(u"贷")
@@ -75,17 +80,22 @@ question1=Select(driver.find_element_by_xpath("//div[@class='form-group qa-conta
 question1.select_by_value('143')
 
 driver.find_element_by_xpath("//security-answer[@answer-number='3']/div/input").send_keys(u"三聚环保")
+print("请开始验证码，并提交")
+#验证码自动化
+imgurl=driver.find_element_by_xpath('//idms-captcha/div/img[@alt="安全提示图片"]').get_attribute('src')
+request.urlretrieve(imgurl,imgname)
+result=lianzhong_api.main(file_name=imgname)
+print(type(result))
+val=result.split(":")[2].split(",")[0][1:-1]
 
-
+driver.find_element_by_xpath('//captcha-input/div/input[@id="captchaInput"]').send_keys(val)
 #image identification
-
 sleep(20)
-
-
-
-#driver.find_element_by_xpath("//div[@class='button-group flow-controls pull-right']/button").click()
 #继续
 driver.find_element_by_xpath("//idms-toolbar/div/div/button").click()
+
+WebDriverWait(driver,15,0.5).until(EC.presence_of_element_located((By.XPATH,"//input[@id='char0']")))
+print('发送邮件中。。。。等待30秒')
 #发送邮件中。。。。
 sleep(30)
 token=get_mail.get_mail(username)
@@ -100,14 +110,13 @@ driver.find_element_by_xpath("//input[@id='char4']").send_keys(token_new[4])
 driver.find_element_by_xpath("//input[@id='char5']").send_keys(token_new[5])
 
 #继续
-
 driver.find_element_by_xpath("//step-verify-code/idms-step/div/div/div/div[3]/idms-toolbar/div/div[1]/button[1]").click()
 #同意条款1
 WebDriverWait(driver,10,0.5).until(EC.presence_of_element_located((By.XPATH,"//html/body/div[@role='dialog']/div[3]/div/div[3]/div[2]/label")))
-print("同意1")
 #WebDriverWait(driver,15,0.5).until(EC.presence_of_element_located((By.LINK_TEXT,"同意")))
-sleep(5)
+sleep(2)
 driver.find_element_by_xpath("//html/body/div[@role='dialog']/div[3]/div/div[3]/div[2]").click()
+'''
 try:
     driver.find_element_by_xpath("//html/body/div[@role='dialog']/div[3]/div/div[3]/div[2]").click()
     print("b")
@@ -122,23 +131,31 @@ try:
     driver.find_element_by_link_text("同意").parent.click()
 except:
     print("c nok")
-sleep(60)
-print(1)
+'''
+print("同意1")
+sleep(1)
+
 #同意条款2
-tongyi2=WebDriverWait(driver,10,0.5).until(EC.presence_of_element_located((By.XPATH,"//div[@role='alertdialog']/div/div/div[2]")))
+tongyi2=WebDriverWait(driver,5,0.5).until(EC.presence_of_element_located((By.XPATH,"//div[@role='alertdialog']/div/div/div[2]")))
+sleep(1)
 tongyi2.click()
 print("同意条款2成功")
-sleep(5)
+sleep(1)
 #开始使用iCloud
-startuse=WebDriverWait(driver,10,0.5).until(EC.presence_of_element_located((By.XPATH,"//div[@role='main']/div[2]/label")))
+#startuse=WebDriverWait(driver,10,0.5).until(EC.presence_of_element_located((By.XPATH,"//div[@role='main']/div[2]/label")))
+startuse=WebDriverWait(driver,10,0.5).until(EC.presence_of_element_located((By.XPATH,"//div[@role='main']/div[2]")))
+sleep(1)
 startuse.click()
 print("点击开始使用iCloud成功")
-sleep(30)
+sleep(1)
 #选择 设置与注销
-WebDriverWait(driver,10,0.5).until(EC.presence_of_element_located((By.XPATH,"//div[@title='iCloud 设置与注销']"))).click()
+WebDriverWait(driver,5,0.5).until(EC.presence_of_element_located((By.XPATH,"//div[@title='iCloud 设置与注销']"))).click()
+sleep(1)
 #注销
-WebDriverWait(driver,15,0.5).until(EC.presence_of_element_located((By.LINK_TEXT,"注销"))).click()
-
-sleep(10)
+WebDriverWait(driver,5,0.5).until(EC.presence_of_element_located((By.LINK_TEXT,"注销"))).click()
+sleep(2)
 driver.close()
 driver.quit()
+timeend=time.time()
+timecost=timeend-timestart
+print(("耗时%f秒")%timecost)
