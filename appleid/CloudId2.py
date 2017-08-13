@@ -71,9 +71,6 @@ def create_cloudid(mailname,mailpasswd):
     result=lianzhong_api.main(file_name=imgname)
     val=result.split(":")[2].split(",")[0][1:-1]
     print (val)
-    if os.path.exists(imgname):
-        os.remove(imgname)
-        print('remove:',imgname)
     driver.find_element_by_xpath('//captcha-input/div/input[@id="captchaInput"]').send_keys(val)
     #image identification
     sleep(1)
@@ -91,18 +88,22 @@ def create_cloudid(mailname,mailpasswd):
         try:
             WebDriverWait(driver,10,0.5).until(EC.presence_of_element_located((By.XPATH,"//input[@id='char0']")))
             success = True
+            if os.path.exists(imgname):
+                os.remove(imgname)
+                print('remove:', imgname)
             print('发送邮件中。。。。等待30秒')
         except:
             attempts += 1
             if attempts ==3:
                 return 2 #2表示图片验证尝试次数过多
+            #记录错误的打码
+            if os.path.exists(imgname):
+                os.rename(imgname, imgname.split('.')[0] + '_' + val + '.jpg')
+                print(验证码失败)
             # 验证码自动化
             imgurl = driver.find_element_by_xpath('//idms-captcha/div/img[@alt="安全提示图片"]').get_attribute('src')
             request.urlretrieve(imgurl, imgname)
             result = lianzhong_api.main(file_name=imgname)
-            if os.path.exists(imgname):
-                os.remove(imgname)
-                print('remove:', imgname)
             # print(type(result))
             val = result.split(":")[2].split(",")[0][1:-1]
             print(val)
