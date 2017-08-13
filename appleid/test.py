@@ -17,3 +17,6 @@ imgname='xmxqb_603.jpg'
 if os.path.exists(imgname):
     os.remove(imgname)
     print('remove:',imgname)
+
+a=123.456789
+print ('%.f'%a)

@@ -24,8 +24,14 @@ def create_cloudid(mailname,mailpasswd):
     driver.get("https://www.icloud.com/")
     print(driver.current_window_handle)
     print(driver.title)
-    create_element=WebDriverWait(driver,10,0.5).until(EC.presence_of_element_located((By.LINK_TEXT,"现在创建一个。")))
-    create_element.click()
+    try:
+        create_element=WebDriverWait(driver,10,0.5).until(EC.presence_of_element_located((By.LINK_TEXT,"现在创建一个。")))
+        create_element.click()
+    except:
+        driver.close()
+        driver.quit()
+        print("网络超时，等待60秒再尝试")
+        return 4 #网络超时
     #switch to frame
     switch_frame=WebDriverWait(driver,10,0.5).until(EC.presence_of_element_located((By.XPATH,"//div[@role='dialog']/div[3]/div/iframe")))
     driver.switch_to.frame(switch_frame)
@@ -70,7 +76,7 @@ def create_cloudid(mailname,mailpasswd):
         print('remove:',imgname)
     driver.find_element_by_xpath('//captcha-input/div/input[@id="captchaInput"]').send_keys(val)
     #image identification
-    sleep(5)
+    sleep(1)
     #继续
     driver.find_element_by_xpath("//idms-toolbar/div/div/button").click()
     '''
@@ -89,7 +95,7 @@ def create_cloudid(mailname,mailpasswd):
         except:
             attempts += 1
             if attempts ==3:
-                return (2) #2表示图片验证尝试次数过多
+                return 2 #2表示图片验证尝试次数过多
             # 验证码自动化
             imgurl = driver.find_element_by_xpath('//idms-captcha/div/img[@alt="安全提示图片"]').get_attribute('src')
             request.urlretrieve(imgurl, imgname)
@@ -102,7 +108,7 @@ def create_cloudid(mailname,mailpasswd):
             print(val)
             driver.find_element_by_xpath('//captcha-input/div/input[@id="captchaInput"]').send_keys(val)
             # image identification
-            sleep(5)
+            sleep(1)
             # 继续
             driver.find_element_by_xpath("//idms-toolbar/div/div/button").click()
             '''
@@ -166,12 +172,12 @@ def create_cloudid(mailname,mailpasswd):
     sleep(1)
     #注销
     WebDriverWait(driver,5,0.5).until(EC.presence_of_element_located((By.LINK_TEXT,"注销"))).click()
-    sleep(2)
+    sleep(1)
     driver.close()
     driver.quit()
     timeend=time.time()
     timecost=timeend-timestart
-    print(("耗时%f秒")%timecost)
+    print(("本次耗时%.f秒")%timecost)
     return 1
 if __name__=='__main__':
     mailname="xmxqb_612@nbsky55.com"

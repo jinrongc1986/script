@@ -5,3 +5,9 @@ xmxqb_616@nbsky55.com PASS
 xmxqb_617@nbsky55.com PASS
 xmxqb_618@nbsky55.com PASS
 xmxqb_619@nbsky55.com FAIL server gg.....
+xmxqb_619@nbsky55.com PASS
+xmxqb_620@nbsky55.com PASS
+xmxqb_621@nbsky55.com PASS
+xmxqb_622@nbsky55.com FAIL ÍøÂç³¬Ê±
+xmxqb_622@nbsky55.com PASS
+xmxqb_623@nbsky55.com FAIL server gg.....
