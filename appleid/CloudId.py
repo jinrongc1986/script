@@ -31,7 +31,6 @@ def create_cloudid(mailname,mailpasswd):
     option = webdriver.ChromeOptions()
     option.add_argument('--user-agent=%s'%ua)
     option.add_argument('--proxy-server=%s' % proxy)
-    option.add_argument(')
     driver = webdriver.Chrome(chrome_options=option)
     # driver=webdriver.Firefox()
     driver.get("https://www.icloud.com/")
