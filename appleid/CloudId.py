@@ -1,5 +1,4 @@
 #coding=utf-8
-import time
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
@@ -10,7 +9,7 @@ import requests
 import os
 import sys
 from time import sleep
-import time
+import time,random
 import get_mail
 from urllib import request
 import lianzhong_api
@@ -24,18 +23,21 @@ def create_cloudid(mailname,mailpasswd):
     print("开始新一轮注册")
     print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
     print(mailname)
-    ua=generate_user_agent()
+    ua=""
+    while ("Chrome" not in ua):
+        ua = generate_user_agent()
+    print(ua)
+    proxy = '127.0.0.1:1081'
     option = webdriver.ChromeOptions()
     option.add_argument('--user-agent=%s'%ua)
+    option.add_argument('--proxy-server=%s' % proxy)
+    option.add_argument(')
     driver = webdriver.Chrome(chrome_options=option)
     # driver=webdriver.Firefox()
     driver.get("https://www.icloud.com/")
+    sleep(random.randint(5, 30))
     #删除cookie
     #driver.delete_all_cookies()
-    #获取网页cookie
-    #cookie = [item["name"] + "=" + item["value"] for item in driver.get_cookies()]
-    #cookiestr = ';'.join(item for item in cookie)
-    #print(cookiestr)
     #获取网页
     print(driver.current_window_handle)
     print(driver.title)
