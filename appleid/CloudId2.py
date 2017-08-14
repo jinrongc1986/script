@@ -14,20 +14,41 @@ import time
 import get_mail
 from urllib import request
 import lianzhong_api
-from user_agent import generate_user_agent, generate_navigator
+
+# 一直等待某元素可见，默认超时10秒 locator 为XPATH 选择器
+def is_visible(driver, locator, timeout=10):
+    try:
+        WebDriverWait(driver, timeout).until(EC.visibility_of_element_located((By.XPATH, locator)))
+        return True
+    except TimeoutError:
+        return False
+
+#一致等待某元素可见，默认超时10秒 LINK_TEXT 为XPATH 选择器
+def is_visible(driver, locator, timeout=10):
+        try:
+            WebDriverWait(driver, timeout).until(EC.visibility_of_element_located((By.XPATH, locator)))
+            return True
+        except TimeoutError:
+            return False
+
+# 一直等待某个元素消失，默认超时10秒 locator 为XPATH 选择器
+def is_not_visible(driver, locator, timeout=10):
+    try:
+        WebDriverWait(driver, timeout).until_not(EC.visibility_of_element_located((By.XPATH, locator)))
+        return True
+    except TimeoutError:
+        return False
 
 def create_cloudid(mailname,mailpasswd):
     timestart=time.time()
     mailname=mailname
     mailpasswd=mailpasswd
     imgname=mailname.split('@')[0]+'.jpg'
+    print("#"*40)
     print("开始新一轮注册")
     print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
     print(mailname)
-    ua=generate_user_agent()
-    option = webdriver.ChromeOptions()
-    option.add_argument('--user-agent=%s'%ua)
-    driver = webdriver.Chrome(chrome_options=option)
+    driver=webdriver.Chrome()
     # driver=webdriver.Firefox()
     driver.get("https://www.icloud.com/")
     #删除cookie
