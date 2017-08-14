@@ -34,7 +34,7 @@ def create_cloudid(mailname,mailpasswd):
     driver = webdriver.Chrome(chrome_options=option)
     # driver=webdriver.Firefox()
     driver.get("https://www.icloud.com/")
-    sleep(random.randint(5, 30))
+    #sleep(random.randint(5, 30))
     #删除cookie
     #driver.delete_all_cookies()
     #获取网页
