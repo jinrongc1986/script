@@ -1,19 +1,17 @@
 #coding=utf-8
-import time
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import requests
 import os
-import sys
 from time import sleep
 import time
 import get_mail
 from urllib import request
 import lianzhong_api
+from user_agent import generate_user_agent
 
 # 一直等待某元素可见，默认超时10秒 locator 为XPATH 选择器
 def is_visible(driver, locator, timeout=10):
@@ -24,9 +22,9 @@ def is_visible(driver, locator, timeout=10):
         return False
 
 #一致等待某元素可见，默认超时10秒 LINK_TEXT 为XPATH 选择器
-def is_visible(driver, locator, timeout=10):
+def is_visible_text(driver, text, timeout=10):
         try:
-            WebDriverWait(driver, timeout).until(EC.visibility_of_element_located((By.XPATH, locator)))
+            WebDriverWait(driver, timeout).until(EC.visibility_of_element_located((By.LINK_TEXT, text)))
             return True
         except TimeoutError:
             return False
@@ -44,19 +42,22 @@ def create_cloudid(mailname,mailpasswd):
     mailname=mailname
     mailpasswd=mailpasswd
     imgname=mailname.split('@')[0]+'.jpg'
-    print("#"*40)
     print("开始新一轮注册")
     print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
     print(mailname)
-    driver=webdriver.Chrome()
+    ua=""
+    while ("Chrome" not in ua):
+        ua = generate_user_agent()
+    print(ua)
+    #proxy = '127.0.0.1:1081'
+    option = webdriver.ChromeOptions()
+    option.add_argument('--user-agent=%s'%ua)
+    #option.add_argument('--proxy-server=%s' % proxy)
+    driver = webdriver.Chrome(chrome_options=option)
     # driver=webdriver.Firefox()
     driver.get("https://www.icloud.com/")
     #删除cookie
     #driver.delete_all_cookies()
-    #获取网页cookie
-    #cookie = [item["name"] + "=" + item["value"] for item in driver.get_cookies()]
-    #cookiestr = ';'.join(item for item in cookie)
-    #print(cookiestr)
     #获取网页
     print(driver.current_window_handle)
     print(driver.title)
@@ -139,8 +140,11 @@ def create_cloudid(mailname,mailpasswd):
                 driver.quit()
                 return 2 #2表示图片验证尝试次数过多
             #记录错误的打码
+            # if os.path.exists(imgname):
+            #     os.rename(imgname, imgname.split('.')[0] + '_' + val + '.jpg')
+            #     print("验证码失败")
             if os.path.exists(imgname):
-                os.rename(imgname, imgname.split('.')[0] + '_' + val + '.jpg')
+                os.remove(imgname)
                 print("验证码失败")
             with open("dama.txt", "a") as f:
                 timenow=(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))

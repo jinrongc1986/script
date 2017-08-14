@@ -27,10 +27,10 @@ def create_cloudid(mailname,mailpasswd):
     while ("Chrome" not in ua):
         ua = generate_user_agent()
     print(ua)
-    proxy = '127.0.0.1:1081'
+    #proxy = '127.0.0.1:1081'
     option = webdriver.ChromeOptions()
     option.add_argument('--user-agent=%s'%ua)
-    option.add_argument('--proxy-server=%s' % proxy)
+    #option.add_argument('--proxy-server=%s' % proxy)
     driver = webdriver.Chrome(chrome_options=option)
     # driver=webdriver.Firefox()
     driver.get("https://www.icloud.com/")
@@ -119,8 +119,11 @@ def create_cloudid(mailname,mailpasswd):
                 driver.quit()
                 return 2 #2表示图片验证尝试次数过多
             #记录错误的打码
+            # if os.path.exists(imgname):
+            #     os.rename(imgname, imgname.split('.')[0] + '_' + val + '.jpg')
+            #     print("验证码失败")
             if os.path.exists(imgname):
-                os.rename(imgname, imgname.split('.')[0] + '_' + val + '.jpg')
+                os.remove(imgname)
                 print("验证码失败")
             with open("dama.txt", "a") as f:
                 timenow=(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
