@@ -182,8 +182,7 @@ def create_cloudid(mailname,mailpasswd):
         pass
     '''
     try:
-        WebDriverWait(driver, 2, 0.5).until(EC.presence_of_element_located(
-            (By.XPATH,'//step-verify-code/idms-step/div/div/div/div[2]/div/div/div[2]/security-code/div/idms-popover/div/div/div/div')))
+        WebDriverWait(driver, 2, 0.5).until(EC.presence_of_element_located((By.XPATH,'//step-verify-code/idms-step/div/div/div/div[2]/div/div/div[2]/security-code/div/idms-popover/div/div/div/div')))
         print("gg...未知错误")
         driver.close()
         driver.quit()

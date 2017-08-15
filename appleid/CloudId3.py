@@ -101,10 +101,11 @@ def create_cloudid(mailname,mailpasswd):
     ua=""
     while ("Chrome" not in ua):
         ua = generate_user_agent()
-    proxy = '127.0.0.1:1081'
+    #proxy = '127.0.0.1:1081'
+    #proxy = '192.168.2.68:7072'
     option = webdriver.ChromeOptions()
     option.add_argument('--user-agent=%s'%ua)
-    option.add_argument('--proxy-server=%s' % proxy)
+    #option.add_argument('--proxy-server=%s' % proxy)
     driver = webdriver.Chrome(chrome_options=option)
     # driver=webdriver.Firefox()
     driver.get("https://www.icloud.com/")
@@ -229,8 +230,7 @@ def create_cloudid(mailname,mailpasswd):
         return 4
     #服务器开始拒绝服务
     try:
-        WebDriverWait(driver, 2, 0.5).until(EC.presence_of_element_located(
-            (By.XPATH,'//step-verify-code/idms-step/div/div/div/div[2]/div/div/div[2]/security-code/div/idms-popover/div/div/div/div')))
+        WebDriverWait(driver, 2, 0.5).until(EC.presence_of_element_located((By.XPATH,'//step-verify-code/idms-step/div/div/div/div[2]/div/div/div[2]/security-code/div/idms-popover/div/div/div/div')))
         print("gg...未知错误")
         driver.close()
         driver.quit()
@@ -240,26 +240,36 @@ def create_cloudid(mailname,mailpasswd):
     #同意条款1
     xpath="//html/body/div[@role='dialog']/div[3]/div/div[3]/div[2]/label"
     msg="点击同意1失败"
-    double_click_p(driver,xpath,msg)
+    gg=double_click_p(driver,xpath,msg)
+    if gg == 5:
+        return 5
     print("同意条款1成功")
     #同意条款2
     xpath="//div[@role='alertdialog']/div/div/div[2]"
     msg="点击同意2失败"
-    double_click_p(driver,xpath,msg)
+    gg=double_click_p(driver,xpath,msg)
+    if gg == 5:
+        return 5
     print("同意条款2成功")
     #开始使用iCloud
     xpath="//div[@role='main']/div[2]"
     msg="点击开始使用iCloud失败"
-    double_click_v(driver,xpath,msg)
+    gg=double_click_v(driver,xpath,msg)
+    if gg == 5:
+        return 5
     print("点击开始使用iCloud成功")
     #选择 设置与注销
     xpath="//div[@title='iCloud 设置与注销']"
     msg="点击设置失败"
-    double_click_p(driver,xpath,msg)
+    gg=double_click_p(driver,xpath,msg)
+    if gg == 5:
+        return 5
     #注销
     xpath="注销"
     msg="注销失败"
-    double_click_p(driver,xpath, msg,method='LINK_TEXT')
+    gg=double_click_p(driver,xpath, msg,method='LINK_TEXT')
+    if gg==5:
+        return 5
     print("注销成功")
     ###
     sleep(1)
