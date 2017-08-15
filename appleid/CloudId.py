@@ -27,10 +27,14 @@ def create_cloudid(mailname,mailpasswd):
     while ("Chrome" not in ua):
         ua = generate_user_agent()
     print(ua)
-    #proxy = '127.0.0.1:1081'
+    #r = requests.get('http://api.ip.data5u.com/dynamic/get.html?order=aa7d41b7a281a52c14c43e76fc4ac7a1&sep=3')
+    #proxy= r.text.split("\n")[0]
+    #proxy='173.208.190.146:1080'
+    #print(proxy)
     option = webdriver.ChromeOptions()
     option.add_argument('--user-agent=%s'%ua)
     #option.add_argument('--proxy-server=%s' % proxy)
+    #option.add_argument('--proxy-server=socks://%s' % proxy)
     driver = webdriver.Chrome(chrome_options=option)
     # driver=webdriver.Firefox()
     driver.get("https://www.icloud.com/")
@@ -82,7 +86,14 @@ def create_cloudid(mailname,mailpasswd):
     driver.find_element_by_xpath("//security-answer[@answer-number='3']/div/input").send_keys(u"三聚环保")
     print("开始验证码自动识别")
     #验证码自动化
-    imgurl=driver.find_element_by_xpath('//idms-captcha/div/img[@alt="安全提示图片"]').get_attribute('src')
+    attempts = 0
+    success = False
+    while attempts < 3 and not success:
+        try:
+            imgurl=driver.find_element_by_xpath('//idms-captcha/div/img[@alt="安全提示图片"]').get_attribute('src')
+            success=True
+        except:
+            driver.find_element_by_xpath('//button[@class ="button link first"]').click()
     request.urlretrieve(imgurl,imgname)
     result=lianzhong_api.main(file_name=imgname)
     val=result.split(":")[2].split(",")[0][1:-1]

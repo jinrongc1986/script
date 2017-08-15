@@ -52,21 +52,43 @@ def get_yzm(driver,imgname):
     print(val)
     return val
 
-def double_click(driver,todo,msg):
+def double_click_p(driver,xpath,msg,method='XPATH'):
     attempts = 0
     success = False
     while attempts < 2 and not success:
         try:
-           todo
-           todo.click()
-           success=True
+            if method=='XPATH':
+                todo = WebDriverWait(driver, 10, 0.5).until(EC.presence_of_element_located((By.XPATH, xpath)))
+                todo.click()
+                success=True
+            elif method=='LINK_TEXT':
+                todo = WebDriverWait(driver, 10, 0.5).until(EC.presence_of_element_located((By.LINK_TEXT, xpath)))
+                todo.click()
+                success=True
         except:
             print(msg)
             driver.close()
             driver.quit()
             return 5
 
-
+def double_click_v(driver,xpath,msg,method='XPATH'):
+    attempts = 0
+    success = False
+    while attempts < 2 and not success:
+        try:
+            if method=='XPATH':
+                todo = WebDriverWait(driver, 10, 0.5).until(EC.presence_of_element_located((By.XPATH, xpath)))
+                todo.click()
+                success=True
+            elif method=='LINK_TEXT':
+                todo = WebDriverWait(driver, 10, 0.5).until(EC.presence_of_element_located((By.LINK_TEXT, xpath)))
+                todo.click()
+                success=True
+        except:
+            print(msg)
+            driver.close()
+            driver.quit()
+            return 5
 
 def create_cloudid(mailname,mailpasswd):
     timestart=time.time()
@@ -216,24 +238,30 @@ def create_cloudid(mailname,mailpasswd):
     except:
         pass
     #同意条款1
-    WebDriverWait(driver,10,0.5).until(EC.presence_of_element_located((By.XPATH,"//html/body/div[@role='dialog']/div[3]/div/div[3]/div[2]/label")))
-    driver.find_element_by_xpath("//html/body/div[@role='dialog']/div[3]/div/div[3]/div[2]").click()
+    xpath="//html/body/div[@role='dialog']/div[3]/div/div[3]/div[2]/label"
+    msg="点击同意1失败"
+    double_click_p(driver,xpath,msg)
     print("同意条款1成功")
     #同意条款2
-    tongyi2=WebDriverWait(driver,10,0.5).until(EC.presence_of_element_located((By.XPATH,"//div[@role='alertdialog']/div/div/div[2]")))
-    tongyi2.click()
+    xpath="//div[@role='alertdialog']/div/div/div[2]"
+    msg="点击同意2失败"
+    double_click_p(driver,xpath,msg)
     print("同意条款2成功")
     #开始使用iCloud
-    #startuse=WebDriverWait(driver,10,0.5).until(EC.presence_of_element_located((By.XPATH,"//div[@role='main']/div[2]/label")))
-    #startuse=WebDriverWait(driver,10,0.5).until(EC.presence_of_element_located((By.XPATH,"//div[@role='main']/div[2]")))
-    #sleep(2)
-    startuse = WebDriverWait(driver, 10, 0.5).until(EC.visibility_of_element_located((By.XPATH, "//div[@role='main']/div[2]")))
-    startuse.click()
+    xpath="//div[@role='main']/div[2]"
+    msg="点击开始使用iCloud失败"
+    double_click_v(driver,xpath,msg)
     print("点击开始使用iCloud成功")
     #选择 设置与注销
-    WebDriverWait(driver,10,0.5).until(EC.presence_of_element_located((By.XPATH,"//div[@title='iCloud 设置与注销']"))).click()
-    WebDriverWait(driver,10,0.5).until(EC.presence_of_element_located((By.LINK_TEXT,"注销"))).click()
+    xpath="//div[@title='iCloud 设置与注销']"
+    msg="点击设置失败"
+    double_click_p(driver,xpath,msg)
+    #注销
+    xpath="注销"
+    msg="注销失败"
+    double_click_p(driver,xpath, msg,method='LINK_TEXT')
     print("注销成功")
+    ###
     sleep(1)
     driver.close()
     driver.quit()

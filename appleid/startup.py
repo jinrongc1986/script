@@ -1,5 +1,5 @@
 #coding=utf-8
-from CloudId import create_cloudid
+from CloudId3 import create_cloudid
 from time import sleep
 import time
 
@@ -11,7 +11,9 @@ with open("mail.txt", "r") as f:  # 读取开始尝试id
     sn = f.readline()
 mailstart = "xmxqb_" + sn + "@nbsky55.com"
 
-for i in range(0,175):
+for i in range(0,1000):
+    if int(sn)==780:
+        break
     with open("mail.txt", "r") as f: #读取当前尝试id
         sn = f.readline()
     # 请设置邮箱信息
@@ -41,13 +43,22 @@ for i in range(0,175):
             result = mailname + " FAIL server gg.....\n"
             f.write(result)
         nokcnt += 1
-        sleep(1200)
+        sleep(1800)
         #break #结束进程
     elif a == 4: #网络差，打不开网页
         with open("result.txt","a") as f:
             result = mailname + " FAIL 网络超时\n"
             f.write(result)
+        print("网络超时，等待60秒")
         sleep(60)
+        nokcnt += 1
+    elif a == 5:
+        with open("mail.txt","w") as f:
+            sn = str(int(sn)+1)
+            f.write(sn)
+        with open("result.txt","a") as f:
+            result = mailname + " FAIL 未点击开始\n"
+            f.write(result)
         nokcnt += 1
 timeend = time.time()
 timecost = timeend - timestart
