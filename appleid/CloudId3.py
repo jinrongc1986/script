@@ -171,8 +171,11 @@ def create_cloudid(mailname,mailpasswd,proxy=''):
     #验证码自动化
     lianzhong_result=get_yzm(driver,imgname)
     if not lianzhong_result:
-        return 4 #图片无法加载
-    val = json.loads(lianzhong_result)["data"]["val"]
+        return 4 #
+    try :
+        val = json.loads(lianzhong_result)["data"]["val"]
+    except:
+        return 4 #图片分析出错
     print(val)
     driver.find_element_by_xpath('//captcha-input/div/input[@id="captchaInput"]').send_keys(val)
     sleep(1)
