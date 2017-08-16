@@ -47,6 +47,8 @@ def get_yzm(driver,imgname):
             success = True
         except:
             attempts +=1
+            if attempts == 3:
+                return False
             driver.find_element_by_xpath('//button[@class ="button link first"]').click()
     request.urlretrieve(imgurl, imgname)
     result = lianzhong_api.main(file_name=imgname)
@@ -165,7 +167,10 @@ def create_cloudid(mailname,mailpasswd,proxy=''):
     print("开始验证码自动识别")
     #验证码自动化
     lianzhong_result=get_yzm(driver,imgname)
+    if not lianzhong_result:
+        return 4 #图片无法加载
     val = json.loads(lianzhong_result)["data"]["val"]
+    print(val)
     driver.find_element_by_xpath('//captcha-input/div/input[@id="captchaInput"]').send_keys(val)
     sleep(1)
     # 继续
@@ -211,8 +216,10 @@ def create_cloudid(mailname,mailpasswd,proxy=''):
                 f.write(timenow + damanok + val +'\n')
             # 验证码自动化
             lianzhong_result = get_yzm(driver, imgname)
-            print (lianzhong_result)
+            if not lianzhong_result:
+                return 4  # 图片无法加载
             val = json.loads(lianzhong_result)["data"]["val"]
+            print(val)
             driver.find_element_by_xpath('//captcha-input/div/input[@id="captchaInput"]').send_keys(val)
             sleep(1)
             # 继续
