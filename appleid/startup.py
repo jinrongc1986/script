@@ -43,6 +43,7 @@ for i in range(0,1000):
             result = mailname + " FAIL server gg.....\n"
             f.write(result)
         nokcnt += 1
+        print("间隔1800秒")
         sleep(1800)
         #break #结束进程
     elif a == 4: #网络差，打不开网页

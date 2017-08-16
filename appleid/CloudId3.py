@@ -103,11 +103,11 @@ def create_cloudid(mailname,mailpasswd):
     ua=""
     while ("Chrome" not in ua):
         ua = generate_user_agent()
-    #proxy = '127.0.0.1:1081'
+    proxy = '127.0.0.1:1081'
     #proxy = '192.168.0.188:1080'
     option = webdriver.ChromeOptions()
     option.add_argument('--user-agent=%s'%ua)
-    #option.add_argument('--proxy-server=%s' % proxy)
+    option.add_argument('--proxy-server=%s' % proxy)
     driver = webdriver.Chrome(chrome_options=option)
     # driver=webdriver.Firefox()
     driver.get("https://www.icloud.com/")
@@ -229,23 +229,22 @@ def create_cloudid(mailname,mailpasswd):
     #继续
     driver.find_element_by_xpath("//step-verify-code/idms-step/div/div/div/div[3]/idms-toolbar/div/div[1]/button[1]").click()
     sleep(1)
-    #服务器超时
-    try :
-        WebDriverWait(driver, 10, 0.5).until_not(EC.visibility_of_element_located((By.XPATH, "//button[@id='send-code']")))
-    except :
-        driver.close()
-        driver.quit()
-        return 4
     #服务器开始拒绝服务
     try:
         WebDriverWait(driver, 2, 0.5).until(EC.presence_of_element_located((By.XPATH,'//step-verify-code/idms-step/div/div/div/div[2]/div/div/div[2]/security-code/div/idms-popover/div/div/div/div')))
         print("gg...未知错误")
-        driver.close()
-        driver.quit()
+        #driver.close()
+        #driver.quit()
         return 3 #3表示服务器拒绝服务
     except:
         pass
-
+    #服务器超时
+    try :
+        WebDriverWait(driver, 10, 0.5).until_not(EC.visibility_of_element_located((By.XPATH, "//button[@id='send-code']")))
+    except :
+        #driver.close()
+        #driver.quit()
+        return 4
 
     #同意条款1
     xpath="//html/body/div[@role='dialog']/div[3]/div/div[3]/div[2]/label"
@@ -271,6 +270,7 @@ def create_cloudid(mailname,mailpasswd):
     msg="点击同意2失败"
     gg=double_click_c(driver,xpath,msg)
     if gg:
+
         return 5
     print("同意条款2成功")
 
