@@ -7,6 +7,10 @@ timestart=time.time()
 okcnt=0
 nokcnt=0
 nokcnt_yzm=0
+
+###############################参数设置#######################################################
+proxy='127.0.0.1:1081'
+# proxy=''
 with open("mail.txt", "r") as f:  # 读取开始尝试id
     sn = f.readline()
 mailstart = "xmxqb_" + sn + "@nbsky55.com"
@@ -19,7 +23,7 @@ for i in range(0,1000):
     # 请设置邮箱信息
     mailname = "xmxqb_" + sn + "@nbsky55.com"
     mailpasswd = "Xmx&qb3"
-    a = create_cloudid(mailname,mailpasswd)
+    a = create_cloudid(mailname,mailpasswd,proxy)
     if a == 1:  #顺利完成
         with open("mail.txt","w") as f:
             sn = str(int(sn)+1)

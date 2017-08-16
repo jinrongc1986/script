@@ -59,17 +59,20 @@ def double_check(driver,xpath,msg,method='XPATH'):
     while attempts < 2 and not success:
         try:
             if method=='XPATH':
-                WebDriverWait(driver, 10, 0.5).until(EC.presence_of_element_located((By.XPATH, xpath)))
+                WebDriverWait(driver, 10, 0.5).until(EC.visibility_of_element_located((By.XPATH, xpath)))
                 success=True
             elif method=='LINK_TEXT':
-                WebDriverWait(driver, 10, 0.5).until(EC.presence_of_element_located((By.LINK_TEXT, xpath)))
+                WebDriverWait(driver, 10, 0.5).until(EC.visibility_of_element_located((By.LINK_TEXT, xpath)))
                 success=True
         except Exception as e:
             attempts += 1
+            if attempts == 3:
+                return False
+            print(e)
             print(msg)
             #driver.close()
             #driver.quit()
-            return False
+
 
 def double_click_c(driver,xpath,msg,method='XPATH'):
     attempts = 0
@@ -87,12 +90,14 @@ def double_click_c(driver,xpath,msg,method='XPATH'):
                 success=True
         except Exception as e:
             attempts += 1
+            if attempts == 3:
+                return False
+            print(e)
             print(msg)
             #driver.close()
             #driver.quit()
-            return False
 
-def create_cloudid(mailname,mailpasswd):
+def create_cloudid(mailname,mailpasswd,proxy=''):
     timestart=time.time()
     mailname=mailname
     mailpasswd=mailpasswd
@@ -103,11 +108,12 @@ def create_cloudid(mailname,mailpasswd):
     ua=""
     while ("Chrome" not in ua):
         ua = generate_user_agent()
-    proxy = '127.0.0.1:1081'
+    #proxy = '127.0.0.1:1081'
     #proxy = '192.168.0.188:1080'
     option = webdriver.ChromeOptions()
     option.add_argument('--user-agent=%s'%ua)
-    option.add_argument('--proxy-server=%s' % proxy)
+    if proxy :
+        option.add_argument('--proxy-server=%s' % proxy)
     driver = webdriver.Chrome(chrome_options=option)
     # driver=webdriver.Firefox()
     driver.get("https://www.icloud.com/")
@@ -178,7 +184,7 @@ def create_cloudid(mailname,mailpasswd):
             success = True
             if os.path.exists(imgname):
                 os.remove(imgname)
-                print('remove:', imgname)
+                print('删除正常验证码', imgname)
             with open("dama.txt", "a") as f:
                 timenow=(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
                 damaok=' PASS\n'
@@ -198,13 +204,15 @@ def create_cloudid(mailname,mailpasswd):
             #     print("验证码失败")
             if os.path.exists(imgname):
                 os.remove(imgname)
-                print("验证码失败")
+                print("删除无效验证码",imgname)
             with open("dama.txt", "a") as f:
                 timenow=(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
                 damanok=' FAIL '
                 f.write(timenow + damanok + val +'\n')
             # 验证码自动化
-            val=get_yzm(driver,imgname)
+            lianzhong_result = get_yzm(driver, imgname)
+            print (lianzhong_result)
+            val = json.loads(lianzhong_result)["data"]["val"]
             driver.find_element_by_xpath('//captcha-input/div/input[@id="captchaInput"]').send_keys(val)
             sleep(1)
             # 继续
@@ -233,8 +241,8 @@ def create_cloudid(mailname,mailpasswd):
     try:
         WebDriverWait(driver, 2, 0.5).until(EC.presence_of_element_located((By.XPATH,'//step-verify-code/idms-step/div/div/div/div[2]/div/div/div[2]/security-code/div/idms-popover/div/div/div/div')))
         print("gg...未知错误")
-        #driver.close()
-        #driver.quit()
+        driver.close()
+        driver.quit()
         return 3 #3表示服务器拒绝服务
     except:
         pass
@@ -242,17 +250,19 @@ def create_cloudid(mailname,mailpasswd):
     try :
         WebDriverWait(driver, 10, 0.5).until_not(EC.visibility_of_element_located((By.XPATH, "//button[@id='send-code']")))
     except :
-        #driver.close()
-        #driver.quit()
-        return 4
+        driver.close()
+        driver.quit()
+        print("页面未跳转")
+        return 4 #页面未跳转
 
     #同意条款1
+    sleep(2)
     xpath="//html/body/div[@role='dialog']/div[3]/div/div[3]/div[2]/label"
     msg="等待同意1失败"
     double_check(driver,xpath,msg)
     msg="点击同意1失败"
     gg=double_click_c(driver,xpath,msg)
-    if gg:
+    if not gg:
         try:
             WebDriverWait(driver, 2, 0.5).until(EC.presence_of_element_located((By.XPATH,'//step-verify-code/idms-step/div/div/div/div[2]/div/div/div[2]/security-code/div/idms-popover/div/div/div/div')))
             print("gg...未知错误")
@@ -260,18 +270,17 @@ def create_cloudid(mailname,mailpasswd):
             driver.quit()
             return 3  # 3表示服务器拒绝服务
         except:
-            return 5
+            #return 5
+            pass
     print("同意条款1成功")
 
     #同意条款2
     xpath="//div[@role='alertdialog']/div/div/div[2]"
     msg = "等待同意2失败"
     double_check(driver, xpath, msg)
+    sleep(1)
     msg="点击同意2失败"
     gg=double_click_c(driver,xpath,msg)
-    if gg:
-
-        return 5
     print("同意条款2成功")
 
     #开始使用iCloud
