@@ -2,15 +2,30 @@
 from CloudId3 import create_cloudid
 from time import sleep
 import time
+import requests
 
+def get_out_ip(proxies):
+    url = r'http://1212.ip138.com/ic.asp'
+    if not proxies:
+        r = requests.get(url)
+    else :
+        proxies={"http":"127.0.0.1:1081"}
+        r = requests.get(url,proxies=proxies)
+    txt = r.text
+    ip = txt[txt.find("[") + 1: txt.find("]")]
+    print('ip:' + ip)
+    return ip
+
+###############################参数设置######################################################
 timestart=time.time()
 okcnt=0
 nokcnt=0
 nokcnt_yzm=0
-
-###############################参数设置#######################################################
-proxy='127.0.0.1:1081'
+# proxy='127.0.0.1:1081'
+proxy='socks://192.168.0.61:1080'
 # proxy=''
+# proxies = proxy
+# get_out_ip(proxies)
 with open("mail.txt", "r") as f:  # 读取开始尝试id
     sn = f.readline()
 mailstart = "xmxqb_" + sn + "@nbsky55.com"
