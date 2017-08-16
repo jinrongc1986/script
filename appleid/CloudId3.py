@@ -74,7 +74,8 @@ def double_check(driver,xpath,msg,method='XPATH'):
                 return False
             #driver.close()
             #driver.quit()
-
+        finally:
+            return True
 
 def double_click_c(driver,xpath,msg,method='XPATH'):
     attempts = 0
@@ -98,6 +99,8 @@ def double_click_c(driver,xpath,msg,method='XPATH'):
                 return False
             #driver.close()
             #driver.quit()
+        finally:
+            return True
 
 def create_cloudid(mailname,mailpasswd,proxy=''):
     timestart=time.time()
@@ -296,6 +299,7 @@ def create_cloudid(mailname,mailpasswd,proxy=''):
     double_check(driver,xpath,msg)
     msg="点击开始使用iCloud失败"
     gg=double_click_c(driver,xpath,msg)
+    print(gg)
     if not gg:
         return 5
     print("点击开始使用iCloud成功")
