@@ -12,6 +12,7 @@ import get_mail
 from urllib import request
 import lianzhong_api
 from user_agent import generate_user_agent
+import json
 
 # 一直等待某元素可见，默认超时10秒 locator 为XPATH 选择器
 def is_visible(driver, locator, timeout=10):
@@ -49,9 +50,8 @@ def get_yzm(driver,imgname):
             driver.find_element_by_xpath('//button[@class ="button link first"]').click()
     request.urlretrieve(imgurl, imgname)
     result = lianzhong_api.main(file_name=imgname)
-    val = result.split(":")[2].split(",")[0][1:-1]
-    print(val)
-    return val
+    print(result)
+    return result
 
 def double_check(driver,xpath,msg,method='XPATH'):
     attempts = 0
@@ -104,7 +104,7 @@ def create_cloudid(mailname,mailpasswd):
     while ("Chrome" not in ua):
         ua = generate_user_agent()
     #proxy = '127.0.0.1:1081'
-    #proxy = '192.168.2.68:7072'
+    #proxy = '192.168.0.188:1080'
     option = webdriver.ChromeOptions()
     option.add_argument('--user-agent=%s'%ua)
     #option.add_argument('--proxy-server=%s' % proxy)
@@ -158,7 +158,8 @@ def create_cloudid(mailname,mailpasswd):
     driver.execute_script(js)
     print("开始验证码自动识别")
     #验证码自动化
-    val=get_yzm(driver,imgname)
+    lianzhong_result=get_yzm(driver,imgname)
+    val = json.loads(lianzhong_result)["data"]["val"]
     driver.find_element_by_xpath('//captcha-input/div/input[@id="captchaInput"]').send_keys(val)
     sleep(1)
     # 继续
@@ -184,12 +185,14 @@ def create_cloudid(mailname,mailpasswd):
                 f.write(timenow + damaok)
             print('发送邮件中。。。。等待30秒')
         except:
+            #上报错误的打码
+            lianzhong_id = json.loads(lianzhong_result)["data"]["id"]
+            lianzhong_api.report(lianzhong_id)
             attempts += 1
             if attempts ==3:
                 driver.close()
                 driver.quit()
                 return 2 #2表示图片验证尝试次数过多
-            #记录错误的打码
             # if os.path.exists(imgname):
             #     os.rename(imgname, imgname.split('.')[0] + '_' + val + '.jpg')
             #     print("验证码失败")
@@ -251,7 +254,14 @@ def create_cloudid(mailname,mailpasswd):
     msg="点击同意1失败"
     gg=double_click_c(driver,xpath,msg)
     if gg:
-        return 5
+        try:
+            WebDriverWait(driver, 2, 0.5).until(EC.presence_of_element_located((By.XPATH,'//step-verify-code/idms-step/div/div/div/div[2]/div/div/div[2]/security-code/div/idms-popover/div/div/div/div')))
+            print("gg...未知错误")
+            driver.close()
+            driver.quit()
+            return 3  # 3表示服务器拒绝服务
+        except:
+            return 5
     print("同意条款1成功")
 
     #同意条款2

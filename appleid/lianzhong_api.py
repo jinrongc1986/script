@@ -48,6 +48,26 @@ def main(file_name,api_username="jinrongc", api_password="FxData!Cds@2016_", api
     #print(r.text)  #{"data":{"val":"FAA4","id":8631454506},"result":true}
     return(r.text)
 
+def report(yzm_id,api_username="jinrongc", api_password="FxData!Cds@2016_", api_post_url="http://v1-http-api.jsdama.com/api.php?mod=php&act=error"):
+    headers = {
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language': 'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3',
+        'Accept-Encoding': 'gzip, deflate',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64; rv:53.0) Gecko/20100101 Firefox/53.0',
+        # 'Content-Type': 'multipart/form-data; boundary=---------------------------227973204131376',
+        'Connection': 'keep-alive',
+        'Host': 'v1-http-api.jsdama.com',
+        'Upgrade-Insecure-Requests': '1'
+    }
+    data = {
+        'user_name': api_username,
+        'user_pw': api_password,
+        'yzm_id': yzm_id
+    }
+    s = requests.session()
+    r = s.post(api_post_url, headers=headers, data=data,verify=False)
+    print (r.text)
+    return(r.text)
 
 
 def download_vcode():
