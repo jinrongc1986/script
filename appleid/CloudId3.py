@@ -309,7 +309,7 @@ def create_cloudid(mailname,mailpasswd,proxy=''):
     if not gg:
         driver.close()
         driver.quit()
-        return 5
+        return 6
     #注销
     xpath = "注销"
     msg = "等待注销失败"
@@ -319,7 +319,7 @@ def create_cloudid(mailname,mailpasswd,proxy=''):
     if not gg:
         driver.close()
         driver.quit()
-        return 5
+        return 6
     print("注销成功")
     ###
     sleep(1)
