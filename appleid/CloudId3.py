@@ -68,10 +68,10 @@ def double_check(driver,xpath,msg,method='XPATH'):
                 success=True
         except Exception as e:
             attempts += 1
-            if attempts == 3:
-                return False
             print(e)
             print(msg)
+            if attempts == 3:
+                return False
             #driver.close()
             #driver.quit()
 
@@ -92,10 +92,10 @@ def double_click_c(driver,xpath,msg,method='XPATH'):
                 success=True
         except Exception as e:
             attempts += 1
-            if attempts == 3:
-                return False
             print(e)
             print(msg)
+            if attempts == 3:
+                return False
             #driver.close()
             #driver.quit()
 
