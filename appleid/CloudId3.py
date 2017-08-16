@@ -45,6 +45,7 @@ def get_yzm(driver,imgname):
             imgurl = driver.find_element_by_xpath('//idms-captcha/div/img[@alt="安全提示图片"]').get_attribute('src')
             success = True
         except:
+            attempts +=1
             driver.find_element_by_xpath('//button[@class ="button link first"]').click()
     request.urlretrieve(imgurl, imgname)
     result = lianzhong_api.main(file_name=imgname)
@@ -52,43 +53,44 @@ def get_yzm(driver,imgname):
     print(val)
     return val
 
-def double_click_p(driver,xpath,msg,method='XPATH'):
+def double_check(driver,xpath,msg,method='XPATH'):
     attempts = 0
     success = False
     while attempts < 2 and not success:
         try:
             if method=='XPATH':
-                todo = WebDriverWait(driver, 10, 0.5).until(EC.presence_of_element_located((By.XPATH, xpath)))
-                todo.click()
+                WebDriverWait(driver, 10, 0.5).until(EC.presence_of_element_located((By.XPATH, xpath)))
                 success=True
             elif method=='LINK_TEXT':
-                todo = WebDriverWait(driver, 10, 0.5).until(EC.presence_of_element_located((By.LINK_TEXT, xpath)))
-                todo.click()
+                WebDriverWait(driver, 10, 0.5).until(EC.presence_of_element_located((By.LINK_TEXT, xpath)))
                 success=True
-        except:
+        except Exception as e:
+            attempts += 1
             print(msg)
-            driver.close()
-            driver.quit()
-            return 5
+            #driver.close()
+            #driver.quit()
+            return False
 
-def double_click_v(driver,xpath,msg,method='XPATH'):
+def double_click_c(driver,xpath,msg,method='XPATH'):
     attempts = 0
     success = False
     while attempts < 2 and not success:
         try:
             if method=='XPATH':
-                todo = WebDriverWait(driver, 10, 0.5).until(EC.presence_of_element_located((By.XPATH, xpath)))
+                todo=WebDriverWait(driver, 10, 0.5).until(EC.element_to_be_clickable((By.XPATH, xpath)))
+                sleep(1)
                 todo.click()
                 success=True
             elif method=='LINK_TEXT':
-                todo = WebDriverWait(driver, 10, 0.5).until(EC.presence_of_element_located((By.LINK_TEXT, xpath)))
+                todo = WebDriverWait(driver, 10, 0.5).until(EC.element_to_be_clickable((By.LINK_TEXT, xpath)))
                 todo.click()
                 success=True
-        except:
+        except Exception as e:
+            attempts += 1
             print(msg)
-            driver.close()
-            driver.quit()
-            return 5
+            #driver.close()
+            #driver.quit()
+            return False
 
 def create_cloudid(mailname,mailpasswd):
     timestart=time.time()
@@ -151,6 +153,9 @@ def create_cloudid(mailname,mailpasswd):
     question1=Select(driver.find_element_by_xpath("//div[@class='form-group qa-container qa-set2 ']/security-question/div/div/select"))
     question1.select_by_value('143')
     driver.find_element_by_xpath("//security-answer[@answer-number='3']/div/input").send_keys(u"三聚环保")
+    # 将页面滚动条拖到底部
+    js = "var q=document.documentElement.scrollTop=100000"
+    driver.execute_script(js)
     print("开始验证码自动识别")
     #验证码自动化
     val=get_yzm(driver,imgname)
@@ -237,38 +242,53 @@ def create_cloudid(mailname,mailpasswd):
         return 3 #3表示服务器拒绝服务
     except:
         pass
+
+
     #同意条款1
     xpath="//html/body/div[@role='dialog']/div[3]/div/div[3]/div[2]/label"
+    msg="等待同意1失败"
+    double_check(driver,xpath,msg)
     msg="点击同意1失败"
-    gg=double_click_p(driver,xpath,msg)
-    if gg == 5:
+    gg=double_click_c(driver,xpath,msg)
+    if gg:
         return 5
     print("同意条款1成功")
+
     #同意条款2
     xpath="//div[@role='alertdialog']/div/div/div[2]"
+    msg = "等待同意2失败"
+    double_check(driver, xpath, msg)
     msg="点击同意2失败"
-    gg=double_click_p(driver,xpath,msg)
-    if gg == 5:
+    gg=double_click_c(driver,xpath,msg)
+    if gg:
         return 5
     print("同意条款2成功")
+
     #开始使用iCloud
     xpath="//div[@role='main']/div[2]"
+    msg = "等待开始使用iCloud失败"
+    double_check(driver,xpath,msg)
     msg="点击开始使用iCloud失败"
-    gg=double_click_v(driver,xpath,msg)
-    if gg == 5:
+    gg=double_click_c(driver,xpath,msg)
+    if gg:
         return 5
     print("点击开始使用iCloud成功")
+
     #选择 设置与注销
     xpath="//div[@title='iCloud 设置与注销']"
+    msg="等待点击设置失败"
+    double_check(driver,xpath,msg)
     msg="点击设置失败"
-    gg=double_click_p(driver,xpath,msg)
-    if gg == 5:
+    gg=double_click_c(driver,xpath,msg)
+    if gg:
         return 5
     #注销
-    xpath="注销"
-    msg="注销失败"
-    gg=double_click_p(driver,xpath, msg,method='LINK_TEXT')
-    if gg==5:
+    xpath = "注销"
+    msg = "等待注销失败"
+    double_check(driver,xpath,msg,method='LINK_TEXT')
+    msg = "注销失败"
+    gg=double_click_c(driver,xpath, msg,method='LINK_TEXT')
+    if gg:
         return 5
     print("注销成功")
     ###
