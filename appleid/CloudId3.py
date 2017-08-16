@@ -296,7 +296,7 @@ def create_cloudid(mailname,mailpasswd,proxy=''):
     double_check(driver,xpath,msg)
     msg="点击开始使用iCloud失败"
     gg=double_click_c(driver,xpath,msg)
-    if gg:
+    if not gg:
         return 5
     print("点击开始使用iCloud成功")
 
@@ -306,7 +306,7 @@ def create_cloudid(mailname,mailpasswd,proxy=''):
     double_check(driver,xpath,msg)
     msg="点击设置失败"
     gg=double_click_c(driver,xpath,msg)
-    if gg:
+    if not gg:
         return 5
     #注销
     xpath = "注销"
@@ -314,7 +314,7 @@ def create_cloudid(mailname,mailpasswd,proxy=''):
     double_check(driver,xpath,msg,method='LINK_TEXT')
     msg = "注销失败"
     gg=double_click_c(driver,xpath, msg,method='LINK_TEXT')
-    if gg:
+    if not gg:
         return 5
     print("注销成功")
     ###

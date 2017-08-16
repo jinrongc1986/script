@@ -22,7 +22,8 @@ okcnt=0
 nokcnt=0
 nokcnt_yzm=0
 # proxy='127.0.0.1:1081'
-proxy='socks://192.168.0.61:1080'
+proxies=['socks://192.168.0.61:1080','socks://192.168.0.61:1081','socks://192.168.0.61:1082','']
+# proxy='socks://192.168.0.61:1080'
 # proxy=''
 # proxies = proxy
 # get_out_ip(proxies)
@@ -30,7 +31,17 @@ with open("mail.txt", "r") as f:  # 读取开始尝试id
     sn = f.readline()
 mailstart = "xmxqb_" + sn + "@nbsky55.com"
 
+x=0
+y=0
 for i in range(0,1000):
+    x += 1
+    if x == 4 :
+        x = 0
+        y += 1
+        if y == 4 :
+            y = 0
+    proxy=proxies[y]
+    print (proxy)
     if int(sn)==780:
         break
     with open("mail.txt", "r") as f: #读取当前尝试id
