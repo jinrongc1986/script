@@ -307,6 +307,8 @@ def create_cloudid(mailname,mailpasswd,proxy=''):
     msg="点击设置失败"
     gg=double_click_c(driver,xpath,msg)
     if not gg:
+        driver.close()
+        driver.quit()
         return 5
     #注销
     xpath = "注销"
@@ -315,6 +317,8 @@ def create_cloudid(mailname,mailpasswd,proxy=''):
     msg = "注销失败"
     gg=double_click_c(driver,xpath, msg,method='LINK_TEXT')
     if not gg:
+        driver.close()
+        driver.quit()
         return 5
     print("注销成功")
     ###
