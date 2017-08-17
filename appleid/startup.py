@@ -22,7 +22,7 @@ okcnt=0
 nokcnt=0
 nokcnt_yzm=0
 # proxy='127.0.0.1:1081'
-proxies=['socks://192.168.0.61:1081','socks://192.168.0.61:1082','socks://192.168.0.61:1083','']
+proxies=['socks://192.168.0.61:1082','','socks://192.168.0.61:1083','socks://192.168.0.61:1081']
 # proxy='socks://192.168.0.61:1080'
 # proxy=''
 # proxies = proxy
@@ -35,7 +35,9 @@ x=0
 y=0
 for i in range(0,1000):
     x += 1
-    if x == 4 :
+    if y == 4:
+        y = 0
+    if x == 7 :
         x = 0
         y += 1
         if y == 4 :
@@ -73,15 +75,17 @@ for i in range(0,1000):
             result = mailname + " FAIL server gg.....\n"
             f.write(result)
         nokcnt += 1
-        print("间隔1800秒")
-        sleep(1800)
+        print("切换代理")
+        y = y +1
+        x = 0
+        #sleep(1800)
         #break #结束进程
     elif a == 4: #网络差，打不开网页
         with open("result.txt","a") as f:
             result = mailname + " FAIL 网络超时\n"
             f.write(result)
         print("网络超时，等待60秒")
-        sleep(60)
+        sleep(10)
         nokcnt += 1
     elif a == 5:
         with open("mail.txt","w") as f:
