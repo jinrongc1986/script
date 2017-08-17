@@ -166,8 +166,7 @@ def create_cloudid(mailname,mailpasswd,proxy=''):
     question1.select_by_value('143')
     driver.find_element_by_xpath("//security-answer[@answer-number='3']/div/input").send_keys(u"三聚环保")
     # 将页面滚动条拖到底部
-    js = "var q=document.documentElement.scrollTop=100000"
-    driver.execute_script(js)
+    driver.find_element_by_xpath('//captcha-input/div/input[@id="captchaInput"]').send_keys(Keys.TAB)
     print("开始验证码自动识别")
     #验证码自动化
     lianzhong_result=get_yzm(driver,imgname)
@@ -178,6 +177,7 @@ def create_cloudid(mailname,mailpasswd,proxy=''):
     except:
         return 4 #图片分析出错
     print(val)
+    driver.find_element_by_xpath('//captcha-input/div/input[@id="captchaInput"]').clear()
     driver.find_element_by_xpath('//captcha-input/div/input[@id="captchaInput"]').send_keys(val)
     sleep(1)
     # 继续
@@ -239,10 +239,10 @@ def create_cloudid(mailname,mailpasswd,proxy=''):
             # 手工验证模式结束
             '''
     sleep(30)
-    token=get_mail.get_mail(mailname,mailpasswd)
-    print(str(token)[2:-1])
+    token=get_mail.get_mail_token(mailname,mailpasswd)
+    token_new = token.decode("utf-8")
+    print(token_new)
     #verification
-    token_new=str(token)[2:-1]
     driver.find_element_by_xpath("//input[@id='char0']").send_keys(token_new[0])
     driver.find_element_by_xpath("//input[@id='char1']").send_keys(token_new[1])
     driver.find_element_by_xpath("//input[@id='char2']").send_keys(token_new[2])
