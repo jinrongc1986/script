@@ -19,4 +19,14 @@ def get_out_ip():
     print('ip:' + ip)
     return ip
 
-get_out_ip()
+#get_out_ip()
+
+import os
+def router_init():
+    # reconnect
+    # restart
+    cmd = 'python34 xiaomi.py 192.168.31.1 1qaz@3edcCJR reconnect'
+    os.system(cmd)
+print(1)
+print(os.getcwd())
+router_init()

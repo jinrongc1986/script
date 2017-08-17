@@ -113,6 +113,7 @@ def create_cloudid(mailname,mailpasswd,proxy=''):
     ua=""
     while ("Chrome" not in ua):
         ua = generate_user_agent()
+    print(ua)
     #proxy = '127.0.0.1:1081'
     #proxy = '192.168.0.188:1080'
     option = webdriver.ChromeOptions()
@@ -226,6 +227,7 @@ def create_cloudid(mailname,mailpasswd,proxy=''):
                 return 4  # 图片无法加载
             val = json.loads(lianzhong_result)["data"]["val"]
             print(val)
+            driver.find_element_by_xpath('//captcha-input/div/input[@id="captchaInput"]').clear()
             driver.find_element_by_xpath('//captcha-input/div/input[@id="captchaInput"]').send_keys(val)
             sleep(1)
             # 继续
