@@ -22,7 +22,8 @@ okcnt=0
 nokcnt=0
 nokcnt_yzm=0
 # proxy='127.0.0.1:1081'
-proxies=['socks://192.168.0.61:1082','','socks://192.168.0.61:1083','socks://192.168.0.61:1081']
+# proxies=['','socks://192.168.0.61:1081','socks://192.168.0.61:1082']
+proxies=['']
 # proxy='socks://192.168.0.61:1080'
 # proxy=''
 # proxies = proxy
@@ -35,16 +36,15 @@ x=0
 y=0
 for i in range(0,1000):
     x += 1
-    if y == 4:
+    if y == 1:
         y = 0
-    if x == 7 :
+    if x == 5 :
         x = 0
         y += 1
-        if y == 4 :
-            y = 0
+        sleep(3600)
     proxy=proxies[y]
     print (proxy)
-    if int(sn)==780:
+    if int(sn)==400:
         break
     with open("mail.txt", "r") as f: #读取当前尝试id
         sn = f.readline()
