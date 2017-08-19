@@ -35,12 +35,13 @@ mailstart = "xmxqb_" + sn + "@nbsky55.com"
 x=0
 y=0
 for i in range(0,1000):
-    x += 1
-    if y == 1:
-        y = 0
-    if x == 5 :
+    if x == 4 :
+        print ("次数已超过5次")
         x = 0
         y += 1
+    if y == 1: #总代理数量
+        y = 0
+        print("等待3600秒")
         sleep(3600)
     proxy=proxies[y]
     print (proxy)
@@ -84,7 +85,7 @@ for i in range(0,1000):
         with open("result.txt","a") as f:
             result = mailname + " FAIL 网络超时\n"
             f.write(result)
-        print("网络超时，等待60秒")
+        print("网络超时，等待10秒")
         sleep(10)
         nokcnt += 1
     elif a == 5:
@@ -92,9 +93,10 @@ for i in range(0,1000):
             sn = str(int(sn)+1)
             f.write(sn)
         with open("result.txt","a") as f:
-            result = mailname + " FAIL 未点击开始\n"
+            result = mailname + " FAIL 未点击开始使用\n"
             f.write(result)
         nokcnt += 1
+    x += 1
 timeend = time.time()
 timecost = timeend - timestart
 print(("总耗时%.f秒，总成功%d次，总失败%d次,验证码导致的失败%d次") % (timecost,okcnt,nokcnt,nokcnt_yzm))
