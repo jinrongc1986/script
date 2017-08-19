@@ -57,7 +57,7 @@ def get_mail(email, password, limit=1):
         return msgAll
 
     # stat()返回邮件数量和占用空间:
-    print('Messages: %s. Size: %s' % server.stat())
+    # print('Messages: %s. Size: %s' % server.stat())
 
     # list()返回所有邮件的编号:
     resp, mails, octets = server.list()
@@ -80,7 +80,6 @@ def get_mail(email, password, limit=1):
 
             # 稍后解析出邮件:
             msg = Parser().parsestr(msg_content)
-
             msgAll.append(print_info(msg, None))
         except:
             pass
@@ -222,7 +221,7 @@ def print_info(msg, data, indent=0):
             # 附件
             # print('%sAttachment: %s' % ('  ' * indent, content_type))
             data['attach'] = ''
-        data['content_type'] = content_typemessage
+        data['content_type'] = content_type
     return data
 
 #邮件的Subject或者Email中包含的名字都是经过编码后的str，要正常显示，就必须decode：
@@ -331,8 +330,28 @@ if __name__ == "__main__":
 
     print('all ok:%s' % time.strftime("%Y-%m-%d %H:%M:%S"))
     '''
-    token = get_mail_token('xmxqb_606@nbsky55.com','Xmx&qb3', 2)
-    print(token.decode("utf-8"))
+    cnt=0
+    for i in range(500,1000):
+        mailname='xmxqb_'+str(i)+'@nbsky55.com'
+        passwd='Xmx&qb3'
+        #token = get_mail_token(mailname,passwd, 2)
+        #print (mailname)
+        #print(token.decode("utf-8"))
+        msg=get_mail(mailname,passwd,2)
+        #print(msg)
+        try:
+            success=msg[0]["Subject"]
+            if success=="欢迎使用 iCloud":
+                pass
+            else :
+                cnt=cnt+1
+                print(mailname)
+                print("Nok")
+        except:
+            cnt=cnt+1
+            print (mailname)
+            print ("NOK")
+    print (cnt)
     # code = get_apple_code('liukelin_5@163.com','qq6280734', 3)
     # print(code)
     #pass
