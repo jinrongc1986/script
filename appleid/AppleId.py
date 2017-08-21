@@ -6,9 +6,11 @@ from selenium.webdriver.common.keys import Keys
 
 from selenium.webdriver.support.ui import Select
 
-import requests
+from selenium.webdriver.common.by import By
 
-import os
+from selenium.webdriver.support.ui import WebDriverWait
+
+from selenium.webdriver.support import expected_conditions as EC
 
 import sys
 
@@ -18,7 +20,28 @@ import time
 
 driver=webdriver.Chrome()
 
-driver.get("https://appleid.apple.com/account#!&page=create")
+driver.get("https://www.icloud.com")
+
+#change window
+print(driver.current_window_handle)
+
+print(driver.title)
+
+create_element=WebDriverWait(driver,15,0.5).until(EC.presence_of_element_located((By.LINK_TEXT,"现在创建一个。")))
+
+create_element.click()
+
+#driver.find_element_by_link_text("现在创建一个。").click()
+
+#sleep(10)
+
+switch_frame=WebDriverWait(driver,10,0.5).until(EC.presence_of_element_located((By.XPATH,"//div[@role='dialog']/div[3]/div/iframe")))
+
+#switch to frame
+
+#driver.switch_to.frame(switch_frame)
+
+driver.switch_to.frame(driver.find_element_by_xpath("//div[@role='dialog']/div[3]/div/iframe"))
 
 #name
 
@@ -29,7 +52,8 @@ driver.find_element_by_xpath("//first-name-input/div/input").send_keys("hua")
 #china select
 
 country_select=Select(driver.find_element_by_id('countryOptions'))
-
+
+
 country_select.select_by_value('CHN')
 
 #birthday
