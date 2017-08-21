@@ -23,7 +23,7 @@ nokcnt=0
 nokcnt_yzm=0
 # proxy='127.0.0.1:1081'
 # proxies=['','socks://192.168.0.61:1081','socks://192.168.0.61:1082']
-proxies=['']
+proxies=['socks://192.168.31.100:1081','','socks://192.168.31.100:1085']
 # proxy='socks://192.168.0.61:1080'
 # proxy=''
 # proxies = proxy
@@ -35,17 +35,17 @@ mailstart = "xmxqb_" + sn + "@nbsky55.com"
 x=0
 y=0
 for i in range(0,1000):
-    if x == 4 :
+    if x == 5 :
         print ("次数已超过5次")
         x = 0
         y += 1
-    if y == 1: #总代理数量
+    if y == 3: #总代理数量
         y = 0
         print("等待3600秒")
         sleep(3600)
     proxy=proxies[y]
     print (proxy)
-    if int(sn)==400:
+    if int(sn)==300:
         break
     with open("mail.txt", "r") as f: #读取当前尝试id
         sn = f.readline()

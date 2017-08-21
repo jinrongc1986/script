@@ -38,13 +38,13 @@ with open("mail.txt", "r") as f:  # 读取开始尝试id
     sn = f.readline()
 mailstart = "xmxqb_" + sn + "@nbsky55.com"
 
-for i in range(0, 1000):
-    if x == 7:
+for i in range(0, 200):
+    if x == 6:
         x = 0
         router_init()
     else:
         x += 1
-    if int(sn) == 500:
+    if int(sn) == 300:
         break
     with open("mail.txt", "r") as f:  # 读取当前尝试id
         sn = f.readline()
@@ -77,6 +77,8 @@ for i in range(0, 1000):
         nokcnt += 1
         print("已被服务器拒绝，开始重启路由")
         router_init()
+        print("重启路由成功，等待5分钟")
+        sleep(300)
     elif a == 4:  # 网络差，打不开网页
         with open("result.txt", "a") as f:
             result = mailname + " FAIL 网络超时\n"

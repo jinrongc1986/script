@@ -331,26 +331,28 @@ if __name__ == "__main__":
     print('all ok:%s' % time.strftime("%Y-%m-%d %H:%M:%S"))
     '''
     cnt=0
-    for i in range(500,1000):
+    for i in range(1,1000):
         mailname='xmxqb_'+str(i)+'@nbsky55.com'
         passwd='Xmx&qb3'
-        #token = get_mail_token(mailname,passwd, 2)
+        #token = get_mail_token(mailname,passwd, 1)
         #print (mailname)
         #print(token.decode("utf-8"))
-        msg=get_mail(mailname,passwd,2)
+        msg=get_mail(mailname,passwd,3)
         #print(msg)
-        try:
-            success=msg[0]["Subject"]
-            if success=="欢迎使用 iCloud":
+        flag=False
+        for i in range(0,3):
+            try:
+                subject=msg[i]["Subject"]
+                #print(subject)
+                #if subject=="欢迎使用 iCloud" or subject=="您的 Apple ID 被用于在 Web 浏览器上登录 iCloud":
+                if subject == "欢迎使用 iCloud":
+                    flag=True
+                    break
+            except:
                 pass
-            else :
-                cnt=cnt+1
-                print(mailname)
-                print("Nok")
-        except:
+        if flag==False:
+            print(mailname)
             cnt=cnt+1
-            print (mailname)
-            print ("NOK")
     print (cnt)
     # code = get_apple_code('liukelin_5@163.com','qq6280734', 3)
     # print(code)
