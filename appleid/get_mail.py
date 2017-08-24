@@ -19,7 +19,7 @@ imp.reload(sys)
 dir_ = os.getcwd()
 
 set_debuglevel = 0
-pops = {'126.com':'pop.126.com','163.com':'pop.163.com','qq.com':'pop.qq.com', 'sina.com':'pop.sina.com','nbsky55.com':'mail.nbsky55.com'}
+pops = {'126.com':'pop.126.com','163.com':'pop.163.com','qq.com':'pop.qq.com', 'sina.com':'pop.sina.com','nbsky55.com':'mail.nbsky55.com','loveyxx.com':'mail.loveyxx.com','iloveyxx.com':'mail.iloveyxx.com'}
 
 #
 # 获取邮件内容
