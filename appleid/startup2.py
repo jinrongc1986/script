@@ -2,21 +2,20 @@
 from CloudId import create_cloudid
 from time import sleep
 import time
-def need_money(body,trytimes):
+def need_money(mailname_pre,domain,mailpasswd,body,count):
     timestart=time.time()
     okcnt=0
     nokcnt=0
     nokcnt_yzm=0
     with open("mail.txt", "r") as f:  # 读取开始尝试id
         sn = f.readline()
-    mailstart = "xmxqb_" + sn + "@nbsky55.com"
+    # mailstart = "xmxqb_" + sn + "@nbsky55.com"
 
-    for i in range(0,trytimes):
+    for i in range(0,count):
         with open("mail.txt", "r") as f: #读取当前尝试id
             sn = f.readline()
         # 请设置邮箱信息
-        mailname = "xmxqb_" + sn + "@nbsky55.com"
-        mailpasswd = "Xmx&qb3"
+        mailname = domain + sn + domain
         a = create_cloudid(mailname,mailpasswd)
         if a == 1:  #顺利完成
             with open("mail.txt","w") as f:
@@ -54,17 +53,19 @@ def need_money(body,trytimes):
     print(("总耗时%.f秒，总成功%d次，总失败%d次,验证码导致的失败%d次") % (timecost,okcnt,nokcnt,nokcnt_yzm))
 
 if __name__=='__main__':
-    body={'last_name':'',
-          'first_name':'贷',
-          'country':'中国',
-          'birth':'19891212',
-          'passwd':'21B12a5&',
-          'secretqid1':'130',
-          'secretaid1':'第一财经',
-          'secretqid2':'137',
-          'secretaid2':'万华化学',
-          'secretqid3': '143',
-          'secretaid3': '三聚环保',
-          }
-    trytimes = 100
-    create_cloudid(body,trytimes)
+    mailname_pre='xmxqb_'
+    domain='@nbsky55.com'
+    mailpasswd='Xmx&qb3'
+    body = {'last_name': 'Zrcredit',
+            'first_name': '贷',
+            'country': 'CHN',
+            'birthday': '19891212',
+            'password': '21B12a5&',
+            'question1': '130',
+            'answer1': '第一财经',
+            'question2': '137',
+            'answer2': '万华化学',
+            'question3': '143',
+            'answer3': u'三聚环保'}
+    count = 100
+    need_money(mailname_pre,domain,mailpasswd,body,count)

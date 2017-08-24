@@ -124,6 +124,7 @@ def create_cloudid(mailname,mailpasswd,proxy=''):
     # driver=webdriver.Firefox()
     driver.get("https://www.icloud.com/")
     #获取网页
+    print(driver.get_cookies())
     print(driver.current_window_handle)
     print(driver.title)
     try:
@@ -339,7 +340,7 @@ def create_cloudid(mailname,mailpasswd,proxy=''):
     print(("本次耗时%.f秒")%timecost)
     return 1
 if __name__=='__main__':
-    mailname="xmxqb_797@nbsky55.com"
+    mailname="xmxqb_382@nbsky55.com"
     mailpasswd="Xmx&qb3"
-    a=create_cloudid(mailname,mailpasswd)
+    a=create_cloudid(mailname,mailpasswd,proxy='')
     print(a)
