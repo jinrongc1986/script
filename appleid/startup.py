@@ -3,18 +3,22 @@ from CloudId4 import create_cloudid
 from time import sleep
 import time
 import requests
+import socket
 
+def localIP():
+    localIP = socket.gethostbyname(socket.gethostname())
+    return localIP
 
-def get_out_ip(proxies):
+def get_out_ip(proxy):
     url = r'http://1212.ip138.com/ic.asp'
-    if not proxies:
+    if not proxy:
         r = requests.get(url)
     else:
-        proxies = {"http": "127.0.0.1:1081"}
+        proxies = proxy
         r = requests.get(url, proxies=proxies)
     txt = r.text
     ip = txt[txt.find("[") + 1: txt.find("]")]
-    print('ip:' + ip)
+    print('global ip:' + ip)
     return ip
 
 
@@ -24,22 +28,20 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
     okcnt = 0
     nokcnt = 0
     nokcnt_yzm = 0
-    # proxy='127.0.0.1:1081'
-    # proxy='socks://192.168.0.61:1080'
-    proxies = ['', 'socks://192.168.31.100:1082', 'socks://192.168.31.100:1082', 'socks://192.168.31.100:1085']
-    # get_out_ip(proxies)
-    with open("mail.txt", "r") as f:  # 读取开始尝试id
-        sn = f.readline()
-    # mailstart = mailname_pre + sn + domain
-    # print ("mailstart")
     x = 0
     y = 0
+    if localIP()=="30.30.32.2":
+        proxies = ['','socks://192.168.0.61:1081', 'socks://192.168.0.61:1083','socks://192.168.0.61:1084','socks://192.168.0.61:1086','socks://192.168.0.61:1087','socks://192.168.0.61:1088','socks://192.168.0.61:1089','socks://192.168.0.61:1090']
+        # proxies = ['socks://192.168.0.61:1081']
+    else :
+        proxies = ['socks://192.168.31.100:1081', 'socks://192.168.31.100:1082', 'socks://192.168.31.100:1085']
     for i in range(0, count):
         if x == 0 and y == 0:
             print("新的代理周期")
+            # get_out_ip(proxy)
             lastround = time.time()
         if x == 5:
-            print("次数已超过5次")
+            print("次数已超过5次，切换代理")
             x = 0
             y += 1
         if y == len(proxies):  # 总代理数量
@@ -51,12 +53,13 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
             if timeleft < 0:
                 print("代理周期结束，为确保代理可用，暂停%.f" % abs(timeleft))
                 sleep(abs(timeleft))
+            lastround = time.time()
         proxy = proxies[y]
         print(proxy)
         with open("mail.txt", "r") as f:  # 读取当前尝试id
             sn = f.readline()
         # 请设置邮箱信息
-        mailname = mailname_pre + sn + domain
+        mailname = mailname_pre + sn.zfill(4) + domain
         do = create_cloudid(mailname, mailpasswd, body, proxy)
         if do == 1:  # 顺利完成
             with open("mail.txt", "w") as f:
@@ -78,7 +81,7 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
                 break
         elif do == 3:  # 服务器报未知错误
             with open("result.txt", "a") as f:
-                result = mailname + " FAIL server gg.....\n"
+                result = mailname + " FAIL server gg.....%s\n"%proxy
                 f.write(result)
             nokcnt += 1
             print("切换代理")
@@ -128,19 +131,19 @@ if __name__ == '__main__':
     # mailname_pre='xmxqb_'
     # domain='@nbsky55.com'
     # mailpasswd='Xmx&qb3'
-    mailname_pre = 'test0'
+    mailname_pre = 'just'
     domain = '@loveyxx.com'
-    mailpasswd = 'lslq9527'
-    body = {'last_name': 'Zrcredit',
+    mailpasswd = 'Lslq9527'
+    body = {'last_name': 'Mlqbll',
             'first_name': '贷',
             'country': 'CHN',
-            'birthday': '19891212',
-            'password': '21B12a5&',
+            'birthday': '19880808',
+            'password': '08ML15qb@',
             'question1': '130',
-            'answer1': '第一财经',
+            'answer1': '三五河流',
             'question2': '137',
-            'answer2': '万华化学',
+            'answer2': '王者荣耀',
             'question3': '143',
-            'answer3': '三聚环保'}
-    count = 100
+            'answer3': '东成西就'}
+    count = 60
     need_money(mailname_pre, domain, mailpasswd, body, count)

@@ -214,6 +214,8 @@ def create_cloudid(mailname, mailpasswd, body, proxy=''):
         val = json.loads(lianzhong_result)["data"]["val"]
     except:
         print("验证码格式返回错误")
+        driver.close()
+        driver.quit()
         return 4
     print(val)
     driver.find_element_by_xpath('//captcha-input/div/input[@id="captchaInput"]').clear()
@@ -288,7 +290,7 @@ def create_cloudid(mailname, mailpasswd, body, proxy=''):
             sleep(15)
             # 手工验证模式结束
             '''
-    sleep(30)
+    # sleep(30)
     token = get_mail.get_mail_token(mailname, mailpasswd,1,ssl=True)
     if token == []:
         print ("邮件获取失败")

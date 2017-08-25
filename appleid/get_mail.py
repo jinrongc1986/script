@@ -21,7 +21,7 @@ dir_ = os.getcwd()
 
 set_debuglevel = 0
 pops = {'126.com': 'pop.126.com', '163.com': 'pop.163.com', 'qq.com': 'pop.qq.com', 'sina.com': 'pop.sina.com',
-        'nbsky55.com': 'mail.nbsky55.com', 'loveyxx.com': 'mail.loveyxx.com','iloveyxx.com': 'mail.iloveyxx.com'}
+        'nbsky55.com': 'mail.nbsky55.com', 'loveyxx.com': 'mail.loveyxx.com', 'iloveyxx.com': 'mail.iloveyxx.com'}
 
 
 #
@@ -45,9 +45,9 @@ def get_mail(email, password, limit=1):
 
     try:
         # 连接到POP3服务器:
-        if ssl :
+        if ssl:
             server = poplib.POP3_SSL(pop3_server)
-        else :
+        else:
             server = poplib.POP3(pop3_server)
 
         # 可以打开或关闭调试信息:
@@ -99,7 +99,7 @@ def get_mail(email, password, limit=1):
     return msgAll
 
 
-def get_mail_token(email, password, limit=1,ssl=True):
+def get_mail_token(email, password, limit=1, ssl=True):
     pop3_server = ''
     st = email.split('@')[1]
     if st and (st in pops):
@@ -111,78 +111,79 @@ def get_mail_token(email, password, limit=1,ssl=True):
     email = email  # input('Email: ')
     password = password  # input('Password: ')
     pop3_server = pop3_server  # input('POP3 server: ') # pop.126.com   pop.163.com
-
-    try:
-        # 连接到POP3服务器:
-        if ssl :
-            server = poplib.POP3_SSL(pop3_server)
-        else :
-            server = poplib.POP3(pop3_server)
-
-        # 可以打开或关闭调试信息:
-        server.set_debuglevel(set_debuglevel)
-
-        # 可选:打印POP3服务器的欢迎文字:
-        print(server.getwelcome().decode('utf-8'))
-
-        # 身份认证:
-        server.user(email)
-        server.pass_(password)
-    except:
-        print ('与邮件服务器连接失败，请检查账号密码及网络')
-        return msgAll
-
-    # stat()返回邮件数量和占用空间:
-    # print('Messages: %s. Size: %s' % server.stat())
-
-    # list()返回所有邮件的编号:
-    resp, mails, octets = server.list()
-
-    # 可以查看返回的列表类似[b'1 82923', b'2 2184', ...]
-    # print(mails)
-
-    # 获取最新一封邮件, 注意索引号从1开始:
-    index = len(mails)  # 总数
-    # print(index)
-
-    page = (index - limit) if (index - limit) > 0 else 0
-    # print(page)
-    flag=True
-    cnt=1
-    token=[]
-    while (flag and cnt <= 6 ) :
+    flag = True
+    cnt = 1
+    token = []
+    while (flag and cnt <= 6):
         time.sleep(5)
+        try:
+            # 连接到POP3服务器:
+            if ssl:
+                server = poplib.POP3_SSL(pop3_server)
+            else:
+                server = poplib.POP3(pop3_server)
+
+            # 可以打开或关闭调试信息:
+            server.set_debuglevel(set_debuglevel)
+
+            # 可选:打印POP3服务器的欢迎文字:
+            print(server.getwelcome().decode('utf-8'))
+
+            # 身份认证:
+            server.user(email)
+            server.pass_(password)
+        except:
+            print('与邮件服务器连接失败，请检查账号密码及网络')
+            return msgAll
+
+        # stat()返回邮件数量和占用空间:
+        # print('Messages: %s. Size: %s' % server.stat())
+
+        # list()返回所有邮件的编号:
+        resp, mails, octets = server.list()
+
+        # 可以查看返回的列表类似[b'1 82923', b'2 2184', ...]
+        # print(mails)
+
+        # 获取最新一封邮件, 注意索引号从1开始:
+        index = len(mails)  # 总数
+        print("邮件数量:%d"%index)
+
+        page = (index - limit) if (index - limit) > 0 else 0
+        # print(page)
+
         for x in range(index, page, -1):  # 循环获取所有邮件
             try:
                 resp, lines, octets = server.retr(x)
                 # lines存储了邮件的原始文本的每一行,
                 # 可以获得整个邮件的原始文本:
                 messages = lines
-                #print (messages)
+                # print (messages)
                 msg_content = b'\r\n'.join(lines).decode('utf-8')
-                for message in messages :
-                    if '(UTC)' in message.decode('utf-8') :
+                for message in messages:
+                    if '(UTC)' in message.decode('utf-8'):
                         # print (message)
-                        mailtime=message.decode('utf-8').split(';')[1]
+                        mailtime = message.decode('utf-8').split(';')[1]
                         # print (mailtime)
-                        timeArray = time .strptime(mailtime, " %a, %d %b %Y %H:%M:%S %z (%Z)")
+                        timeArray = time.strptime(mailtime, " %a, %d %b %Y %H:%M:%S %z (%Z)")
                         timemap = time.mktime(timeArray)
                         timenow = time.time()
-                        difference = timenow - timemap
-                        if difference < 60 :
+                        difference = timenow - 8 * 3600 - timemap  # 考虑时区
+                        # print(difference)
+                        if difference < 60:
                             print("成功获取最新的邮件，时间差值为：%.f" % difference)
                             flag = False
                             break
-                        else :
+                        else:
                             flag = True
-                            print ("没有最新时间的邮件，时间差值为：%.f" %difference)
+                            # print ("没有最新时间的邮件，时间差值为：%.f" %difference)
 
                 # 稍后解析出邮件:
                 msg = Parser().parsestr(msg_content)
                 msgAll.append(print_info(msg, None))
             except Exception as e:
-                print (e)
-            if not flag :
+                print(e)
+            if not flag:
                 for message in messages:
                     if 'x-ds-vetting-token' in message.decode('utf-8'):
                         # print (message)
@@ -192,24 +193,24 @@ def get_mail_token(email, password, limit=1,ssl=True):
                         # token_new=str(token)[2:-1]
                         # print(token_new)
                         break
-                if not flag :
+                if not flag:
                     break
-                else :
+                else:
                     print("此邮件中没有token")
                     continue
-        if not flag :
+        if not flag:
             break
-        else :
-            print ("第%d次尝试获取token失败"%cnt)
+        else:
+            print("第%d次尝试获取token失败" % cnt)
             cnt += 1
 
-    # 可以根据邮件索引号直接从服务器删除邮件:
-    # server.dele(index)
-    # 关闭连接:
-    server.quit()
-    # except:
-    #     pass
-    # return msgAll
+        # 可以根据邮件索引号直接从服务器删除邮件:
+        # server.dele(index)
+        # 关闭连接:
+        server.quit()
+        # except:
+        #     pass
+        # return msgAll
     return token
 
 
@@ -403,25 +404,19 @@ def check_start_mail(mailname, mailpasswd, depth=3):
 
 if __name__ == "__main__":
     cnt = 0
-    for i in range(10, 11):
-        mailname = 'test0' + str(i) + '@loveyxx.com'
-        mailpasswd = 'lslq9527'
-        token = get_mail_token(mailname,mailpasswd, 2,ssl=True)
-        print (token)
-    #     # print (mailname)
-    #     print(token.decode("utf-8"))
-    #     flag = check_start_mail(mailname, mailpasswd, depth=2)
-    #     if flag == False:
-    #         print(mailname)
-    #         cnt = cnt + 1
-    # print('total error mail:%d' % cnt)
+    for i in range(26, 27):
+        mailname = 'just' + str(i).zfill(4) + '@loveyxx.com'
+        mailpasswd = 'Lslq9527'
+        token = get_mail_token(mailname, mailpasswd, 2, ssl=True)
+        print(token)
+        #     # print (mailname)
+        #     print(token.decode("utf-8"))
+        #     flag = check_start_mail(mailname, mailpasswd, depth=2)
+        #     if flag == False:
+        #         print(mailname)
+        #         cnt = cnt + 1
+        # print('total error mail:%d' % cnt)
 
-    # msg = get_mail("test1@loveyxx.com", "12345", 1)
-    # subject = msg[0]["Subject"]
-    # print(subject)
-
-
-
-
-
-
+        # msg = get_mail("test1@loveyxx.com", "12345", 1)
+        # subject = msg[0]["Subject"]
+        # print(subject)
