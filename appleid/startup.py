@@ -109,6 +109,14 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
                 result = mailname + " PASS\n"
                 f.write(result)
             okcnt += 1
+        elif do == 7:
+            with open("mail.txt", "w") as f:
+                sn = str(int(sn) + 1)
+                f.write(sn)
+            with open("result.txt", "a") as f:
+                result = mailname + " FAIL 获取邮件token失败\n"
+                f.write(result)
+            nokcnt += 1
         x += 1
 
     timeend = time.time()

@@ -290,6 +290,9 @@ def create_cloudid(mailname, mailpasswd, body, proxy=''):
             '''
     sleep(30)
     token = get_mail.get_mail_token(mailname, mailpasswd,1,ssl=True)
+    if token == []:
+        print ("邮件获取失败")
+        return 7
     token_new = token.decode("utf-8")
     print(token_new)
     # verification

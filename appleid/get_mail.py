@@ -148,11 +148,13 @@ def get_mail_token(email, password, limit=1,ssl=True):
     page = (index - limit) if (index - limit) > 0 else 0
     # print(page)
     flag=True
-    while flag:
+    cnt=1
+    token=[]
+    while (flag and cnt <= 6 ) :
+        time.sleep(5)
         for x in range(index, page, -1):  # 循环获取所有邮件
             try:
                 resp, lines, octets = server.retr(x)
-
                 # lines存储了邮件的原始文本的每一行,
                 # 可以获得整个邮件的原始文本:
                 messages = lines
@@ -160,30 +162,46 @@ def get_mail_token(email, password, limit=1,ssl=True):
                 msg_content = b'\r\n'.join(lines).decode('utf-8')
                 for message in messages :
                     if '(UTC)' in message.decode('utf-8') :
-                        print (message)
+                        # print (message)
                         mailtime=message.decode('utf-8').split(';')[1]
-                        print (mailtime)
-                        '''b'\tfor <test010@loveyxx.com>; Thu, 24 Aug 2017 17:11:16 +0000 (UTC)'
- Thu, 24 Aug 2017 17:11:16 +0000 (UTC)
-                        '''
+                        # print (mailtime)
+                        timeArray = time .strptime(mailtime, " %a, %d %b %Y %H:%M:%S %z (%Z)")
+                        timemap = time.mktime(timeArray)
+                        timenow = time.time()
+                        difference = timenow - timemap
+                        if difference < 60 :
+                            print("成功获取最新的邮件，时间差值为：%.f" % difference)
+                            flag = False
+                            break
+                        else :
+                            flag = True
+                            print ("没有最新时间的邮件，时间差值为：%.f" %difference)
 
                 # 稍后解析出邮件:
                 msg = Parser().parsestr(msg_content)
                 msgAll.append(print_info(msg, None))
-            except:
-                print ('gg')
-                pass
-        for message in messages:
-            if 'x-ds-vetting-token' in message.decode('utf-8'):
-                # print (message)
-                token = message[-6:]
-                flag = False
-                # print(token.decode("utf-8"))
-                # token_new=str(token)[2:-1]
-                # print(token_new)
-                break
-            else:
-                continue
+            except Exception as e:
+                print (e)
+            if not flag :
+                for message in messages:
+                    if 'x-ds-vetting-token' in message.decode('utf-8'):
+                        # print (message)
+                        token = message[-6:]
+                        flag = False
+                        # print(token.decode("utf-8"))
+                        # token_new=str(token)[2:-1]
+                        # print(token_new)
+                        break
+                if not flag :
+                    break
+                else :
+                    print("此邮件中没有token")
+                    continue
+        if not flag :
+            break
+        else :
+            print ("第%d次尝试获取token失败"%cnt)
+            cnt += 1
 
     # 可以根据邮件索引号直接从服务器删除邮件:
     # server.dele(index)
