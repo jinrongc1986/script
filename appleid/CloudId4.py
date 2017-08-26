@@ -209,6 +209,8 @@ def create_cloudid(mailname, mailpasswd, body, proxy=''):
     # 验证码自动化
     lianzhong_result = get_yzm(driver, imgname)
     if not lianzhong_result:
+        driver.close()
+        driver.quit()
         return 4
     try:
         val = json.loads(lianzhong_result)["data"]["val"]
@@ -245,7 +247,7 @@ def create_cloudid(mailname, mailpasswd, body, proxy=''):
                 timenow = (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
                 damaok = ' PASS\n'
                 f.write(timenow + damaok)
-            print('发送邮件中。。。。等待30秒')
+            print('发送邮件中。。。。等待5秒')
         except:
             # 上报错误的打码
             lianzhong_id = json.loads(lianzhong_result)["data"]["id"]
@@ -322,9 +324,19 @@ def create_cloudid(mailname, mailpasswd, body, proxy=''):
         WebDriverWait(driver, 10, 0.5).until_not(
             EC.visibility_of_element_located((By.XPATH, "//button[@id='send-code']")))
     except:
+        try:
+            WebDriverWait(driver, 3, 0.5).until(EC.presence_of_element_located((By.XPATH,
+                                                                                '//step-verify-code/idms-step/div/div/div/div[2]/div/div/div[2]/security-code/div/idms-popover/div/div/div/div')))
+            print("gg...未知错误")
+            driver.close()
+            driver.quit()
+            return 3  # 3表示服务器拒绝服务
+        except:
+            pass
+        # 服务器超时
+        print("页面未跳转")
         driver.close()
         driver.quit()
-        print("页面未跳转")
         return 4  # 页面未跳转
 
     sleep(2)
