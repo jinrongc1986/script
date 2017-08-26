@@ -4,6 +4,13 @@ from time import sleep
 import time
 import requests
 import socket
+import os
+
+def router_init():
+    # reconnect
+    # restart
+    cmd = 'python34 xiaomi.py 192.168.31.1 1qaz@3edcCJR reconnect'
+    os.system(cmd)
 
 def localIP():
     localIP = socket.gethostbyname(socket.gethostname())
@@ -31,14 +38,13 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
     x = 0
     y = 0
     if localIP()=="30.30.32.2":
-        proxies = ['','socks://192.168.0.61:1081', 'socks://192.168.0.61:1083','socks://192.168.0.61:1084','socks://192.168.0.61:1086','socks://192.168.0.61:1087','socks://192.168.0.61:1088','socks://192.168.0.61:1089','socks://192.168.0.61:1090']
-        # proxies = ['socks://192.168.0.61:1081']
+        # proxies = [ ]
+        proxies = ['','socks://192.168.0.61:1081','socks://192.168.0.61:1083','socks://192.168.0.61:1084','socks://192.168.0.61:1085',,'socks://192.168.0.61:1086','socks://192.168.0.61:1087','socks://192.168.0.61:1088','socks://192.168.0.61:1089','socks://192.168.0.61:1090','socks://192.168.0.61:1091','socks://192.168.0.61:1092','socks://192.168.0.61:1093','socks://192.168.0.61:1095']
     else :
-        proxies = ['socks://192.168.31.100:1081', 'socks://192.168.31.100:1082', 'socks://192.168.31.100:1085']
+        proxies = ['', 'socks://192.168.31.100:1082', 'socks://192.168.0.61:1094']
     for i in range(0, count):
         if x == 0 and y == 0:
             print("新的代理周期")
-            # get_out_ip(proxy)
             lastround = time.time()
         if x == 5:
             print("次数已超过5次，切换代理")
@@ -49,10 +55,14 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
             thisround = time.time()
             roundtime = thisround - lastround
             print("此次代理周期为%.f" % roundtime)
-            timeleft = roundtime - 3600
+            timeleft = roundtime - 4000
             if timeleft < 0:
                 print("代理周期结束，为确保代理可用，暂停%.f" % abs(timeleft))
-                sleep(abs(timeleft))
+                sleep(abs(timeleft)-120)
+                print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
+                print("120秒后重新开始")
+                sleep(120)
+            print("新的代理周期")
             lastround = time.time()
         proxy = proxies[y]
         print(proxy)
@@ -84,7 +94,8 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
                 result = mailname + " FAIL server gg.....%s\n"%proxy
                 f.write(result)
             nokcnt += 1
-            print("切换代理")
+            print("切换代理并等待5分钟")
+            sleep(300)
             y = y + 1
             x = 0
             # sleep(1800)
@@ -145,5 +156,5 @@ if __name__ == '__main__':
             'answer2': '王者荣耀',
             'question3': '143',
             'answer3': '东成西就'}
-    count = 60
+    count = 1000
     need_money(mailname_pre, domain, mailpasswd, body, count)
