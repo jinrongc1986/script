@@ -30,7 +30,7 @@ pops = {'126.com': 'pop.126.com', '163.com': 'pop.163.com', 'qq.com': 'pop.qq.co
 # password 密码
 # limit    获取邮件数量
 #
-def get_mail(email, password, limit=1):
+def get_mail(email, password, limit=1,ssl=True):
     pop3_server = ''
     st = email.split('@')[1]
     if st and (st in pops):
@@ -366,8 +366,8 @@ def get_apple_code(mail, password, limit=10):
     return codes
 
 
-def check_start_mail(mailname, mailpasswd, depth=3):
-    msg = get_mail(mailname, mailpasswd, depth)
+def check_start_mail(mailname, mailpasswd, depth=3,ssl=True):
+    msg = get_mail(mailname, mailpasswd, depth,ssl)
     flag = False
     for i in range(0, depth + 1):
         try:
@@ -404,18 +404,19 @@ def check_start_mail(mailname, mailpasswd, depth=3):
 
 if __name__ == "__main__":
     cnt = 0
-    for i in range(325, 326):
+    for i in range(1, 449):
         mailname = 'just' + str(i).zfill(4) + '@loveyxx.com'
         mailpasswd = 'Lslq9527'
-        token = get_mail_token(mailname, mailpasswd, 2, ssl=True,dt=3600)
-        print(token)
+        # token = get_mail_token(mailname, mailpasswd, 2, ssl=True,dt=3600)
+        # print(token)
         #     # print (mailname)
         #     print(token.decode("utf-8"))
-        #     flag = check_start_mail(mailname, mailpasswd, depth=2)
-        #     if flag == False:
-        #         print(mailname)
-        #         cnt = cnt + 1
-        # print('total error mail:%d' % cnt)
+        flag = check_start_mail(mailname, mailpasswd, depth=2,ssl=True)
+        if flag == False:
+            print(mailname)
+            cnt = cnt + 1
+        print(i)
+    print('total error mail:%d' % cnt)
 
         # msg = get_mail("test1@loveyxx.com", "12345", 1)
         # subject = msg[0]["Subject"]
