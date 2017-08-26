@@ -430,19 +430,22 @@ def create_cloudid(mailname, mailpasswd, body, proxy=''):
 
 
 if __name__ == '__main__':
-    mailname = "xmxqb_382@nbsky55.com"
-    mailpasswd = "Xmx&qb3"
-    # proxy = '127.0.0.1:1081'
-    body = {'last_name': 'Zrcredit',
+    mailname_pre = 'just'
+    domain = '@loveyxx.com'
+    mailpasswd = 'Lslq9527'
+    sn=448
+    proxy="socks://192.168.0.61:1089"
+    mailname = mailname_pre + str(sn).zfill(4) + domain
+    body = {'last_name': 'Mlqbll',
             'first_name': '贷',
             'country': 'CHN',
-            'birthday': '19891212',
-            'password': '21B12a5&',
+            'birthday': '19880808',
+            'password': '08ML15qb@',
             'question1': '130',
-            'answer1': '第一财经',
+            'answer1': '三五河流',
             'question2': '137',
-            'answer2': '万华化学',
+            'answer2': '王者荣耀',
             'question3': '143',
-            'answer3': '三聚环保'}
+            'answer3': '东成西就'}
     # print (body['answer3'])
     create_cloudid(mailname, mailpasswd, body, proxy='')
