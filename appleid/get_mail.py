@@ -99,7 +99,7 @@ def get_mail(email, password, limit=1):
     return msgAll
 
 
-def get_mail_token(email, password, limit=1, ssl=True):
+def get_mail_token(email, password, limit=1, ssl=True,dt=60):
     pop3_server = ''
     st = email.split('@')[1]
     if st and (st in pops):
@@ -170,7 +170,7 @@ def get_mail_token(email, password, limit=1, ssl=True):
                         timenow = time.time()
                         difference = timenow - 8 * 3600 - timemap  # 考虑时区
                         # print(difference)
-                        if difference < 60:
+                        if difference < dt:
                             print("成功获取最新的邮件，时间差值为：%.f" % difference)
                             flag = False
                             break
@@ -404,10 +404,10 @@ def check_start_mail(mailname, mailpasswd, depth=3):
 
 if __name__ == "__main__":
     cnt = 0
-    for i in range(26, 27):
+    for i in range(325, 326):
         mailname = 'just' + str(i).zfill(4) + '@loveyxx.com'
         mailpasswd = 'Lslq9527'
-        token = get_mail_token(mailname, mailpasswd, 2, ssl=True)
+        token = get_mail_token(mailname, mailpasswd, 2, ssl=True,dt=3600)
         print(token)
         #     # print (mailname)
         #     print(token.decode("utf-8"))
