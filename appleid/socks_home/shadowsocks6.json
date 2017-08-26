@@ -1,0 +1,10 @@
+{
+    "server":"198.211.121.210",
+    "server_port":9036,
+    "local_address": "192.168.31.100",
+    "local_port":1086,
+    "password":"FxData!Cds@2016_",
+    "timeout":300,
+    "method":"aes-256-cfb",
+    "fast_open": false
+}
