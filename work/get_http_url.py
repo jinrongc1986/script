@@ -30,6 +30,7 @@ def geturls(sn='CAS0530000152'):
     cmd2='mysql -N  -e  "select uri from cache.mobile_cache order by create_time desc limit 100 ;" >> /tmp/test_jinrongc.txt'
     cmd3='mysql -N  -e  "select uri from cache.http_cache order by create_time desc limit 100 ;" >> /tmp/test_jinrongc.txt'
     sshclient_execmd(port,cmd)
+    print ("等待生成数据...")
     sshclient_execmd(port,cmd1)
     sshclient_execmd(port,cmd2)
     sshclient_execmd(port,cmd3)
