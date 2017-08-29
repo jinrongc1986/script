@@ -22,8 +22,8 @@ def get_port(sn):
     port=ports[0].strip().split(':')[2]
     return port
 
-if __name__=='__main__':
-    sn='CAS0530000152'
+def geturls(sn='CAS0530000152'):
+    print ("请等待连接远程服务器...")
     port=int(get_port(sn))
     cmd='rm -f /tmp/test_jinrongc.txt'
     cmd1='mysql -N  -e  "select uri from cache.video_cache order by create_time desc limit 100 ;" >> /tmp/test_jinrongc.txt'
@@ -35,9 +35,15 @@ if __name__=='__main__':
     sshclient_execmd(port,cmd3)
 
     
-    child=pexpect.spawn('scp -P %d  root@rhelp.fxdata.cn:/tmp/test_jinrongc.txt /tmp/test_jinrongc.txt'%port)
+    #child=pexpect.spawn('scp -P %d  root@rhelp.fxdata.cn:/tmp/test_jinrongc.txt /tmp/test_jinrongc.txt'%port)
+    child=pexpect.spawn('scp -P %d  root@rhelp.fxdata.cn:/tmp/test_jinrongc.txt ./urls.txt'%port)
     child.expect("root@rhelp.fxdata.cn's password:")
     child.sendline("FxData!Cds@2016_")
     child.expect(pexpect.EOF)
+
+    sshclient_execmd(port,cmd)
     
-    print('success')
+    print('生成并同步到本地 urls.txt 成功')
+
+if __name__=='__main__':
+    geturls()

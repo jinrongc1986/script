@@ -17,3 +17,5 @@ appleid/result.txt
 appleid/dama.txt
 appleid/result1.txt
 nohup.out
+*.txt
+*.pcap
