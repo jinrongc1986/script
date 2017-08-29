@@ -3,7 +3,7 @@
     "server_port":7288,
     "local_address": "192.168.0.61",
     "local_port":1082,
-    "password":"you_will-never-know",
+    "password":"FxData!Cds@2016_",
     "timeout":300,
     "method":"aes-256-cfb",
     "fast_open": false

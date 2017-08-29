@@ -1,0 +1,15 @@
+nohup sslocal -c /home/git/script/appleid/socks/shadowsocks1.json /dev/null 2>&1 &
+nohup sslocal -c /home/git/script/appleid/socks/shadowsocks2.json /dev/null 2>&1 &
+nohup sslocal -c /home/git/script/appleid/socks/shadowsocks3.json /dev/null 2>&1 &
+nohup sslocal -c /home/git/script/appleid/socks/shadowsocks4.json /dev/null 2>&1 &
+nohup sslocal -c /home/git/script/appleid/socks/shadowsocks5.json /dev/null 2>&1 &
+nohup sslocal -c /home/git/script/appleid/socks/shadowsocks6.json /dev/null 2>&1 &
+nohup sslocal -c /home/git/script/appleid/socks/shadowsocks7.json /dev/null 2>&1 &
+nohup sslocal -c /home/git/script/appleid/socks/shadowsocks8.json /dev/null 2>&1 &
+nohup sslocal -c /home/git/script/appleid/socks/shadowsocks9.json /dev/null 2>&1 &
+nohup sslocal -c /home/git/script/appleid/socks/shadowsocks10.json /dev/null 2>&1 &
+nohup sslocal -c /home/git/script/appleid/socks/shadowsocks11.json /dev/null 2>&1 &
+nohup sslocal -c /home/git/script/appleid/socks/shadowsocks12.json /dev/null 2>&1 &
+nohup sslocal -c /home/git/script/appleid/socks/shadowsocks13.json /dev/null 2>&1 &
+nohup sslocal -c /home/git/script/appleid/socks/shadowsocks14.json /dev/null 2>&1 &
+nohup sslocal -c /home/git/script/appleid/socks/shadowsocks15.json /dev/null 2>&1 &

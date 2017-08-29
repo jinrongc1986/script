@@ -16,3 +16,4 @@ appleid/result.txt
 *.log
 appleid/dama.txt
 appleid/result1.txt
+nohup.out
