@@ -1,0 +1,8 @@
+在设备上下载压缩文件
+wget 'ftp://192.168.1.222/bigFlows/make_cache.tar.gz'
+请先解压到当前目录
+tar -zxvf make_cache.tar.gz
+再执行以下命令以满足环境要求
+bash install_make_cache.sh
+执行以下命令以生产回源，！！注意脚本会设置回源带宽强制为1M！！
+python make_cache.py
