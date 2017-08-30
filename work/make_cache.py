@@ -5,7 +5,7 @@ import make_http_pcap
 
 def create_bridge():
     path=os.path.split(os.path.realpath(__file__))[0]
-    cmd='bash %s/start_mirror.sh'
+    cmd='bash %s/start_mirror.sh'%path
     cb = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     cb.communicate()
     print ("创建bridge成功")
