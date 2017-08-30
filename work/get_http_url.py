@@ -26,9 +26,9 @@ def geturls(sn='CAS0530000152'):
     print ("请等待连接远程服务器...")
     port=int(get_port(sn))
     cmd='rm -f /tmp/test_jinrongc.txt'
-    cmd1='mysql -N  -e  "select uri from cache.video_cache order by create_time desc limit 100 ;" >> /tmp/test_jinrongc.txt'
-    cmd2='mysql -N  -e  "select uri from cache.mobile_cache order by create_time desc limit 100 ;" >> /tmp/test_jinrongc.txt'
-    cmd3='mysql -N  -e  "select uri from cache.http_cache order by create_time desc limit 100 ;" >> /tmp/test_jinrongc.txt'
+    cmd1='mysql -N  -e  "select uri from cache.video_cache order by create_time desc limit 5 ;" >> /tmp/test_jinrongc.txt'
+    cmd2='mysql -N  -e  "select uri from cache.mobile_cache order by create_time desc limit 5 ;" >> /tmp/test_jinrongc.txt'
+    cmd3='mysql -N  -e  "select uri from cache.http_cache order by create_time desc limit 5 ;" >> /tmp/test_jinrongc.txt'
     sshclient_execmd(port,cmd)
     print ("等待生成数据...")
     sshclient_execmd(port,cmd1)
