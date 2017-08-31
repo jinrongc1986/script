@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
-import os, subprocess
+import os
+import subprocess
 from time import sleep
 import json
 
@@ -36,12 +37,12 @@ def make_http_pcap(flag='all'):
         if flag == 'all':
             cmd = "wget '%s' --spider" % url
             subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,
-                                 stderr=subprocess.STDOUT)
+                             stderr=subprocess.STDOUT)
         elif flag == 'cnc':
             if url_analysis(url):
                 cmd = "wget '%s' --spider" % url
                 subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,
-                                     stderr=subprocess.STDOUT)
+                                 stderr=subprocess.STDOUT)
     sleep(5)
     dump.terminate()
     os.system('rm -f urls.txt')
