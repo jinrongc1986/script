@@ -46,5 +46,21 @@ def geturls(sn='CAS0530000152'):
     
     print('生成并同步到本地 urls.txt 成功')
 
+def getlocalurls():
+    print ("读取本地数据库...")
+    cmd='rm -f /tmp/test_jinrongc.txt'
+    cmd1='mysql -N  -e  "select uri from cache.video_cache ;" >> /tmp/test_jinrongc.txt'
+    cmd2='mysql -N  -e  "select uri from cache.mobile_cache ;" >> /tmp/test_jinrongc.txt'
+    cmd3='mysql -N  -e  "select uri from cache.http_cache ;" >> /tmp/test_jinrongc.txt'
+    cmd4='cp /tmp/test_jinrongc.txt ./urls.txt'
+    p = subprocess.call(cmd, shell=True)
+    p1 = subprocess.call(cmd1, shell=True)
+    p2 = subprocess.call(cmd2, shell=True)
+    p3 = subprocess.call(cmd3, shell=True)
+    p4 = subprocess.call(cmd4, shell=True)
+    
+    
+
 if __name__=='__main__':
-    geturls()
+    #geturls()
+    getlocalurls()
