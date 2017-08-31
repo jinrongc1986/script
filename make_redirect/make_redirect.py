@@ -20,7 +20,7 @@ def get_local_ip(nic='br100'):
     ip = os.popen((
                       "ifconfig %s | grep 'inet addr:' | grep -v '127.0.0.1' |\
                        cut -d: -f2 | awk '{print $1}' | head -1")
-                        %nic).read().split('\n')[0]
+                  % nic).read().split('\n')[0]
     print("%s ip : %s" % (nic, ip))
     return ip
 
