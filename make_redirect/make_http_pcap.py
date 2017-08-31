@@ -22,7 +22,8 @@ def make_http_pcap(flag='all'):
     getlocalurls();
     print("开始抓包...")
     capture = "tcpdump -i eth0 'tcp[((tcp[12:1] & 0xf0) >> 2):4] = 0x48454144' -w http_head.pcap"
-    dump = subprocess.Popen(capture, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    dump = subprocess.Popen(capture, shell=True, stdout=subprocess.PIPE,
+                            stderr=subprocess.STDOUT)
     f = open('./urls.txt', 'r')
     urls = f.readlines()
     print("开始发流...")
@@ -30,11 +31,13 @@ def make_http_pcap(flag='all'):
         url = url.strip()
         if flag == 'all':
             cmd = "wget '%s' --spider" % url
-            p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,
+                                 stderr=subprocess.STDOUT)
         elif flag == 'cnc':
             if url_analysis(url):
                 cmd = "wget '%s' --spider" % url
-                p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+                p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,
+                                     stderr=subprocess.STDOUT)
     sleep(5)
     dump.terminate()
     os.system('rm -f urls.txt')

@@ -18,7 +18,7 @@ def create_bridge():
 
 def get_local_ip(nic='br100'):
     ip = os.popen((
-                  "ifconfig %s | grep 'inet addr:' | grep -v '127.0.0.1' | cut -d: -f2 | awk '{print $1}' | head -1") % nic).read().split(
+                      "ifconfig %s | grep 'inet addr:' | grep -v '127.0.0.1' | cut -d: -f2 | awk '{print $1}' | head -1") % nic).read().split(
         '\n')[0]
     print("%s ip : %s" % (nic, ip))
     return ip
@@ -28,13 +28,17 @@ def tcprew(ip):
     iplist = ip.split('.')
     iplist[3] = str(int(iplist[3]) + 1)
     ipnew = '.'.join(iplist)
-    os.system('tcprewrite --srcipmap=%s:%s -i http_head.pcap -o bigFlows.pcap' % (ip, ipnew))
+    os.system(
+        'tcprewrite --srcipmap=%s:%s -i http_head.pcap -o bigFlows.pcap' % (
+        ip, ipnew))
     os.system('rm -f http_head.pcap')
     print("重写 src_ip 为 : %s" % ipnew)
 
 
 def tcprep(speed=1, loop=2):
-    os.system('tcpreplay -K -i veth1 --mbps %d  --loop %d  --unique-ip bigFlows.pcap' % (speed, loop))
+    os.system(
+        'tcpreplay -K -i veth1 --mbps %d  --loop %d  --unique-ip bigFlows.pcap' % (
+        speed, loop))
     os.system('rm -f bigFlows.pcap')
     print("tcpreplay 执行成功，请确认重定向日志！")
 
@@ -46,9 +50,11 @@ def del_bridge():
 
 def setbw(bw='1'):
     print("设置回源带宽为%sM，以防内网崩塌") % bw
-    os.system("/home/icache/configd config set download bandwidth work '%s'" % bw)
+    os.system(
+        "/home/icache/configd config set download bandwidth work '%s'" % bw)
     print('设置非空闲时段成功')
-    os.system("/home/icache/configd config set download bandwidth spare '%s'" % bw)
+    os.system(
+        "/home/icache/configd config set download bandwidth spare '%s'" % bw)
     print('设置空闲时间成功')
     print('等待20秒，等icached恢复')
     sleep(20)
