@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-import os, subprocess, time
+import os, subprocess
 from time import sleep
 import json
 
@@ -11,15 +11,15 @@ def getlocalurls():
     cmd2 = 'mysql -N  -e  "select uri from cache.mobile_cache ;" >> test_jinrongc.txt'
     cmd3 = 'mysql -N  -e  "select uri from cache.http_cache ;" >> test_jinrongc.txt'
     cmd4 = 'mv test_jinrongc.txt urls.txt'
-    p = subprocess.call(cmd, shell=True)
-    p1 = subprocess.call(cmd1, shell=True)
-    p2 = subprocess.call(cmd2, shell=True)
-    p3 = subprocess.call(cmd3, shell=True)
-    p4 = subprocess.call(cmd4, shell=True)
+    subprocess.call(cmd, shell=True)
+    subprocess.call(cmd1, shell=True)
+    subprocess.call(cmd2, shell=True)
+    subprocess.call(cmd3, shell=True)
+    subprocess.call(cmd4, shell=True)
 
 
 def make_http_pcap(flag='all'):
-    getlocalurls();
+    getlocalurls()
     print("开始抓包...")
     capture = "tcpdump -i eth0 'tcp[((tcp[12:1] & 0xf0) >> 2):4] = 0x48454144' -w http_head.pcap"
     dump = subprocess.Popen(capture, shell=True, stdout=subprocess.PIPE,
@@ -31,12 +31,12 @@ def make_http_pcap(flag='all'):
         url = url.strip()
         if flag == 'all':
             cmd = "wget '%s' --spider" % url
-            p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,
+            subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,
                                  stderr=subprocess.STDOUT)
         elif flag == 'cnc':
             if url_analysis(url):
                 cmd = "wget '%s' --spider" % url
-                p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,
+                subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,
                                      stderr=subprocess.STDOUT)
     sleep(5)
     dump.terminate()

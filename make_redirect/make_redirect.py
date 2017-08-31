@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-import os, subprocess, time
+import os
 from time import sleep
 from xedge.tool import make_http_pcap
 
