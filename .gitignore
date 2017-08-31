@@ -9,7 +9,7 @@ appleid/.idea/appleid.iml
 appleid/.idea/misc.xml
 appleid/.idea/workspace.xml
 *.iml
-.idea/
+.idea
 study/.idea/study.iml
 appleid/mail.txt
 appleid/result.txt
