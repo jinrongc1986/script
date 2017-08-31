@@ -7,9 +7,12 @@ import json
 def getlocalurls():
     print("读取本地数据库...")
     cmd = 'rm -f test_jinrongc.txt'
-    cmd1 = 'mysql -N  -e  "select uri from cache.video_cache ;" >> test_jinrongc.txt'
-    cmd2 = 'mysql -N  -e  "select uri from cache.mobile_cache ;" >> test_jinrongc.txt'
-    cmd3 = 'mysql -N  -e  "select uri from cache.http_cache ;" >> test_jinrongc.txt'
+    cmd1 = 'mysql -N  -e  "select uri from cache.video_cache ;" \
+            >> test_jinrongc.txt'
+    cmd2 = 'mysql -N  -e  "select uri from cache.mobile_cache ;" \
+            >> test_jinrongc.txt'
+    cmd3 = 'mysql -N  -e  "select uri from cache.http_cache ;" \
+            >> test_jinrongc.txt'
     cmd4 = 'mv test_jinrongc.txt urls.txt'
     subprocess.call(cmd, shell=True)
     subprocess.call(cmd1, shell=True)
@@ -21,7 +24,8 @@ def getlocalurls():
 def make_http_pcap(flag='all'):
     getlocalurls()
     print("开始抓包...")
-    capture = "tcpdump -i eth0 'tcp[((tcp[12:1] & 0xf0) >> 2):4] = 0x48454144' -w http_head.pcap"
+    capture = "tcpdump -i eth0 'tcp[((tcp[12:1] & 0xf0) >> 2):4] = 0x48454144'\
+                -w http_head.pcap"
     dump = subprocess.Popen(capture, shell=True, stdout=subprocess.PIPE,
                             stderr=subprocess.STDOUT)
     f = open('./urls.txt', 'r')

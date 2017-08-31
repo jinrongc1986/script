@@ -18,8 +18,9 @@ def create_bridge():
 
 def get_local_ip(nic='br100'):
     ip = os.popen((
-                      "ifconfig %s | grep 'inet addr:' | grep -v '127.0.0.1' | cut -d: -f2 | awk '{print $1}' | head -1") % nic).read().split(
-        '\n')[0]
+                      "ifconfig %s | grep 'inet addr:' | grep -v '127.0.0.1' |\
+                       cut -d: -f2 | awk '{print $1}' | head -1") % \
+                  nic).read().split('\n')[0]
     print("%s ip : %s" % (nic, ip))
     return ip
 
@@ -30,15 +31,15 @@ def tcprew(ip):
     ipnew = '.'.join(iplist)
     os.system(
         'tcprewrite --srcipmap=%s:%s -i http_head.pcap -o bigFlows.pcap' % (
-        ip, ipnew))
+            ip, ipnew))
     os.system('rm -f http_head.pcap')
     print("重写 src_ip 为 : %s" % ipnew)
 
 
 def tcprep(speed=1, loop=2):
     os.system(
-        'tcpreplay -K -i veth1 --mbps %d  --loop %d  --unique-ip bigFlows.pcap' % (
-        speed, loop))
+        'tcpreplay -K -i veth1 --mbps %d  --loop %d  --unique-ip \
+        bigFlows.pcap' % (speed, loop))
     os.system('rm -f bigFlows.pcap')
     print("tcpreplay 执行成功，请确认重定向日志！")
 
