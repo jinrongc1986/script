@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
-import os, subprocess
+import os
+import subprocess
 from time import sleep
 import make_http_pcap
 

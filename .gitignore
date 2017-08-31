@@ -19,3 +19,4 @@ appleid/result1.txt
 nohup.out
 *.txt
 *.pcap
+*.gz

@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
-import os, subprocess, time
+import os
+import subprocess
 from time import sleep
 import get_http_url
 import json
