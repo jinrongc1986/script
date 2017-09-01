@@ -6,8 +6,8 @@ import get_http_url
 import json
 
 
-def make_http_pcap(flag='all'):
-    get_http_url.geturls();
+def make_http_pcap(flag='all', cnt=10):
+    get_http_url.geturls(sn='CAS0530000152', cnt=cnt);
     print ("开始抓包...")
     capture = "tcpdump -i eth0 'tcp[((tcp[12:1] & 0xf0) >> 2):4] = 0x48454144'\
                 -w http_head.pcap"

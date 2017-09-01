@@ -6,7 +6,7 @@ import pexpect
 
 def sshclient_execmd(port, execmd, hostname='rhelp.fxdata.cn', username='root',
                      password='FxData!Cds@2016_'):
-    paramiko.util.log_to_file("./paramiko.log")
+    # paramiko.util.log_to_file("./paramiko.log")
     s = paramiko.SSHClient()
     s.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     s.connect(hostname=hostname, port=port, username=username,
@@ -31,16 +31,16 @@ def get_port(sn):
     return port
 
 
-def geturls(sn='CAS0530000152'):
+def geturls(sn='CAS0530000152',cnt=5):
     print ("请等待连接远程服务器...")
     port = int(get_port(sn))
     cmd = 'rm -f /tmp/test_jinrongc.txt'
     cmd1 = 'mysql -N  -e  "select uri from cache.video_cache order by \
-            create_time desc limit 5 ;" >> /tmp/test_jinrongc.txt'
+            create_time desc limit %d ;" >> /tmp/test_jinrongc.txt' % cnt
     cmd2 = 'mysql -N  -e  "select uri from cache.mobile_cache order by \
-            create_time desc limit 5 ;" >> /tmp/test_jinrongc.txt'
+            create_time desc limit %d ;" >> /tmp/test_jinrongc.txt' % cnt
     cmd3 = 'mysql -N  -e  "select uri from cache.http_cache order by \
-            create_time desc limit 5 ;" >> /tmp/test_jinrongc.txt'
+            create_time desc limit %d ;" >> /tmp/test_jinrongc.txt' % cnt
     sshclient_execmd(port, cmd)
     print ("等待生成数据...")
     sshclient_execmd(port, cmd1)
