@@ -28,8 +28,8 @@ def create_bridge():
 
 def get_local_ip(nic='br100'):
     ip = os.popen((
-                  "ifconfig %s | grep 'inet addr:' | grep -v '127.0.0.1' | \
-                  cut -d: -f2 | awk '{print $1}' | head -1")
+                      "ifconfig %s | grep 'inet addr:' | grep -v '127.0.0.1' \
+                      | cut -d: -f2 | awk '{print $1}' | head -1")
                   % nic).read().split(
         '\n')[0]
     print ("%s ip : %s" % (nic, ip))
@@ -41,7 +41,7 @@ def tcprew(ip):
     iplist[3] = str(int(iplist[3]) + 1)
     ipnew = '.'.join(iplist)
     cmd = 'tcprewrite --srcipmap=%s:%s -i http_head.pcap -o bigFlows.pcap' % (
-    ip, ipnew)
+        ip, ipnew)
     tcprw = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,
                              stderr=subprocess.STDOUT)
     tcprw.communicate()
@@ -51,7 +51,7 @@ def tcprew(ip):
 def tcprep(speed=1, loop=2):
     cmd = 'tcpreplay -K -i veth1 --mbps %d  --loop %d  \
             --unique-ip bigFlows.pcap' % (
-    speed, loop)
+        speed, loop)
     tcprp = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,
                              stderr=subprocess.STDOUT)
     tcprp.communicate()
@@ -60,7 +60,7 @@ def tcprep(speed=1, loop=2):
 
 def del_bridge():
     cmd = 'brctl delif br-xedge eth1'
-    del_br = subprocess.call(cmd, shell=True)
+    subprocess.call(cmd, shell=True)
     print ("清除bridge成功")
 
 
@@ -68,9 +68,9 @@ def setbw(bw='1'):
     print("设置回源带宽为%sM，以防内网崩塌") % bw
     cmd1 = "/home/icache/configd config set download bandwidth work '%s'" % bw
     cmd2 = "/home/icache/configd config set download bandwidth spare '%s'" % bw
-    setbw1 = subprocess.call(cmd1, shell=True)
+    subprocess.call(cmd1, shell=True)
     print ('设置非空闲时段成功')
-    setbw2 = subprocess.call(cmd2, shell=True)
+    subprocess.call(cmd2, shell=True)
     print ('设置空闲时间成功')
     print ('等待20秒，等icached恢复')
     sleep(20)

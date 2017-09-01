@@ -1,5 +1,4 @@
 # -*- coding:utf-8 -*-
-import os
 import subprocess
 from time import sleep
 import get_http_url
@@ -20,12 +19,12 @@ def make_http_pcap(flag='all', cnt=10):
         url = url.strip()
         if flag == 'all':
             cmd = "wget '%s' --spider" % url
-            p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,
+            subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,
                                  stderr=subprocess.STDOUT)
         elif flag == 'cnc':
             if url_analysis(url):
                 cmd = "wget '%s' --spider" % url
-                p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,
+                subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,
                                      stderr=subprocess.STDOUT)
     sleep(5)
     dump.terminate()

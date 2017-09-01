@@ -31,7 +31,7 @@ def get_port(sn):
     return port
 
 
-def geturls(sn='CAS0530000152',cnt=5):
+def geturls(sn='CAS0530000152', cnt=5):
     print ("请等待连接远程服务器...")
     port = int(get_port(sn))
     cmd = 'rm -f /tmp/test_jinrongc.txt'
@@ -67,11 +67,11 @@ def getlocalurls():
     cmd3 = 'mysql -N  -e  "select uri from cache.http_cache ;" \
             >> /tmp/test_jinrongc.txt'
     cmd4 = 'cp /tmp/test_jinrongc.txt ./urls.txt'
-    p = subprocess.call(cmd, shell=True)
-    p1 = subprocess.call(cmd1, shell=True)
-    p2 = subprocess.call(cmd2, shell=True)
-    p3 = subprocess.call(cmd3, shell=True)
-    p4 = subprocess.call(cmd4, shell=True)
+    subprocess.call(cmd, shell=True)
+    subprocess.call(cmd1, shell=True)
+    subprocess.call(cmd2, shell=True)
+    subprocess.call(cmd3, shell=True)
+    subprocess.call(cmd4, shell=True)
 
 
 if __name__ == '__main__':
