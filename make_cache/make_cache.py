@@ -79,7 +79,7 @@ def setbw(bw='1'):
 def main(flag='all',cnt=5):
     # 制造所有资源的重定向为all,制造cnc_export重定向为cnc
     setbw(bw="1")
-    make_http_pcap.make_http_pcap(flai,cnt)
+    make_http_pcap.make_http_pcap(flag,cnt)
     create_bridge()
     br100_ip = get_local_ip(nic='br100')
     tcprew(br100_ip)
