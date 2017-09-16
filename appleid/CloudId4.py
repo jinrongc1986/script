@@ -426,6 +426,8 @@ def create_cloudid(mailname, mailpasswd, body, proxy=''):
     timeend = time.time()
     timecost = timeend - timestart
     print(("本次耗时%.f秒") % timecost)
+    print("等待250秒")
+    sleep(250)
     return 1
 
 
@@ -433,9 +435,11 @@ if __name__ == '__main__':
     mailname_pre = 'just'
     domain = '@loveyxx.com'
     mailpasswd = 'Lslq9527'
-    sn=448
+    sn=857
     proxy="socks://192.168.0.61:1089"
     mailname = mailname_pre + str(sn).zfill(4) + domain
+    # mailname = 'test017@loveyxx.com'
+    # mailpasswd = 'lslq9527'
     body = {'last_name': 'Mlqbll',
             'first_name': '贷',
             'country': 'CHN',

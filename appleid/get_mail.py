@@ -404,14 +404,14 @@ def check_start_mail(mailname, mailpasswd, depth=3,ssl=True):
 
 if __name__ == "__main__":
     cnt = 0
-    for i in range(1, 449):
+    for i in range(800, 870):
         mailname = 'just' + str(i).zfill(4) + '@loveyxx.com'
         mailpasswd = 'Lslq9527'
         # token = get_mail_token(mailname, mailpasswd, 2, ssl=True,dt=3600)
         # print(token)
         #     # print (mailname)
         #     print(token.decode("utf-8"))
-        flag = check_start_mail(mailname, mailpasswd, depth=2,ssl=True)
+        flag = check_start_mail(mailname, mailpasswd, depth=6,ssl=True)
         if flag == False:
             print(mailname)
             cnt = cnt + 1
