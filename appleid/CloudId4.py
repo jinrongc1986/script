@@ -116,8 +116,48 @@ def double_click_c(driver, xpath, msg, method='XPATH'):
                 # driver.close()
                 # driver.quit()
 
+def checkserver(driver):
+    driver.switch_to.active_element
+    xpath = "“iCloud” 已停止响应。"
+    msg = "“iCloud” 已停止响应。"
+    # flag = double_check(driver, xpath, msg, method='LINK_TEXT')
+    try :
+        WebDriverWait(driver, 2, 0.5).until(EC.visibility_of_element_located((By.LINK_TEXT, xpath)))
+        print (msg)
+        driver.close()
+        driver.quit()
+        return 8
+    except :
+        pass
+    xpath = "iCloud 尝试连接至服务器时出错。"
+    msg = "iCloud 尝试连接至服务器时出错。"
+    # flag = double_check(driver, xpath, msg, method='LINK_TEXT')
+    try :
+        WebDriverWait(driver, 2, 0.5).until(EC.visibility_of_element_located((By.LINK_TEXT, xpath)))
+        print (msg)
+        driver.close()
+        driver.quit()
+        return 8
+    except :
+        pass
 
-def create_cloudid(mailname, mailpasswd, body, proxy=''):
+
+def checkunuse(driver):
+    driver.switch_to.active_element
+    xpath = "无法使用此电子邮件地址。请选择其他电子邮件地址"
+    msg = "无法使用此电子邮件地址。请选择其他电子邮件地址"
+    # flag = double_check(driver, xpath, msg, method='LINK_TEXT')
+    try :
+        WebDriverWait(driver, 2, 0.5).until(EC.visibility_of_element_located((By.LINK_TEXT, xpath)))
+        print (msg)
+        driver.close()
+        driver.quit()
+        return 9
+    except :
+        pass
+
+
+def create_cloudid(mailname, mailpasswd, body, proxy='',dttime=5):
     timestart = time.time()
     mailname = mailname
     mailpasswd = mailpasswd
@@ -141,6 +181,7 @@ def create_cloudid(mailname, mailpasswd, body, proxy=''):
     # print(driver.get_cookies())
     # print(driver.current_window_handle)
     # print(driver.title)
+    sleep(dttime)
     xpath = "现在创建一个。"
     msg = "点击创建账号失败"
     flag = double_click_c(driver, xpath, msg, method='LINK_TEXT')
@@ -160,6 +201,7 @@ def create_cloudid(mailname, mailpasswd, body, proxy=''):
         return 4
 
     # 账号信息页面
+    sleep(dttime)
     xpath = "//security-answer[@answer-number='3']/div/input"
     msg = "等待安全提示问题3出现失败"
     flag = double_check(driver, xpath, msg, method='XPATH')
@@ -223,6 +265,7 @@ def create_cloudid(mailname, mailpasswd, body, proxy=''):
     driver.find_element_by_xpath('//captcha-input/div/input[@id="captchaInput"]').clear()
     driver.find_element_by_xpath('//captcha-input/div/input[@id="captchaInput"]').send_keys(val)
     # 自动点击继续
+    sleep(2*dttime)
     try:
         driver.find_element_by_xpath("//idms-toolbar/div/div/button").click()
     except:
@@ -249,6 +292,9 @@ def create_cloudid(mailname, mailpasswd, body, proxy=''):
                 f.write(timenow + damaok)
             print('发送邮件中。。。。等待5秒')
         except:
+            # 检查是否邮箱已经使用
+            checkunuse(driver)
+            checkserver(driver)
             # 上报错误的打码
             lianzhong_id = json.loads(lianzhong_result)["data"]["id"]
             lianzhong_api.report(lianzhong_id)
@@ -337,7 +383,7 @@ def create_cloudid(mailname, mailpasswd, body, proxy=''):
         print("页面未跳转")
         driver.close()
         driver.quit()
-        return 4  # 页面未跳转
+        return 8  # 页面未跳转
 
     sleep(2)
     attempts = 0
@@ -386,6 +432,9 @@ def create_cloudid(mailname, mailpasswd, body, proxy=''):
 
     print("同意条款2成功")
 
+    # 确认服务器是否停止响应
+    checkserver(driver)
+
     # 开始使用iCloud
     xpath = "//div[@role='main']/div[2]"
     msg = "等待开始使用iCloud失败"
@@ -426,8 +475,8 @@ def create_cloudid(mailname, mailpasswd, body, proxy=''):
     timeend = time.time()
     timecost = timeend - timestart
     print(("本次耗时%.f秒") % timecost)
-    print("等待250秒")
-    sleep(250)
+    print("等待10秒")
+    sleep(10)
     return 1
 
 
@@ -435,11 +484,11 @@ if __name__ == '__main__':
     mailname_pre = 'just'
     domain = '@loveyxx.com'
     mailpasswd = 'Lslq9527'
-    sn=857
+    sn=453
     proxy="socks://192.168.0.61:1089"
     mailname = mailname_pre + str(sn).zfill(4) + domain
-    # mailname = 'test017@loveyxx.com'
-    # mailpasswd = 'lslq9527'
+    mailname = 'test_002@loveyxx.com'
+    mailpasswd = 'lslq9527'
     body = {'last_name': 'Mlqbll',
             'first_name': '贷',
             'country': 'CHN',

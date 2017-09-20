@@ -41,20 +41,23 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
     x = 0
     y = 0
     if localIP() == "192.168.0.62" or localIP() == "30.30.32.2":
-        # proxies = [ ]
-        proxies = ['socks://192.168.0.61:1081', 'socks://192.168.0.61:1082','socks://192.168.0.61:1083',
-                   'socks://192.168.0.61:1084','socks://192.168.0.61:1085', 'socks://192.168.0.61:1086',
-                   'socks://192.168.0.61:1087', 'socks://192.168.0.61:1088', 'socks://192.168.0.61:1089',
-                   'socks://192.168.0.61:1090', 'socks://192.168.0.61:1091', 'socks://192.168.0.61:1092',
-                   'socks://192.168.0.61:1093', 'socks://192.168.0.61:1094', 'socks://192.168.0.61:1095']
+        # proxies = []
+        proxies = [
+                    'socks://192.168.0.61:1081', 'socks://192.168.0.61:1082', 'socks://192.168.0.61:1083',
+                    'socks://192.168.0.61:1084','socks://192.168.0.61:1085', 'socks://192.168.0.61:1086',
+                    'socks://192.168.0.61:1087', 'socks://192.168.0.61:1088', 'socks://192.168.0.61:1089',
+                    'socks://192.168.0.61:1090', 'socks://192.168.0.61:1091', 'socks://192.168.0.61:1092',
+                    'socks://192.168.0.61:1093', 'socks://192.168.0.61:1094', 'socks://192.168.0.61:1095',
+                    ''
+                    ]
     else:
-        proxies = ['']
+        proxies = []
     for i in range(0, count):
         if x == 0 and y == 0:
             print("新的代理周期")
             lastround = time.time()
-        if x == 4:
-            print("次数已超过4次，切换代理")
+        if x == 1:
+            print("次数已超过1次，切换代理")
             x = 0
             y += 1
         if y == len(proxies):  # 总代理数量
@@ -69,7 +72,9 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
                 print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
                 print("120秒后重新开始")
                 sleep(120)
-            print("新的代理周期")
+            print("新的代理周期准备1800秒")
+            sleep(1800)
+            print("新的代理周期开始")
             lastround = time.time()
         proxy = proxies[y]
         print(proxy)
@@ -105,8 +110,8 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
             sleep(300)
             y = y + 1
             x = 0
-            # sleep(1800)
-            break #结束进程
+            sleep(1200)
+            # break #结束进程
         elif do == 4:  # 网络差，打不开网页
             with open("result.txt", "a") as f:
                 result = mailname + " FAIL 网络超时\n"
@@ -136,6 +141,22 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
                 f.write(sn)
             with open("result.txt", "a") as f:
                 result = mailname + " FAIL 获取邮件token失败\n"
+                f.write(result)
+            nokcnt += 1
+        elif do == 8:
+            with open("mail.txt", "w") as f:
+                sn = str(int(sn) + 1)
+                f.write(sn)
+            with open("result.txt", "a") as f:
+                result = mailname + " icloud已停止响应\n"
+                f.write(result)
+            nokcnt += 1
+        elif do == 9:
+            with open("mail.txt", "w") as f:
+                sn = str(int(sn) + 1)
+                f.write(sn)
+            with open("result.txt", "a") as f:
+                result = mailname + " 此邮箱已经注册\n"
                 f.write(result)
             nokcnt += 1
         x += 1

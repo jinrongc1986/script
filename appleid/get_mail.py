@@ -404,18 +404,18 @@ def check_start_mail(mailname, mailpasswd, depth=3,ssl=True):
 
 if __name__ == "__main__":
     cnt = 0
-    for i in range(800, 870):
+    for i in range(519, 520):
         mailname = 'just' + str(i).zfill(4) + '@loveyxx.com'
         mailpasswd = 'Lslq9527'
-        # token = get_mail_token(mailname, mailpasswd, 2, ssl=True,dt=3600)
-        # print(token)
-        #     # print (mailname)
-        #     print(token.decode("utf-8"))
-        flag = check_start_mail(mailname, mailpasswd, depth=6,ssl=True)
-        if flag == False:
-            print(mailname)
-            cnt = cnt + 1
-        print(i)
+        token = get_mail_token(mailname, mailpasswd, 2, ssl=True,dt=3600)
+        print(token)
+            # print (mailname)
+            # print(token.decode("utf-8"))
+        # flag = check_start_mail(mailname, mailpasswd, depth=6,ssl=True)
+        # if flag == False:
+        #     print(mailname)
+        #     cnt = cnt + 1
+        # print(i)
     print('total error mail:%d' % cnt)
 
         # msg = get_mail("test1@loveyxx.com", "12345", 1)
