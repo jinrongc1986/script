@@ -107,11 +107,11 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
                 f.write(result)
             nokcnt += 1
             print("切换代理并等待5分钟")
-            sleep(300)
+            # sleep(300)
             y = y + 1
             x = 0
-            sleep(1200)
-            # break #结束进程
+            # sleep(1200)
+            break #结束进程
         elif do == 4:  # 网络差，打不开网页
             with open("result.txt", "a") as f:
                 result = mailname + " FAIL 网络超时\n"
@@ -184,5 +184,7 @@ if __name__ == '__main__':
             'answer2': '王者荣耀',
             'question3': '143',
             'answer3': '东成西就'}
-    count = 1000
-    need_money(mailname_pre, domain, mailpasswd, body, count)
+    count = 15
+    for i in range (10) :
+        need_money(mailname_pre, domain, mailpasswd, body, count)
+        sleep(7200)
