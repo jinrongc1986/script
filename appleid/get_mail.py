@@ -405,9 +405,11 @@ def check_start_mail(mailname, mailpasswd, depth=3,ssl=True):
 if __name__ == "__main__":
     cnt = 0
     for i in range(519, 520):
-        mailname = 'just' + str(i).zfill(4) + '@loveyxx.com'
-        mailpasswd = 'Lslq9527'
-        token = get_mail_token(mailname, mailpasswd, 2, ssl=True,dt=3600)
+        # mailname = 'just' + str(i).zfill(4) + '@loveyxx.com'
+        # mailpasswd = 'Lslq9527'
+        mailname = 'tb_aihu@iloveyxx.com'
+        mailpasswd = 'tb@aihu104'
+        token = get_mail_token(mailname, mailpasswd, 5, ssl=True,dt=3600)
         print(token)
             # print (mailname)
             # print(token.decode("utf-8"))
