@@ -85,7 +85,7 @@ def double_check(driver, xpath, msg, method='XPATH'):
             attempts += 1
             print(e)
             print(msg)
-            if attempts == 3:
+            if attempts == 2:
                 return False
                 # driver.close()
                 # driver.quit()
@@ -247,8 +247,12 @@ def create_cloudid(mailname, mailpasswd, body, proxy='',dttime=5):
         print("输入错误，关闭重来")
         return 4
 
+    checkunuse(driver)
+    checkserver(driver)
     print("开始验证码自动识别")
+    sleep(60)
     # 验证码自动化
+    '''
     lianzhong_result = get_yzm(driver, imgname)
     if not lianzhong_result:
         driver.close()
@@ -266,6 +270,7 @@ def create_cloudid(mailname, mailpasswd, body, proxy='',dttime=5):
     driver.find_element_by_xpath('//captcha-input/div/input[@id="captchaInput"]').send_keys(val)
     # 自动点击继续
     sleep(2*dttime)
+    '''
     try:
         driver.find_element_by_xpath("//idms-toolbar/div/div/button").click()
     except:
@@ -295,6 +300,8 @@ def create_cloudid(mailname, mailpasswd, body, proxy='',dttime=5):
             # 检查是否邮箱已经使用
             checkunuse(driver)
             checkserver(driver)
+            print("检测邮箱已使用失败")
+            sleep(300)
             # 上报错误的打码
             lianzhong_id = json.loads(lianzhong_result)["data"]["id"]
             lianzhong_api.report(lianzhong_id)
@@ -487,8 +494,8 @@ if __name__ == '__main__':
     sn=453
     proxy="socks://192.168.0.61:1089"
     mailname = mailname_pre + str(sn).zfill(4) + domain
-    mailname = 'test_002@loveyxx.com'
-    mailpasswd = 'lslq9527'
+    mailname = 'just0001@loveyxx.com'
+    mailpasswd = 'Lslq9527'
     body = {'last_name': 'Mlqbll',
             'first_name': '贷',
             'country': 'CHN',
