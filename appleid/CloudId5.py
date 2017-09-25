@@ -85,7 +85,7 @@ def double_check(driver, xpath, msg, method='XPATH'):
             attempts += 1
             print(e)
             print(msg)
-            if attempts == 2:
+            if attempts == 3:
                 return False
                 # driver.close()
                 # driver.quit()
@@ -96,6 +96,7 @@ def double_click_c(driver, xpath, msg, method='XPATH'):
     success = False
     while attempts < 2 and not success:
         try:
+            print(1)
             if method == 'XPATH':
                 todo = WebDriverWait(driver, 10, 0.5).until(EC.element_to_be_clickable((By.XPATH, xpath)))
                 sleep(1)
@@ -116,48 +117,44 @@ def double_click_c(driver, xpath, msg, method='XPATH'):
                 # driver.close()
                 # driver.quit()
 
+
 def checkserver(driver):
-    driver.switch_to.active_element
     xpath = "“iCloud” 已停止响应。"
     msg = "“iCloud” 已停止响应。"
     # flag = double_check(driver, xpath, msg, method='LINK_TEXT')
-    try :
+    try:
         WebDriverWait(driver, 2, 0.5).until(EC.visibility_of_element_located((By.LINK_TEXT, xpath)))
-        print (msg)
+        print(msg)
         driver.close()
         driver.quit()
         return 8
-    except :
+    except:
         pass
     xpath = "iCloud 尝试连接至服务器时出错。"
     msg = "iCloud 尝试连接至服务器时出错。"
     # flag = double_check(driver, xpath, msg, method='LINK_TEXT')
-    try :
+    try:
         WebDriverWait(driver, 2, 0.5).until(EC.visibility_of_element_located((By.LINK_TEXT, xpath)))
-        print (msg)
+        print(msg)
         driver.close()
         driver.quit()
         return 8
-    except :
+    except:
         pass
 
 
-def checkunuse(driver):
-    driver.switch_to.active_element
-    xpath = "无法使用此电子邮件地址。请选择其他电子邮件地址"
+def checkunuse(driver, element_mail):
+    element_cur = driver.switch_to.active_element
     msg = "无法使用此电子邮件地址。请选择其他电子邮件地址"
     # flag = double_check(driver, xpath, msg, method='LINK_TEXT')
-    try :
-        WebDriverWait(driver, 2, 0.5).until(EC.visibility_of_element_located((By.LINK_TEXT, xpath)))
-        print (msg)
-        driver.close()
-        driver.quit()
-        return 9
-    except :
-        pass
+    if element_mail == element_cur:
+        print(msg)
+        return False
+    else:
+        return True
 
 
-def create_cloudid(mailname, mailpasswd, body, proxy='',dttime=5):
+def create_cloudid(mailname, mailpasswd, body, proxy='', dttime=5):
     timestart = time.time()
     mailname = mailname
     mailpasswd = mailpasswd
@@ -186,6 +183,7 @@ def create_cloudid(mailname, mailpasswd, body, proxy='',dttime=5):
     msg = "点击创建账号失败"
     flag = double_click_c(driver, xpath, msg, method='LINK_TEXT')
     if not flag:
+        sleep(300)
         driver.close()
         driver.quit()
         return 4
@@ -211,6 +209,7 @@ def create_cloudid(mailname, mailpasswd, body, proxy='',dttime=5):
         return 4  # 网络超时
     try:
         # name
+        checkserver(driver)
         print("start")
         driver.find_element_by_xpath("//last-name-input/div/input").send_keys(body['last_name'])
         driver.find_element_by_xpath("//first-name-input/div/input").send_keys(body['first_name'])
@@ -221,6 +220,7 @@ def create_cloudid(mailname, mailpasswd, body, proxy='',dttime=5):
         sleep(0.5)
         driver.find_element_by_xpath("//idms-error-wrapper/div/input").send_keys(body['birthday'])
         # email
+        element_mail = driver.find_element_by_xpath("//idms-error-wrapper/div/div/input")
         driver.find_element_by_xpath("//idms-error-wrapper/div/div/input").send_keys(mailname)
         # password
         driver.find_element_by_xpath("//password-input/input").send_keys(body['password'])
@@ -238,6 +238,11 @@ def create_cloudid(mailname, mailpasswd, body, proxy='',dttime=5):
             "//div[@class='form-group qa-container qa-set2 ']/security-question/div/div/select"))
         question3.select_by_value(body['question3'])
         driver.find_element_by_xpath("//security-answer[@answer-number='3']/div/input").send_keys(body['answer3'])
+        # 截图密保
+        target = driver.find_element_by_xpath(
+            "//div[@class='form-group qa-container qa-set0 ']/security-question/div/div/select")
+        driver.execute_script("arguments[0].scrollIntoView();", target)
+        driver.get_screenshot_as_file("%s.png"%mailname)
         # 将页面滚动条拖到底部
         driver.find_element_by_xpath('//captcha-input/div/input[@id="captchaInput"]').send_keys(Keys.TAB)
     except Exception as e:
@@ -247,12 +252,9 @@ def create_cloudid(mailname, mailpasswd, body, proxy='',dttime=5):
         print("输入错误，关闭重来")
         return 4
 
-    checkunuse(driver)
-    checkserver(driver)
+    sleep(300)
     print("开始验证码自动识别")
-    sleep(60)
     # 验证码自动化
-    '''
     lianzhong_result = get_yzm(driver, imgname)
     if not lianzhong_result:
         driver.close()
@@ -269,8 +271,7 @@ def create_cloudid(mailname, mailpasswd, body, proxy='',dttime=5):
     driver.find_element_by_xpath('//captcha-input/div/input[@id="captchaInput"]').clear()
     driver.find_element_by_xpath('//captcha-input/div/input[@id="captchaInput"]').send_keys(val)
     # 自动点击继续
-    sleep(2*dttime)
-    '''
+    sleep(2 * dttime)
     try:
         driver.find_element_by_xpath("//idms-toolbar/div/div/button").click()
     except:
@@ -298,10 +299,11 @@ def create_cloudid(mailname, mailpasswd, body, proxy='',dttime=5):
             print('发送邮件中。。。。等待5秒')
         except:
             # 检查是否邮箱已经使用
-            checkunuse(driver)
+            if not checkunuse(driver, element_mail):
+                driver.close()
+                driver.quit()
+                return 9
             checkserver(driver)
-            print("检测邮箱已使用失败")
-            sleep(300)
             # 上报错误的打码
             lianzhong_id = json.loads(lianzhong_result)["data"]["id"]
             lianzhong_api.report(lianzhong_id)
@@ -346,9 +348,9 @@ def create_cloudid(mailname, mailpasswd, body, proxy='',dttime=5):
             # 手工验证模式结束
             '''
     # sleep(30)
-    token = get_mail.get_mail_token(mailname, mailpasswd,1,ssl=True)
+    token = get_mail.get_mail_token(mailname, mailpasswd, 1, ssl=True)
     if token == []:
-        print ("邮件获取失败")
+        print("邮件获取失败")
         return 7
     token_new = token.decode("utf-8")
     print(token_new)
@@ -491,8 +493,8 @@ if __name__ == '__main__':
     mailname_pre = 'just'
     domain = '@loveyxx.com'
     mailpasswd = 'Lslq9527'
-    sn=453
-    proxy="socks://192.168.0.61:1089"
+    sn = 453
+    proxy = "socks://127.0.0.1:1081"
     mailname = mailname_pre + str(sn).zfill(4) + domain
     mailname = 'just0001@loveyxx.com'
     mailpasswd = 'Lslq9527'

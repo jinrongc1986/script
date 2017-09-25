@@ -25,8 +25,8 @@ def router_init():
 
 
 if __name__=="__main__" :
-    # get_yzm(1,2)
+    get_yzm(1,2)
     # router_init()
-    proxies = {'http': 'socks://192.168.0.61:1081','http': 'socks://192.168.0.61:1082', 'http':'socks://192.168.0.61:1083'}
+    # proxies = {'http': 'socks://192.168.0.61:1081','http': 'socks://192.168.0.61:1082', 'http':'socks://192.168.0.61:1083'}
     # for i in range(len(proxies)) :
-    get_out_ip(proxies)
+    # get_out_ip(proxies)
