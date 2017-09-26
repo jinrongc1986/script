@@ -199,7 +199,7 @@ def create_cloudid(mailname, mailpasswd, body, proxy='', dttime=5):
 
     # 账号信息页面
     sleep(dttime)
-    xpath = "//security-answer[@answer-number='3']/div/input"
+    xpath = "//security-answer[@answer-number='3']/div/idms-error-wrapper/div/input"
     msg = "等待安全提示问题3出现失败"
     flag = double_check(driver, xpath, msg, method='XPATH')
     if not flag:
@@ -209,33 +209,33 @@ def create_cloudid(mailname, mailpasswd, body, proxy='', dttime=5):
     try:
         # name
         print("start")
-        driver.find_element_by_xpath("//last-name-input/div/input").send_keys(body['last_name'])
-        driver.find_element_by_xpath("//first-name-input/div/input").send_keys(body['first_name'])
+        driver.find_element_by_xpath("//last-name-input/div/idms-error-wrapper/div/input").send_keys(body['last_name'])
+        driver.find_element_by_xpath("//first-name-input/div/idms-error-wrapper/div/input").send_keys(body['first_name'])
         # china select
         country_select = Select(driver.find_element_by_id('countryOptions'))
         country_select.select_by_value(body['country'])
         # birthday
         sleep(0.5)
-        driver.find_element_by_xpath("//idms-error-wrapper/div/input").send_keys(body['birthday'])
+        driver.find_element_by_xpath("//date/idms-error-wrapper/div/input").send_keys(body['birthday'])
         # email
-        element_mail = driver.find_element_by_xpath("//idms-error-wrapper/div/div/input")
-        driver.find_element_by_xpath("//idms-error-wrapper/div/div/input").send_keys(mailname)
+        element_mail = driver.find_element_by_xpath("//email-input/idms-error-wrapper/div/div/input")
+        driver.find_element_by_xpath("//email-input/idms-error-wrapper/div/div/input").send_keys(mailname)
         # password
-        driver.find_element_by_xpath("//password-input/input").send_keys(body['password'])
-        driver.find_element_by_xpath("//confirm-password-input/div/input").send_keys(body['password'])
+        driver.find_element_by_xpath("//password-input/div/input").send_keys(body['password'])
+        driver.find_element_by_xpath("//confirm-password-input/div/idms-error-wrapper/div/input").send_keys(body['password'])
         # questions
         question1 = Select(driver.find_element_by_xpath(
             "//div[@class='form-group qa-container qa-set0 ']/security-question/div/div/select"))
         question1.select_by_value(body['question1'])
-        driver.find_element_by_xpath("//security-answer[@answer-number='1']/div/input").send_keys(body['answer1'])
+        driver.find_element_by_xpath("//security-answer[@answer-number='1']/div/idms-error-wrapper/div/input").send_keys(body['answer1'])
         question2 = Select(driver.find_element_by_xpath(
             "//div[@class='form-group qa-container qa-set1 ']/security-question/div/div/select"))
         question2.select_by_value(body['question2'])
-        driver.find_element_by_xpath("//security-answer[@answer-number='2']/div/input").send_keys(body['answer2'])
+        driver.find_element_by_xpath("//security-answer[@answer-number='2']/div/idms-error-wrapper/div/input").send_keys(body['answer2'])
         question3 = Select(driver.find_element_by_xpath(
             "//div[@class='form-group qa-container qa-set2 ']/security-question/div/div/select"))
         question3.select_by_value(body['question3'])
-        driver.find_element_by_xpath("//security-answer[@answer-number='3']/div/input").send_keys(body['answer3'])
+        driver.find_element_by_xpath("//security-answer[@answer-number='3']/div/idms-error-wrapper/div/input").send_keys(body['answer3'])
         # 截图密保
         '''
         target = driver.find_element_by_xpath(
@@ -244,7 +244,7 @@ def create_cloudid(mailname, mailpasswd, body, proxy='', dttime=5):
         driver.get_screenshot_as_file("%s.png" % mailname)
         '''
         # 将页面滚动条拖到底部
-        driver.find_element_by_xpath('//captcha-input/div/input[@id="captchaInput"]').send_keys(Keys.TAB)
+        driver.find_element_by_xpath('//captcha-input/div/idms-error-wrapper/div/input[@id="captcha-input"]').send_keys(Keys.TAB)
     except Exception as e:
         print(e)
         driver.close()
@@ -267,8 +267,8 @@ def create_cloudid(mailname, mailpasswd, body, proxy='', dttime=5):
         driver.quit()
         return 4
     print(val)
-    driver.find_element_by_xpath('//captcha-input/div/input[@id="captchaInput"]').clear()
-    driver.find_element_by_xpath('//captcha-input/div/input[@id="captchaInput"]').send_keys(val)
+    driver.find_element_by_xpath('//captcha-input/div/idms-error-wrapper/div/input[@id="captcha-input"]').clear()
+    driver.find_element_by_xpath('//captcha-input/div/idms-error-wrapper/div/input[@id="captcha-input"]').send_keys(val)
     # 自动点击继续
     sleep(2 * dttime)
     try:
