@@ -51,7 +51,7 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
                     ''
                     ]
     else:
-        proxies = []
+        proxies = ['']
     for i in range(0, count):
         if x == 0 and y == 0:
             print("新的代理周期")

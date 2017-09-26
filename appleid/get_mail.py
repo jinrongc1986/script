@@ -30,7 +30,7 @@ pops = {'126.com': 'pop.126.com', '163.com': 'pop.163.com', 'qq.com': 'pop.qq.co
 # password 密码
 # limit    获取邮件数量
 #
-def get_mail(email, password, limit=1,ssl=True):
+def get_mail(email, password, limit=1, ssl=True):
     pop3_server = ''
     st = email.split('@')[1]
     if st and (st in pops):
@@ -99,7 +99,7 @@ def get_mail(email, password, limit=1,ssl=True):
     return msgAll
 
 
-def get_mail_token(email, password, limit=1, ssl=True,dt=60):
+def get_mail_token(email, password, limit=1, ssl=True, dt=60):
     pop3_server = ''
     st = email.split('@')[1]
     if st and (st in pops):
@@ -147,7 +147,7 @@ def get_mail_token(email, password, limit=1, ssl=True,dt=60):
 
         # 获取最新一封邮件, 注意索引号从1开始:
         index = len(mails)  # 总数
-        print("邮件数量:%d"%index)
+        print("邮件数量:%d" % index)
 
         page = (index - limit) if (index - limit) > 0 else 0
         # print(page)
@@ -366,8 +366,8 @@ def get_apple_code(mail, password, limit=10):
     return codes
 
 
-def check_start_mail(mailname, mailpasswd, depth=3,ssl=True):
-    msg = get_mail(mailname, mailpasswd, depth,ssl)
+def check_start_mail(mailname, mailpasswd, depth=3, ssl=True):
+    msg = get_mail(mailname, mailpasswd, depth, ssl)
     flag = False
     for i in range(0, depth + 1):
         try:
@@ -404,22 +404,16 @@ def check_start_mail(mailname, mailpasswd, depth=3,ssl=True):
 
 if __name__ == "__main__":
     cnt = 0
-    for i in range(519, 520):
-        # mailname = 'just' + str(i).zfill(4) + '@loveyxx.com'
-        # mailpasswd = 'Lslq9527'
-        mailname = 'tb_aihu@iloveyxx.com'
-        mailpasswd = 'tb@aihu104'
-        token = get_mail_token(mailname, mailpasswd, 5, ssl=True,dt=3600)
-        print(token)
-            # print (mailname)
-            # print(token.decode("utf-8"))
-        # flag = check_start_mail(mailname, mailpasswd, depth=6,ssl=True)
-        # if flag == False:
-        #     print(mailname)
-        #     cnt = cnt + 1
-        # print(i)
+    for i in range(800, 869):
+        mailname = 'just' + str(i).zfill(4) + '@loveyxx.com'
+        mailpasswd = 'Lslq9527'
+        flag = check_start_mail(mailname, mailpasswd, depth=8, ssl=True)
+        if flag == False:
+            print(mailname)
+            cnt = cnt + 1
+        print(i)
     print('total error mail:%d' % cnt)
-
-        # msg = get_mail("test1@loveyxx.com", "12345", 1)
-        # subject = msg[0]["Subject"]
-        # print(subject)
+    # mailname = 'tb_aihu@iloveyxx.com'
+    # mailpasswd = 'tb@aihu104'
+    # token = get_mail_token(mailname, mailpasswd, 5, ssl=True,dt=3600)
+    # print(token)

@@ -210,7 +210,8 @@ def create_cloudid(mailname, mailpasswd, body, proxy='', dttime=5):
         # name
         print("start")
         driver.find_element_by_xpath("//last-name-input/div/idms-error-wrapper/div/input").send_keys(body['last_name'])
-        driver.find_element_by_xpath("//first-name-input/div/idms-error-wrapper/div/input").send_keys(body['first_name'])
+        driver.find_element_by_xpath("//first-name-input/div/idms-error-wrapper/div/input").send_keys(
+            body['first_name'])
         # china select
         country_select = Select(driver.find_element_by_id('countryOptions'))
         country_select.select_by_value(body['country'])
@@ -222,20 +223,24 @@ def create_cloudid(mailname, mailpasswd, body, proxy='', dttime=5):
         driver.find_element_by_xpath("//email-input/idms-error-wrapper/div/div/input").send_keys(mailname)
         # password
         driver.find_element_by_xpath("//password-input/div/input").send_keys(body['password'])
-        driver.find_element_by_xpath("//confirm-password-input/div/idms-error-wrapper/div/input").send_keys(body['password'])
+        driver.find_element_by_xpath("//confirm-password-input/div/idms-error-wrapper/div/input").send_keys(
+            body['password'])
         # questions
         question1 = Select(driver.find_element_by_xpath(
             "//div[@class='form-group qa-container qa-set0 ']/security-question/div/div/select"))
         question1.select_by_value(body['question1'])
-        driver.find_element_by_xpath("//security-answer[@answer-number='1']/div/idms-error-wrapper/div/input").send_keys(body['answer1'])
+        driver.find_element_by_xpath(
+            "//security-answer[@answer-number='1']/div/idms-error-wrapper/div/input").send_keys(body['answer1'])
         question2 = Select(driver.find_element_by_xpath(
             "//div[@class='form-group qa-container qa-set1 ']/security-question/div/div/select"))
         question2.select_by_value(body['question2'])
-        driver.find_element_by_xpath("//security-answer[@answer-number='2']/div/idms-error-wrapper/div/input").send_keys(body['answer2'])
+        driver.find_element_by_xpath(
+            "//security-answer[@answer-number='2']/div/idms-error-wrapper/div/input").send_keys(body['answer2'])
         question3 = Select(driver.find_element_by_xpath(
             "//div[@class='form-group qa-container qa-set2 ']/security-question/div/div/select"))
         question3.select_by_value(body['question3'])
-        driver.find_element_by_xpath("//security-answer[@answer-number='3']/div/idms-error-wrapper/div/input").send_keys(body['answer3'])
+        driver.find_element_by_xpath(
+            "//security-answer[@answer-number='3']/div/idms-error-wrapper/div/input").send_keys(body['answer3'])
         # 截图密保
         '''
         target = driver.find_element_by_xpath(
@@ -244,7 +249,8 @@ def create_cloudid(mailname, mailpasswd, body, proxy='', dttime=5):
         driver.get_screenshot_as_file("%s.png" % mailname)
         '''
         # 将页面滚动条拖到底部
-        driver.find_element_by_xpath('//captcha-input/div/idms-error-wrapper/div/input[@id="captcha-input"]').send_keys(Keys.TAB)
+        driver.find_element_by_xpath('//captcha-input/div/idms-error-wrapper/div/input[@id="captcha-input"]').send_keys(
+            Keys.TAB)
     except Exception as e:
         print(e)
         driver.close()
@@ -366,7 +372,8 @@ def create_cloudid(mailname, mailpasswd, body, proxy='', dttime=5):
     # 服务器开始拒绝服务
     try:
         WebDriverWait(driver, 2, 0.5).until(EC.presence_of_element_located((By.XPATH,
-                                                                            '//step-verify-code/idms-step/div/div/div/div[2]/div/div/div[2]/security-code/div/idms-popover/div/div/div/div')))
+                                                                            '//step-verify-code/idms-step/div/div/div/div[2]/div/div/div[2]/security-code/idms-error-wrapper/div/idms-error/div/div/span')))
+
         print("gg...未知错误")
         driver.close()
         driver.quit()
@@ -380,7 +387,7 @@ def create_cloudid(mailname, mailpasswd, body, proxy='', dttime=5):
     except:
         try:
             WebDriverWait(driver, 3, 0.5).until(EC.presence_of_element_located((By.XPATH,
-                                                                                '//step-verify-code/idms-step/div/div/div/div[2]/div/div/div[2]/security-code/div/idms-popover/div/div/div/div')))
+                                                                                '//step-verify-code/idms-step/div/div/div/div[2]/div/div/div[2]/security-code/idms-error-wrapper/div/idms-error/div/div/span')))
             print("gg...未知错误")
             driver.close()
             driver.quit()
@@ -409,7 +416,7 @@ def create_cloudid(mailname, mailpasswd, body, proxy='', dttime=5):
             if not flag:
                 try:
                     WebDriverWait(driver, 2, 0.5).until(EC.presence_of_element_located((By.XPATH,
-                                                                                        '//step-verify-code/idms-step/div/div/div/div[2]/div/div/div[2]/security-code/div/idms-popover/div/div/div/div')))
+                                                                                        '//step-verify-code/idms-step/div/div/div/div[2]/div/div/div[2]/security-code/idms-error-wrapper/div/idms-error/div/div/span')))
                     print("gg...未知错误")
                     driver.close()
                     driver.quit()
