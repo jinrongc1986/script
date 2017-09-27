@@ -53,7 +53,10 @@ def get_yzm(driver, imgname):
             attempts += 1
             if attempts == 3:
                 return False
-            driver.find_element_by_xpath('//button[@class ="button link first"]').click()
+            try :
+                driver.find_element_by_xpath('//button[@class ="button link first"]').click()
+            except :
+                return False
     try:
         request.urlretrieve(imgurl, imgname)
     except:
@@ -499,11 +502,11 @@ if __name__ == '__main__':
     mailname_pre = 'just'
     domain = '@loveyxx.com'
     mailpasswd = 'Lslq9527'
-    sn = 453
+    sn = 571
     proxy = "socks://127.0.0.1:1081"
     mailname = mailname_pre + str(sn).zfill(4) + domain
-    mailname = 'just0001@loveyxx.com'
-    mailpasswd = 'Lslq9527'
+    # mailname = 'just0571@loveyxx.com'
+    # mailpasswd = 'Lslq9527'
     body = {'last_name': 'Mlqbll',
             'first_name': '贷',
             'country': 'CHN',
@@ -516,4 +519,4 @@ if __name__ == '__main__':
             'question3': '143',
             'answer3': '东成西就'}
     # print (body['answer3'])
-    create_cloudid(mailname, mailpasswd, body, proxy='')
+    create_cloudid(mailname, mailpasswd, body, proxy)
