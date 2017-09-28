@@ -63,7 +63,7 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
             print("次数已超过1次，切换代理")
             x = 0
             y += 1
-        if y == len(proxies):  # 总代理数量
+        if y == 2 * len(proxies):  # 总代理数量
             y = 0
             thisround = time.time()
             roundtime = thisround - lastround
