@@ -162,25 +162,44 @@ def get_mail_token(email, password, limit=1, ssl=True, dt=60):
                 # print (messages)
                 msg_content = b'\r\n'.join(lines).decode('utf-8')
                 for message in messages:
-                    if '+0800' in message.decode('utf-8'):
-                    # if '(UTC)' in message.decode('utf-8'):
-                        # print (message)
-                        mailtime = message.decode('utf-8').split(',')[1]
-                        # mailtime = message.decode('utf-8').split(';')[1]
-                        # print (mailtime)
-                        timeArray = time.strptime(mailtime, " %d %b %Y %H:%M:%S %z")
-                        # timeArray = time.strptime(mailtime, " %a, %d %b %Y %H:%M:%S %z (%Z)")
-                        timemap = time.mktime(timeArray)
-                        timenow = time.time()
-                        difference = timenow - 8 * 3600 - timemap  # 考虑时区
-                        # print(difference)
-                        if difference < dt:
-                            print("成功获取最新的邮件，时间差值为：%.f" % difference)
-                            flag = False
-                            break
-                        else:
-                            flag = True
-                            # print ("没有最新时间的邮件，时间差值为：%.f" %difference)
+                    if st == "nbsky55.com":
+                        if '+0800' in message.decode('utf-8'):
+                            # print (message)
+                            mailtime = message.decode('utf-8').split(',')[1]
+                            # mailtime = message.decode('utf-8').split(';')[1]
+                            # print (mailtime)
+                            timeArray = time.strptime(mailtime, " %d %b %Y %H:%M:%S %z")
+                            # timeArray = time.strptime(mailtime, " %a, %d %b %Y %H:%M:%S %z (%Z)")
+                            timemap = time.mktime(timeArray)
+                            timenow = time.time()
+                            difference = timenow - 8 * 3600 - timemap  # 考虑时区
+                            # print(difference)
+                            if difference < dt:
+                                print("成功获取最新的邮件，时间差值为：%.f" % difference)
+                                flag = False
+                                break
+                            else:
+                                flag = True
+                                # print ("没有最新时间的邮件，时间差值为：%.f" %difference)
+                    else :
+                        if '(UTC)' in message.decode('utf-8'):
+                            print (message)
+                            # mailtime = message.decode('utf-8').split(',')[1]
+                            mailtime = message.decode('utf-8').split(';')[1]
+                            # print (mailtime)
+                            # timeArray = time.strptime(mailtime, " %d %b %Y %H:%M:%S %z")
+                            timeArray = time.strptime(mailtime, " %a, %d %b %Y %H:%M:%S %z (%Z)")
+                            timemap = time.mktime(timeArray)
+                            timenow = time.time()
+                            difference = timenow - 8 * 3600 - timemap  # 考虑时区
+                            # print(difference)
+                            if difference < dt:
+                                print("成功获取最新的邮件，时间差值为：%.f" % difference)
+                                flag = False
+                                break
+                            else:
+                                flag = True
+                                # print ("没有最新时间的邮件，时间差值为：%.f" %difference)
 
                 # 稍后解析出邮件:
                 msg = Parser().parsestr(msg_content)
@@ -417,7 +436,7 @@ if __name__ == "__main__":
     #         cnt = cnt + 1
     #     print(i)
     # print('total error mail:%d' % cnt)
-    mailname = 'xmxqb_3001@nbsky55.com'
-    mailpasswd = 'Xmx&qb3'
+    mailname = 'just0693@loveyxx.com'
+    mailpasswd = 'Lslq9527'
     token = get_mail_token(mailname, mailpasswd, 5, ssl=True,dt=3600)
     print(token)
