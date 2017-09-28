@@ -35,14 +35,14 @@ def get_mail(email, password, limit=1, ssl=True):
     st = email.split('@')[1]
     if st and (st in pops):
         pop3_server = pops[st]
-
+    if st == "nbsky55.com":
+        ssl = False
     msgAll = []
 
     # 输入邮件地址, 口令和POP3服务器地址:
     email = email  # input('Email: ')
     password = password  # input('Password: ')
     pop3_server = pop3_server  # input('POP3 server: ') # pop.126.com   pop.163.com
-
     try:
         # 连接到POP3服务器:
         if ssl:
@@ -104,7 +104,8 @@ def get_mail_token(email, password, limit=1, ssl=True, dt=60):
     st = email.split('@')[1]
     if st and (st in pops):
         pop3_server = pops[st]
-
+    if st == "nbsky55.com":
+        ssl = False
     msgAll = []
 
     # 输入邮件地址, 口令和POP3服务器地址:
@@ -161,11 +162,14 @@ def get_mail_token(email, password, limit=1, ssl=True, dt=60):
                 # print (messages)
                 msg_content = b'\r\n'.join(lines).decode('utf-8')
                 for message in messages:
-                    if '(UTC)' in message.decode('utf-8'):
+                    if '+0800' in message.decode('utf-8'):
+                    # if '(UTC)' in message.decode('utf-8'):
                         # print (message)
-                        mailtime = message.decode('utf-8').split(';')[1]
+                        mailtime = message.decode('utf-8').split(',')[1]
+                        # mailtime = message.decode('utf-8').split(';')[1]
                         # print (mailtime)
-                        timeArray = time.strptime(mailtime, " %a, %d %b %Y %H:%M:%S %z (%Z)")
+                        timeArray = time.strptime(mailtime, " %d %b %Y %H:%M:%S %z")
+                        # timeArray = time.strptime(mailtime, " %a, %d %b %Y %H:%M:%S %z (%Z)")
                         timemap = time.mktime(timeArray)
                         timenow = time.time()
                         difference = timenow - 8 * 3600 - timemap  # 考虑时区
@@ -403,17 +407,17 @@ def check_start_mail(mailname, mailpasswd, depth=3, ssl=True):
 
 
 if __name__ == "__main__":
-    cnt = 0
-    for i in range(800, 869):
-        mailname = 'just' + str(i).zfill(4) + '@loveyxx.com'
-        mailpasswd = 'Lslq9527'
-        flag = check_start_mail(mailname, mailpasswd, depth=8, ssl=True)
-        if flag == False:
-            print(mailname)
-            cnt = cnt + 1
-        print(i)
-    print('total error mail:%d' % cnt)
-    # mailname = 'tb_aihu@iloveyxx.com'
-    # mailpasswd = 'tb@aihu104'
-    # token = get_mail_token(mailname, mailpasswd, 5, ssl=True,dt=3600)
-    # print(token)
+    # cnt = 0
+    # for i in range(800, 869):
+    #     mailname = 'just' + str(i).zfill(4) + '@loveyxx.com'
+    #     mailpasswd = 'Lslq9527'
+    #     flag = check_start_mail(mailname, mailpasswd, depth=8, ssl=True)
+    #     if flag == False:
+    #         print(mailname)
+    #         cnt = cnt + 1
+    #     print(i)
+    # print('total error mail:%d' % cnt)
+    mailname = 'xmxqb_3001@nbsky55.com'
+    mailpasswd = 'Xmx&qb3'
+    token = get_mail_token(mailname, mailpasswd, 5, ssl=True,dt=3600)
+    print(token)

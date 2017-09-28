@@ -40,16 +40,19 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
     nokcnt_yzm = 0
     x = 0
     y = 0
-    if localIP() == "192.168.0.62" or localIP() == "30.30.32.2":
+    if localIP() == "192.168.0.62":
         # proxies = []
-        proxies = [
-                    'socks://192.168.0.61:1081', 'socks://192.168.0.61:1082', 'socks://192.168.0.61:1083',
-                    'socks://192.168.0.61:1084','socks://192.168.0.61:1085', 'socks://192.168.0.61:1086',
-                    'socks://192.168.0.61:1087', 'socks://192.168.0.61:1088', 'socks://192.168.0.61:1089',
-                    'socks://192.168.0.61:1090', 'socks://192.168.0.61:1091', 'socks://192.168.0.61:1092',
-                    'socks://192.168.0.61:1093', 'socks://192.168.0.61:1094', 'socks://192.168.0.61:1095',
-                    ''
-                    ]
+        proxies = ['',
+                   'socks://192.168.0.61:1081', 'socks://192.168.0.61:1082', 'socks://192.168.0.61:1083',
+                   'socks://192.168.0.61:1084', 'socks://192.168.0.61:1085', 'socks://192.168.0.61:1086',
+                   'socks://192.168.0.61:1087', 'socks://192.168.0.61:1088'
+                   ]
+    elif localIP() == "192.168.0.63":
+        # proxies = []
+        proxies = ['socks://192.168.0.61:1089',
+                   'socks://192.168.0.61:1090', 'socks://192.168.0.61:1091', 'socks://192.168.0.61:1092',
+                   'socks://192.168.0.61:1093', 'socks://192.168.0.61:1094', 'socks://192.168.0.61:1095'
+                   ]
     else:
         proxies = ['']
     for i in range(0, count):
@@ -111,7 +114,7 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
             y = y + 1
             x = 0
             # sleep(1200)
-            break #结束进程
+            break  # 结束进程
         elif do == 4:  # 网络差，打不开网页
             with open("result.txt", "a") as f:
                 result = mailname + " FAIL 网络超时\n"
@@ -167,9 +170,9 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
 
 
 if __name__ == '__main__':
-    mailname_pre='xmxqb_'
-    domain='@nbsky55.com'
-    mailpasswd='Xmx&qb3'
+    mailname_pre = 'xmxqb_'
+    domain = '@nbsky55.com'
+    mailpasswd = 'Xmx&qb3'
     # mailname_pre = 'just'
     # domain = '@loveyxx.com'
     # mailpasswd = 'Lslq9527'
@@ -184,8 +187,8 @@ if __name__ == '__main__':
             'answer2': '万华化学',
             'question3': '143',
             'answer3': '三聚环保'}
-    count = 15
-    for i in range (10) :
+    count = 2
+    for i in range(10):
         need_money(mailname_pre, domain, mailpasswd, body, count)
-        print ("等待2小时")
+        print("等待2小时")
         sleep(7200)
