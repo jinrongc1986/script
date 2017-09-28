@@ -187,7 +187,7 @@ if __name__ == '__main__':
             'answer2': '万华化学',
             'question3': '143',
             'answer3': '三聚环保'}
-    count = 2
+    count = 15
     for i in range(10):
         need_money(mailname_pre, domain, mailpasswd, body, count)
         print("等待2小时")
