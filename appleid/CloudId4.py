@@ -56,6 +56,7 @@ def get_yzm(driver, imgname):
             try:
                 driver.find_element_by_xpath('//button[@class ="button link first"]').click()
             except:
+                print('刷新验证码失败')
                 return False
     try:
         request.urlretrieve(imgurl, imgname)
@@ -67,7 +68,10 @@ def get_yzm(driver, imgname):
     except:
         print("获取验证码失败")
         return False
-    print(result)
+    if result == "":
+        print ("联众api返回为空")
+    else:
+        print(result)
     return result
 
 
@@ -507,6 +511,8 @@ if __name__ == '__main__':
     sn = 571
     proxy = "socks://127.0.0.1:1081"
     mailname = mailname_pre + str(sn).zfill(4) + domain
+    mailname = 'xmxqb_3004@nbsky55.com'
+    mailpasswd = 'Xmx&qb3'
     # mailname = 'just0571@loveyxx.com'
     # mailpasswd = 'Lslq9527'
     body = {'last_name': 'Mlqbll',

@@ -172,7 +172,7 @@ def get_mail_token(email, password, limit=1, ssl=True, dt=60):
                             # timeArray = time.strptime(mailtime, " %a, %d %b %Y %H:%M:%S %z (%Z)")
                             timemap = time.mktime(timeArray)
                             timenow = time.time()
-                            difference = timenow - 8 * 3600 - timemap  # 考虑时区
+                            difference = timenow - timemap  # 考虑时区
                             # print(difference)
                             if difference < dt:
                                 print("成功获取最新的邮件，时间差值为：%.f" % difference)
@@ -436,7 +436,9 @@ if __name__ == "__main__":
     #         cnt = cnt + 1
     #     print(i)
     # print('total error mail:%d' % cnt)
-    mailname = 'just0693@loveyxx.com'
-    mailpasswd = 'Lslq9527'
+    mailname = 'xmxqb_3003@nbsky55.com'
+    mailpasswd = 'Xmx&qb3'
+    # mailname = 'just0693@loveyxx.com'
+    # mailpasswd = 'Lslq9527'
     token = get_mail_token(mailname, mailpasswd, 5, ssl=True,dt=3600)
     print(token)
