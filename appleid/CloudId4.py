@@ -53,9 +53,9 @@ def get_yzm(driver, imgname):
             attempts += 1
             if attempts == 3:
                 return False
-            try :
+            try:
                 driver.find_element_by_xpath('//button[@class ="button link first"]').click()
-            except :
+            except:
                 return False
     try:
         request.urlretrieve(imgurl, imgname)
@@ -341,8 +341,10 @@ def create_cloudid(mailname, mailpasswd, body, proxy='', dttime=5):
                 print("验证码格式返回错误")
                 return 4
             print(val)
-            driver.find_element_by_xpath('//captcha-input/div/input[@id="captchaInput"]').clear()
-            driver.find_element_by_xpath('//captcha-input/div/input[@id="captchaInput"]').send_keys(val)
+            driver.find_element_by_xpath(
+                '//captcha-input/div/idms-error-wrapper/div/input[@id="captcha-input"]').clear()
+            driver.find_element_by_xpath(
+                '//captcha-input/div/idms-error-wrapper/div/input[@id="captcha-input"]').send_keys(val)
             # 点击继续
             try:
                 driver.find_element_by_xpath("//idms-toolbar/div/div/button").click()
