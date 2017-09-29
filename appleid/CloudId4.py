@@ -513,8 +513,8 @@ if __name__ == '__main__':
     mailname = mailname_pre + str(sn).zfill(4) + domain
     mailname = 'xmxqb_3004@nbsky55.com'
     mailpasswd = 'Xmx&qb3'
-    # mailname = 'just0571@loveyxx.com'
-    # mailpasswd = 'Lslq9527'
+    mailname = 'nbzr0001@yandex.com'
+    mailpasswd = 'Lslq9527'
     body = {'last_name': 'Mlqbll',
             'first_name': '贷',
             'country': 'CHN',

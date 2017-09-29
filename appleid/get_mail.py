@@ -9,6 +9,7 @@ from email.parser import Parser
 from email.header import decode_header
 from email.utils import parseaddr
 import poplib
+import imaplib
 import threading
 import time
 import sys
@@ -101,14 +102,19 @@ def get_mail(email, password, limit=1, ssl=True):
     return msgAll
 
 
-def get_mail_token(email, password, limit=1, ssl=True, dt=60):
+def get_mail_token(email, password,limit=1, ssl=True, dt=60):
     pop3_server = ''
+    imap_server = 'imap.yandex.com'
     st = email.split('@')[1]
-    if st and (st in pops):
+    msgAll = []
+    mtype = 'pop3'
+    if st == 'yandex.com':
+        mtype = 'imap'
+    elif st and (st in pops):
         pop3_server = pops[st]
     if st == "nbsky55.com":
         ssl = False
-    msgAll = []
+
 
     # 输入邮件地址, 口令和POP3服务器地址:
     email = email  # input('Email: ')
@@ -117,102 +123,172 @@ def get_mail_token(email, password, limit=1, ssl=True, dt=60):
     flag = True
     cnt = 1
     token = []
-    while (flag and cnt <= 6):
-        time.sleep(5)
-        try:
-            # 连接到POP3服务器:
-            if ssl:
-                server = poplib.POP3_SSL(pop3_server)
-            else:
-                server = poplib.POP3(pop3_server)
-
-            # 可以打开或关闭调试信息:
-            server.set_debuglevel(set_debuglevel)
-
-            # 可选:打印POP3服务器的欢迎文字:
-            print(server.getwelcome().decode('utf-8'))
-
-            # 身份认证:
-            server.user(email)
-            server.pass_(password)
-        except:
-            print('与邮件服务器连接失败，请检查账号密码及网络')
-            return msgAll
-
-        # stat()返回邮件数量和占用空间:
-        # print('Messages: %s. Size: %s' % server.stat())
-
-        # list()返回所有邮件的编号:
-        resp, mails, octets = server.list()
-
-        # 可以查看返回的列表类似[b'1 82923', b'2 2184', ...]
-        # print(mails)
-
-        # 获取最新一封邮件, 注意索引号从1开始:
-        index = len(mails)  # 总数
-        print("邮件数量:%d" % index)
-
-        page = (index - limit) if (index - limit) > 0 else 0
-        # print(page)
-
-        for x in range(index, page, -1):  # 循环获取所有邮件
+    if mtype == 'pop3':
+        while (flag and cnt <= 6):
+            time.sleep(5)
             try:
-                resp, lines, octets = server.retr(x)
-                # lines存储了邮件的原始文本的每一行,
-                # 可以获得整个邮件的原始文本:
-                messages = lines
-                # print (messages)
-                msg_content = b'\r\n'.join(lines).decode('utf-8')
-                for message in messages:
-                    if st == "nbsky55.com":
-                        if '+0800' in message.decode('utf-8'):
+                # 连接到POP3服务器:
+                if ssl:
+                    server = poplib.POP3_SSL(pop3_server)
+                else:
+                    server = poplib.POP3(pop3_server)
+
+                # 可以打开或关闭调试信息:
+                server.set_debuglevel(set_debuglevel)
+
+                # 可选:打印POP3服务器的欢迎文字:
+                print(server.getwelcome().decode('utf-8'))
+
+                # 身份认证:
+                server.user(email)
+                server.pass_(password)
+            except:
+                print('与邮件服务器连接失败，请检查账号密码及网络')
+                return msgAll
+
+            # stat()返回邮件数量和占用空间:
+            # print('Messages: %s. Size: %s' % server.stat())
+
+            # list()返回所有邮件的编号:
+            resp, mails, octets = server.list()
+
+            # 可以查看返回的列表类似[b'1 82923', b'2 2184', ...]
+            # print(mails)
+
+            # 获取最新一封邮件, 注意索引号从1开始:
+            index = len(mails)  # 总数
+            print("邮件数量:%d" % index)
+
+            page = (index - limit) if (index - limit) > 0 else 0
+            # print(page)
+
+            for x in range(index, page, -1):  # 循环获取所有邮件
+                try:
+                    resp, lines, octets = server.retr(x)
+                    # lines存储了邮件的原始文本的每一行,
+                    # 可以获得整个邮件的原始文本:
+                    messages = lines
+                    # print (messages)
+                    msg_content = b'\r\n'.join(lines).decode('utf-8')
+                    for message in messages:
+                        if st == "nbsky55.com":
+                            if '+0800' in message.decode('utf-8'):
+                                # print (message)
+                                mailtime = message.decode('utf-8').split(',')[1]
+                                # mailtime = message.decode('utf-8').split(';')[1]
+                                # print (mailtime)
+                                timeArray = time.strptime(mailtime, " %d %b %Y %H:%M:%S %z")
+                                # timeArray = time.strptime(mailtime, " %a, %d %b %Y %H:%M:%S %z (%Z)")
+                                timemap = time.mktime(timeArray)
+                                timenow = time.time()
+                                difference = timenow - timemap  # 考虑时区
+                                # print(difference)
+                                if difference < dt:
+                                    print("成功获取最新的邮件，时间差值为：%.f" % difference)
+                                    flag = False
+                                    break
+                                else:
+                                    flag = True
+                                    # print ("没有最新时间的邮件，时间差值为：%.f" %difference)
+                        else :
+                            if '(UTC)' in message.decode('utf-8'):
+                                print (message)
+                                # mailtime = message.decode('utf-8').split(',')[1]
+                                mailtime = message.decode('utf-8').split(';')[1]
+                                # print (mailtime)
+                                # timeArray = time.strptime(mailtime, " %d %b %Y %H:%M:%S %z")
+                                timeArray = time.strptime(mailtime, " %a, %d %b %Y %H:%M:%S %z (%Z)")
+                                timemap = time.mktime(timeArray)
+                                timenow = time.time()
+                                difference = timenow - 8 * 3600 - timemap  # 考虑时区
+                                # print(difference)
+                                if difference < dt:
+                                    print("成功获取最新的邮件，时间差值为：%.f" % difference)
+                                    flag = False
+                                    break
+                                else:
+                                    flag = True
+                                    # print ("没有最新时间的邮件，时间差值为：%.f" %difference)
+
+                    # 稍后解析出邮件:
+                    msg = Parser().parsestr(msg_content)
+                    msgAll.append(print_info(msg, None))
+                except Exception as e:
+                    print(e)
+                if not flag:
+                    for message in messages:
+                        if 'x-ds-vetting-token' in message.decode('utf-8'):
                             # print (message)
-                            mailtime = message.decode('utf-8').split(',')[1]
-                            # mailtime = message.decode('utf-8').split(';')[1]
-                            # print (mailtime)
-                            timeArray = time.strptime(mailtime, " %d %b %Y %H:%M:%S %z")
-                            # timeArray = time.strptime(mailtime, " %a, %d %b %Y %H:%M:%S %z (%Z)")
-                            timemap = time.mktime(timeArray)
-                            timenow = time.time()
-                            difference = timenow - timemap  # 考虑时区
-                            # print(difference)
-                            if difference < dt:
-                                print("成功获取最新的邮件，时间差值为：%.f" % difference)
-                                flag = False
-                                break
-                            else:
-                                flag = True
-                                # print ("没有最新时间的邮件，时间差值为：%.f" %difference)
-                    else :
-                        if '(UTC)' in message.decode('utf-8'):
-                            print (message)
-                            # mailtime = message.decode('utf-8').split(',')[1]
-                            mailtime = message.decode('utf-8').split(';')[1]
-                            # print (mailtime)
-                            # timeArray = time.strptime(mailtime, " %d %b %Y %H:%M:%S %z")
-                            timeArray = time.strptime(mailtime, " %a, %d %b %Y %H:%M:%S %z (%Z)")
-                            timemap = time.mktime(timeArray)
-                            timenow = time.time()
-                            difference = timenow - 8 * 3600 - timemap  # 考虑时区
-                            # print(difference)
-                            if difference < dt:
-                                print("成功获取最新的邮件，时间差值为：%.f" % difference)
-                                flag = False
-                                break
-                            else:
-                                flag = True
-                                # print ("没有最新时间的邮件，时间差值为：%.f" %difference)
+                            token = message[-6:]
+                            flag = False
+                            # print(token.decode("utf-8"))
+                            # token_new=str(token)[2:-1]
+                            # print(token_new)
+                            break
+                    if not flag:
+                        break
+                    else:
+                        print("此邮件中没有token")
+                        continue
+            if not flag:
+                break
+            else:
+                print("第%d次尝试获取token失败" % cnt)
+                cnt += 1
+
+            # 可以根据邮件索引号直接从服务器删除邮件:
+            # server.dele(index)
+            # 关闭连接:
+            server.quit()
+            # except:
+            #     pass
+            # return msgAll
+    elif mtype == 'imap':
+        while (flag and cnt <= 6):
+            time.sleep(5)
+            try:
+                server = imaplib.IMAP4_SSL(imap_server)
+                server.login(email, password)  # 登录个人帐号
+            except Exception as e:
+                print(e)
+                print("邮箱获取失败")
+                return msgAll
+
+            # list()返回所有邮件的编号:
+            server.select("INBOX")
+            typ, data = server.search(None,'ALL')
+            msgList = data[0].split()
+            last = msgList[len(msgList) - 1]
+            typ, data = server.fetch(last,'(RFC822)')
+            # print (data)
+            try:
+                messages = data[0][1].decode('utf-8').split('\r\n')
+                for message in messages:
+                    if '+0300' in message:
+                        print (message)
+                        mailtime = message.split(',')[1]
+                        # print (mailtime)
+                        timeArray = time.strptime(mailtime, " %d %b %Y %H:%M:%S %z")
+                        timemap = time.mktime(timeArray)
+                        timenow = time.time()
+                        difference = timenow - 5*3600 - timemap  # 考虑时区
+                        # print(difference)
+                        if difference < dt:
+                            print("成功获取最新的邮件，时间差值为：%.f" % difference)
+                            flag = False
+                            break
+                        else:
+                            flag = True
+                            # print ("没有最新时间的邮件，时间差值为：%.f" %difference)
 
                 # 稍后解析出邮件:
-                msg = Parser().parsestr(msg_content)
-                msgAll.append(print_info(msg, None))
             except Exception as e:
                 print(e)
             if not flag:
                 for message in messages:
-                    if 'x-ds-vetting-token' in message.decode('utf-8'):
+                    if 'x-ds-vetting-token' in message:
                         # print (message)
-                        token = message[-6:]
+                        token = message[-6:].encode(encoding="utf-8")
                         flag = False
                         # print(token.decode("utf-8"))
                         # token_new=str(token)[2:-1]
@@ -223,19 +299,19 @@ def get_mail_token(email, password, limit=1, ssl=True, dt=60):
                 else:
                     print("此邮件中没有token")
                     continue
-        if not flag:
-            break
-        else:
-            print("第%d次尝试获取token失败" % cnt)
-            cnt += 1
+            if not flag:
+                break
+            else:
+                print("第%d次尝试获取token失败" % cnt)
+                cnt += 1
 
-        # 可以根据邮件索引号直接从服务器删除邮件:
-        # server.dele(index)
-        # 关闭连接:
-        server.quit()
-        # except:
-        #     pass
-        # return msgAll
+            # 可以根据邮件索引号直接从服务器删除邮件:
+            # server.dele(index)
+            # 关闭连接:
+            server.close()
+            # except:
+            #     pass
+            # return msgAll
     return token
 
 
