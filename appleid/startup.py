@@ -190,5 +190,5 @@ if __name__ == '__main__':
     count = 15
     for i in range (10) :
         need_money(mailname_pre, domain, mailpasswd, body, count)
-        print ("等待2小时")
-        sleep(7200)
+        print ("等待3小时")
+        sleep(10800)

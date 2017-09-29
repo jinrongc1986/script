@@ -23,6 +23,8 @@ set_debuglevel = 0
 pops = {'126.com': 'pop.126.com', '163.com': 'pop.163.com', 'qq.com': 'pop.qq.com', 'sina.com': 'pop.sina.com',
         'nbsky55.com': 'mail.nbsky55.com', 'loveyxx.com': 'mail.loveyxx.com', 'iloveyxx.com': 'mail.iloveyxx.com'}
 
+imap = {'yandex.com':'imap.yandex.com'}
+
 
 #
 # 获取邮件内容
@@ -436,8 +438,10 @@ if __name__ == "__main__":
     #         cnt = cnt + 1
     #     print(i)
     # print('total error mail:%d' % cnt)
-    mailname = 'xmxqb_3003@nbsky55.com'
-    mailpasswd = 'Xmx&qb3'
+    mailname = 'nbzr0002@yandex.com'
+    mailpasswd = 'Lslq9527'
+    # mailname = 'xmxqb_3003@nbsky55.com'
+    # mailpasswd = 'Xmx&qb3'
     # mailname = 'just0693@loveyxx.com'
     # mailpasswd = 'Lslq9527'
     token = get_mail_token(mailname, mailpasswd, 5, ssl=True,dt=3600)
