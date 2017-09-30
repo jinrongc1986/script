@@ -53,6 +53,12 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
                    'socks://192.168.0.61:1090', 'socks://192.168.0.61:1091', 'socks://192.168.0.61:1092',
                    'socks://192.168.0.61:1093', 'socks://192.168.0.61:1094', 'socks://192.168.0.61:1095'
                    ]
+    elif localIP() == "20.20.1.4":
+        # proxies = []
+        proxies = [ 'socks://192.168.0.61:1089',
+                   'socks://192.168.0.61:1090', 'socks://192.168.0.61:1091', 'socks://192.168.0.61:1092',
+                   'socks://192.168.0.61:1093', 'socks://192.168.0.61:1094', 'socks://192.168.0.61:1095'
+                   ]
     else:
         proxies = ['']
     for i in range(0, count):
