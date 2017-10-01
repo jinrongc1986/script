@@ -192,7 +192,7 @@ if __name__ == '__main__':
     # domain='@nbsky55.com'
     # mailpasswd='Xmx&qb3'
     mailname_pre = 'just'
-    domain = '@loveyxx.com'
+    domain = '@iloveyxx.com'
     mailpasswd = 'Lslq9527'
     body = {'last_name': 'Mlqbll',
             'first_name': '贷',
