@@ -9,6 +9,7 @@ import os
 from time import sleep
 import time
 import get_mail
+from urllib import request
 import showapi
 import lianzhong_api
 from user_agent import generate_user_agent
