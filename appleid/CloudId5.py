@@ -64,6 +64,7 @@ def get_yzm(driver, imgname):
                 print('刷新验证码失败')
                 return False
     try:
+        request.urlretrieve(imgurl, imgname)
         url = imgurl.split(',')[1]
         result = showapi.main(url)
     except:
@@ -343,8 +344,8 @@ def create_cloudid(mailname, mailpasswd, body, proxy='', dttime=5):
                 return 9
             checkserver(driver)
             # 上报错误的打码
-            lianzhong_id = json.loads(lianzhong_result)["data"]["id"]
-            lianzhong_api.report(lianzhong_id)
+            # lianzhong_id = json.loads(lianzhong_result)["data"]["id"]
+            # lianzhong_api.report(lianzhong_id)
             attempts += 1
             if attempts == 3:
                 driver.close()
