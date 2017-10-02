@@ -60,7 +60,8 @@ def get_yzm(driver, imgname):
                 return False
     try:
         request.urlretrieve(imgurl, imgname)
-    except:
+    except Exception as e:
+        print (e)
         print("获取验证码图片失败")
         return False
     try:
@@ -513,7 +514,7 @@ if __name__ == '__main__':
     mailname = mailname_pre + str(sn).zfill(4) + domain
     mailname = 'xmxqb_3004@nbsky55.com'
     mailpasswd = 'Xmx&qb3'
-    mailname = 'nbzr0001@yandex.com'
+    mailname = 'nbzr0004@yandex.com'
     mailpasswd = 'Lslq9527'
     body = {'last_name': 'Mlqbll',
             'first_name': '贷',
