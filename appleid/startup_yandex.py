@@ -40,40 +40,19 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
     nokcnt_yzm = 0
     x = 0
     y = 0
-    if localIP() == "192.168.0.62":
-        # proxies = []
+    if localIP() != "192.168.0.62":
         proxies = ['',
                    'socks://192.168.0.61:1081', 'socks://192.168.0.61:1082', 'socks://192.168.0.61:1083',
                    'socks://192.168.0.61:1084', 'socks://192.168.0.61:1085', 'socks://192.168.0.61:1086',
-                   'socks://192.168.0.61:1087', 'socks://192.168.0.61:1088'
-                   ]
-    elif localIP() == "192.168.0.63":
-        # proxies = []
-        proxies = ['socks://192.168.0.61:1089',
+                   'socks://192.168.0.61:1087', 'socks://192.168.0.61:1088', 'socks://192.168.0.61:1089',
                    'socks://192.168.0.61:1090', 'socks://192.168.0.61:1091', 'socks://192.168.0.61:1092',
-                   'socks://192.168.0.61:1093', 'socks://192.168.0.61:1094', 'socks://192.168.0.61:1095'
-                   ]
-    elif localIP() == "20.20.1.3":
-        # proxies = []
-        proxies = ['socks://192.168.0.61:1081', 'socks://192.168.0.61:1082',
-                   'socks://192.168.0.61:1083','socks://192.168.0.61:1084'
-                   ]
-    elif localIP() == "20.20.1.4":
-        # proxies = []
-        proxies = ['socks://192.168.0.61:1085','socks://192.168.0.61:1086',
-                   'socks://192.168.0.61:1087','socks://192.168.0.61:1088'
-                   ]
-    else:
-        proxies = ['socks://192.168.0.61:1089','socks://192.168.0.61:1090',
-                   'socks://192.168.0.61:1091','socks://192.168.0.61:1092',
-                   'socks://192.168.0.61:1093', 'socks://192.168.0.61:1094',
-                   'socks://192.168.0.61:1095']
+                   'socks://192.168.0.61:1093', 'socks://192.168.0.61:1094', 'socks://192.168.0.61:1095']
     for i in range(0, count):
         if x == 0 and y == 0:
             print("新的代理周期")
             lastround = time.time()
-        if x == 4:
-            print("次数已超过4次，切换代理")
+        if x == 2:
+            print("次数已超过2次，切换代理")
             x = 0
             y += 1
         if y == len(proxies):  # 总代理数量
@@ -127,7 +106,7 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
             y = y + 1
             x = 0
             # sleep(1200)
-            break  # 结束进程
+            break #结束进程
         elif do == 4:  # 网络差，打不开网页
             with open("result.txt", "a") as f:
                 result = mailname + " FAIL 网络超时\n"
@@ -183,25 +162,25 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
 
 
 if __name__ == '__main__':
-    mailname_pre = 'xmxqb_'
-    domain = '@nbsky55.com'
-    mailpasswd = 'Xmx&qb3'
-    # mailname_pre = 'just'
-    # domain = '@loveyxx.com'
-    # mailpasswd = 'Lslq9527'
-    body = {'last_name': 'Zrcredit',
+    # mailname_pre='xmxqb_'
+    # domain='@nbsky55.com'
+    # mailpasswd='Xmx&qb3'
+    mailname_pre = 'just'
+    domain = '@iloveyxx.com'
+    mailpasswd = 'Lslq9527'
+    body = {'last_name': 'Mlqbll',
             'first_name': '贷',
             'country': 'CHN',
-            'birthday': '19891212',
-            'password': '21B12a5&',
+            'birthday': '19880808',
+            'password': '08ML15qb@',
             'question1': '130',
-            'answer1': '第一财经',
+            'answer1': '三五河流',
             'question2': '137',
-            'answer2': '万华化学',
+            'answer2': '王者荣耀',
             'question3': '143',
-            'answer3': '三聚环保'}
+            'answer3': '东成西就'}
     count = 15
-    for i in range(10):
+    for i in range (10) :
         need_money(mailname_pre, domain, mailpasswd, body, count)
-        print("等待2小时")
-        sleep(7200)
+        print ("等待3小时")
+        sleep(10800)

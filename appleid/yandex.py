@@ -220,6 +220,7 @@ def create_emailid(mailname, mailpasswd, body, proxy='', dttime=3):
             print("点击非手机认证失败4次")
             try:
                 sleep(5)
+                xpath="//span[contains(text(), 't have')]"
                 driver.find_element_by_xpath(xpath).click()
             except:
                 pdb.set_trace()
@@ -301,8 +302,8 @@ if __name__ == '__main__':
     mailname_pre = 'nbzr'
     domain = '@yandex.com'
     mailpasswd = 'Lslq9527'
-    sn = 22
-    proxy = "socks://127.0.0.1:1081"
+    sn = 36
+    proxy = "socks://192.168.0.61:1084"
     mailname = mailname_pre + str(sn).zfill(4)
     body = {'last_name': 'Mlqbll',
             'first_name': '贷',
