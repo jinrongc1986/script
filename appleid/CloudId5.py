@@ -333,7 +333,7 @@ def create_cloudid(mailname, mailpasswd, body, proxy='', dttime=5):
                 print('删除正常验证码', imgname)
             with open("dama.txt", "a") as f:
                 timenow = (
-                time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
+                    time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
                 damaok = ' PASS\n'
                 f.write(timenow + damaok)
             print('发送邮件中。。。。等待5秒')
@@ -361,7 +361,7 @@ def create_cloudid(mailname, mailpasswd, body, proxy='', dttime=5):
                 print("删除无效验证码", imgname)
             with open("dama.txt", "a") as f:
                 timenow = (
-                time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
+                    time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
                 damanok = ' FAIL '
                 f.write(timenow + damanok + val + '\n')
             # 验证码自动化
@@ -417,10 +417,13 @@ def create_cloudid(mailname, mailpasswd, body, proxy='', dttime=5):
         "//step-verify-code/idms-step/div/div/div/div[3]/idms-toolbar/div/div[1]/button[1]").click()
     # 服务器开始拒绝服务
     try:
-        WebDriverWait(driver, 2, 0.5).until(
-            EC.presence_of_element_located((By.XPATH,
-                                            '//step-verify-code/idms-step/div/div/div/div[2]/div/div/div[2]/security-code/idms-error-wrapper/div/idms-error/div/div/span')))
+        # WebDriverWait(driver, 2, 0.5).until(
+        #     EC.presence_of_element_located((By.XPATH,
+        #                                     '//step-verify-code/idms-step/div/div/div/div[2]/div/div/div[2]/security-code/div/idms-error-wrapper/div/idms-error/div/div/span')))
 
+        WebDriverWait(driver, 2, 0.5).until(
+            EC.presence_of_element_located(
+                (By.XPATH, "//span[contains(text(), '发生未知错误。')]")))
         print("gg...未知错误")
         driver.close()
         driver.quit()
@@ -434,9 +437,9 @@ def create_cloudid(mailname, mailpasswd, body, proxy='', dttime=5):
                 (By.XPATH, "//button[@id='send-code']")))
     except:
         try:
-            WebDriverWait(driver, 3, 0.5).until(
-                EC.presence_of_element_located((By.XPATH,
-                                                '//step-verify-code/idms-step/div/div/div/div[2]/div/div/div[2]/security-code/idms-error-wrapper/div/idms-error/div/div/span')))
+            WebDriverWait(driver, 2, 0.5).until(
+                EC.presence_of_element_located(
+                    (By.XPATH, "//span[contains(text(), '发生未知错误。')]")))
             print("gg...未知错误")
             driver.close()
             driver.quit()
@@ -465,8 +468,8 @@ def create_cloudid(mailname, mailpasswd, body, proxy='', dttime=5):
             if not flag:
                 try:
                     WebDriverWait(driver, 2, 0.5).until(
-                        EC.presence_of_element_located((By.XPATH,
-                                                        '//step-verify-code/idms-step/div/div/div/div[2]/div/div/div[2]/security-code/idms-error-wrapper/div/idms-error/div/div/span')))
+                        EC.presence_of_element_located(
+                            (By.XPATH, "//span[contains(text(), '发生未知错误。')]")))
                     print("gg...未知错误")
                     driver.close()
                     driver.quit()
@@ -540,7 +543,7 @@ def create_cloudid(mailname, mailpasswd, body, proxy='', dttime=5):
     timeend = time.time()
     timecost = timeend - timestart
     print(("本次耗时%.f秒") % timecost)
-    print("等待%d秒"%dttime)
+    print("等待%d秒" % dttime)
     sleep(dttime)
     return 1
 

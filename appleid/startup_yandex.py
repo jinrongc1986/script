@@ -40,19 +40,39 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
     nokcnt_yzm = 0
     x = 0
     y = 0
-    if localIP() != "192.168.0.62":
+    if localIP() == "192.168.0.62":
+        # proxies = []
         proxies = ['',
                    'socks://192.168.0.61:1081', 'socks://192.168.0.61:1082', 'socks://192.168.0.61:1083',
                    'socks://192.168.0.61:1084', 'socks://192.168.0.61:1085', 'socks://192.168.0.61:1086',
-                   'socks://192.168.0.61:1087', 'socks://192.168.0.61:1088', 'socks://192.168.0.61:1089',
+                   'socks://192.168.0.61:1087', 'socks://192.168.0.61:1088'
+                   ]
+    elif localIP() == "192.168.0.63":
+        # proxies = []
+        proxies = ['socks://192.168.0.61:1089',
                    'socks://192.168.0.61:1090', 'socks://192.168.0.61:1091', 'socks://192.168.0.61:1092',
-                   'socks://192.168.0.61:1093', 'socks://192.168.0.61:1094', 'socks://192.168.0.61:1095']
+                   'socks://192.168.0.61:1093', 'socks://192.168.0.61:1094', 'socks://192.168.0.61:1095'
+                   ]
+    elif localIP() == "20.20.1.3":
+        # proxies = []
+        proxies = ['socks://192.168.0.61:1081', 'socks://192.168.0.61:1082',
+                   'socks://192.168.0.61:1083','socks://192.168.0.61:1084'
+                   ]
+    elif localIP() == "20.20.1.4":
+        # proxies = []
+        proxies = ['socks://192.168.0.61:1085','socks://192.168.0.61:1086',
+                   'socks://192.168.0.61:1087','socks://192.168.0.61:1088'
+                   ]
+    else:
+        proxies = ['socks://192.168.0.61:1089','socks://192.168.0.61:1090',
+                   'socks://192.168.0.61:1091','socks://192.168.0.61:1092'
+                   ]
     for i in range(0, count):
         if x == 0 and y == 0:
             print("新的代理周期")
             lastround = time.time()
-        if x == 2:
-            print("次数已超过2次，切换代理")
+        if x == 5:
+            print("次数已超过5次，切换代理")
             x = 0
             y += 1
         if y == len(proxies):  # 总代理数量
@@ -165,8 +185,8 @@ if __name__ == '__main__':
     # mailname_pre='xmxqb_'
     # domain='@nbsky55.com'
     # mailpasswd='Xmx&qb3'
-    mailname_pre = 'just'
-    domain = '@iloveyxx.com'
+    mailname_pre = 'nbzr'
+    domain = '@yandex.com'
     mailpasswd = 'Lslq9527'
     body = {'last_name': 'Mlqbll',
             'first_name': '贷',
@@ -179,7 +199,7 @@ if __name__ == '__main__':
             'answer2': '王者荣耀',
             'question3': '143',
             'answer3': '东成西就'}
-    count = 15
+    count = 20
     for i in range (10) :
         need_money(mailname_pre, domain, mailpasswd, body, count)
         print ("等待3小时")

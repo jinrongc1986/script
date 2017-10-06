@@ -38,6 +38,10 @@ def get_mail(email, password, limit=1, ssl=True):
     st = email.split('@')[1]
     if st and (st in pops):
         pop3_server = pops[st]
+    mtype = 'pop3'
+    if st == 'yandex.com':
+        mtype = 'imap'
+        imap_server = 'imap.yandex.com'
     if st == "nbsky55.com":
         ssl = False
     msgAll = []
@@ -45,61 +49,88 @@ def get_mail(email, password, limit=1, ssl=True):
     # 输入邮件地址, 口令和POP3服务器地址:
     email = email  # input('Email: ')
     password = password  # input('Password: ')
-    pop3_server = pop3_server  # input('POP3 server: ') # pop.126.com   pop.163.com
-    try:
-        # 连接到POP3服务器:
-        if ssl:
-            server = poplib.POP3_SSL(pop3_server)
-        else:
-            server = poplib.POP3(pop3_server)
+    if mtype=="pop3":
 
-        # 可以打开或关闭调试信息:
-        server.set_debuglevel(set_debuglevel)
-
-        # 可选:打印POP3服务器的欢迎文字:
-        # print(server.getwelcome().decode('utf-8'))
-
-        # 身份认证:
-        server.user(email)
-        server.pass_(password)
-    except:
-        return msgAll
-
-    # stat()返回邮件数量和占用空间:
-    # print('Messages: %s. Size: %s' % server.stat())
-
-    # list()返回所有邮件的编号:
-    resp, mails, octets = server.list()
-
-    # 可以查看返回的列表类似[b'1 82923', b'2 2184', ...]
-    # print(mails)
-
-    # 获取最新一封邮件, 注意索引号从1开始:
-    index = len(mails)  # 总数
-
-    page = (index - limit) if (index - limit) > 0 else 0
-    for x in range(index, page, -1):  # 循环获取所有邮件
-
+        pop3_server = pop3_server  # input('POP3 server: ') # pop.126.com   pop.163.com
         try:
-            resp, lines, octets = server.retr(x)
+            # 连接到POP3服务器:
+            if ssl:
+                server = poplib.POP3_SSL(pop3_server)
+            else:
+                server = poplib.POP3(pop3_server)
 
-            # lines存储了邮件的原始文本的每一行,
-            # 可以获得整个邮件的原始文本:
-            msg_content = b'\r\n'.join(lines).decode('utf-8')
+            # 可以打开或关闭调试信息:
+            server.set_debuglevel(set_debuglevel)
 
-            # 稍后解析出邮件:
-            msg = Parser().parsestr(msg_content)
-            msgAll.append(print_info(msg, None))
+            # 可选:打印POP3服务器的欢迎文字:
+            # print(server.getwelcome().decode('utf-8'))
+
+            # 身份认证:
+            server.user(email)
+            server.pass_(password)
         except:
-            pass
+            return msgAll
 
-    # 可以根据邮件索引号直接从服务器删除邮件:
-    # server.dele(index)
-    # 关闭连接:
-    server.quit()
-    # except:
-    # 	pass
-    return msgAll
+        # stat()返回邮件数量和占用空间:
+        # print('Messages: %s. Size: %s' % server.stat())
+
+        # list()返回所有邮件的编号:
+        resp, mails, octets = server.list()
+
+        # 可以查看返回的列表类似[b'1 82923', b'2 2184', ...]
+        # print(mails)
+
+        # 获取最新一封邮件, 注意索引号从1开始:
+        index = len(mails)  # 总数
+
+        page = (index - limit) if (index - limit) > 0 else 0
+        for x in range(index, page, -1):  # 循环获取所有邮件
+
+            try:
+                resp, lines, octets = server.retr(x)
+
+                # lines存储了邮件的原始文本的每一行,
+                # 可以获得整个邮件的原始文本:
+                msg_content = b'\r\n'.join(lines).decode('utf-8')
+
+                # 稍后解析出邮件:
+                msg = Parser().parsestr(msg_content)
+                msgAll.append(print_info(msg, None))
+            except:
+                pass
+
+        # 可以根据邮件索引号直接从服务器删除邮件:
+        # server.dele(index)
+        # 关闭连接:
+        server.quit()
+        # except:
+        # 	pass
+        return msgAll
+    elif mtype=="imap":
+        try:
+            server = imaplib.IMAP4_SSL(imap_server)
+            server.login(email, password)  # 登录个人帐号
+        except Exception as e:
+            print(e)
+            print("邮箱获取失败")
+            return msgAll
+
+        # list()返回所有邮件的编号:
+        status,count=server.select("INBOX")
+        index = int(count[0].decode("utf-8"))
+        page = (index - limit) if (index - limit) > 0 else 0
+        for x in range(index, page, -1):  # 循环获取所有邮件
+            i=str(x).encode(encoding="utf-8")
+            try:
+                typ, data = server.fetch(i, '(RFC822)')
+                mailText = data[0][1].decode("utf-8")
+                # 稍后解析出邮件:
+                msg = Parser().parsestr(mailText)
+                msgAll.append(print_info(msg, None))
+            except:
+                pass
+        server.close()
+        return msgAll
 
 
 def get_mail_token(email, password,limit=1, ssl=True, dt=60):
@@ -483,6 +514,22 @@ def check_start_mail(mailname, mailpasswd, depth=3, ssl=True):
     if flag == False:
         return flag
 
+def check_welcome_mail(mailname, mailpasswd, depth=3, ssl=True):
+    msg = get_mail(mailname, mailpasswd, depth, ssl)
+    flag = False
+    for i in range(0, depth + 1):
+        try:
+            subject = msg[i]["Subject"]
+            # print(subject)
+            # if subject=="欢迎使用 iCloud" or subject=="您的 Apple ID 被用于在 Web 浏览器上登录 iCloud":
+            if subject == "How to read Mail from your mobile":
+                flag = True
+                return flag
+        except:
+            pass
+    if flag == False:
+        return flag
+
     '''
     # 总线程数 
     threadNum = 9
@@ -505,20 +552,24 @@ def check_start_mail(mailname, mailpasswd, depth=3, ssl=True):
 
 if __name__ == "__main__":
     # cnt = 0
-    # for i in range(800, 869):
-    #     mailname = 'just' + str(i).zfill(4) + '@loveyxx.com'
-    #     mailpasswd = 'Lslq9527'
-    #     flag = check_start_mail(mailname, mailpasswd, depth=8, ssl=True)
+    # mailprefix = "nbzr"
+    # maildomain = "@yandex.com"
+    # mailpasswd = "Lslq9527"
+    # for i in range(1, 51):
+    #     mailname = mailprefix + str(i).zfill(4) + maildomain
+    #     # flag = check_start_mail(mailname, mailpasswd, depth=8, ssl=True)
+    #     flag = check_welcome_mail(mailname, mailpasswd, depth=2, ssl=True)
     #     if flag == False:
     #         print(mailname)
     #         cnt = cnt + 1
     #     print(i)
     # print('total error mail:%d' % cnt)
-    mailname = 'nbzr0002@yandex.com'
+    mailname = 'nbzr0006@yandex.com'
     mailpasswd = 'Lslq9527'
     # mailname = 'xmxqb_3003@nbsky55.com'
     # mailpasswd = 'Xmx&qb3'
     # mailname = 'just0693@loveyxx.com'
     # mailpasswd = 'Lslq9527'
     token = get_mail_token(mailname, mailpasswd, 5, ssl=True,dt=3600)
-    print(token)
+    # print(token)
+    # print (check_welcome_mail(mailname,mailpasswd,2))
