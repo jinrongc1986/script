@@ -34,6 +34,7 @@ def get_out_ip(proxy):
 
 def need_money(mailname_pre, domain, mailpasswd, body, count):
     ###############################参数设置######################################################
+    domainname = domain.split("@")[1]
     timestart = time.time()
     okcnt = 0
     nokcnt = 0
@@ -92,31 +93,31 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
             lastround = time.time()
         proxy = proxies[y]
         print(proxy)
-        with open("mail.txt", "r") as f:  # 读取当前尝试id
+        with open("%s.txt"%domainname, "r") as f:  # 读取当前尝试id
             sn = f.readline()
         # 请设置邮箱信息
         mailname = mailname_pre + sn.zfill(4) + domain
         do = create_cloudid(mailname, mailpasswd, body, proxy)
         if do == 1:  # 顺利完成
-            with open("mail.txt", "w") as f:
+            with open("%s.txt"%domainname, "w") as f:
                 sn = str(int(sn) + 1)
                 f.write(sn)
-            with open("result.txt", "a") as f:
+            with open("result_%s.txt"%domainname, "a") as f:
                 result = mailname + " PASS\n"
                 f.write(result)
             okcnt += 1
         elif do == 2:  # 验证码3次失败
-            with open("result.txt", "a") as f:
+            with open("result_%s.txt"%domainname, "a") as f:
                 result = mailname + " FAIL 验证码尝试多次失败\n"
                 f.write(result)
-            with open("mail.txt", "w") as f:  # 跳过此sn，开始下一个
+            with open("%s.txt"%domainname, "w") as f:  # 跳过此sn，开始下一个
                 sn = str(int(sn) + 1)
                 f.write(sn)
             nokcnt_yzm += 3
             if nokcnt_yzm > 18:
                 break
         elif do == 3:  # 服务器报未知错误
-            with open("result.txt", "a") as f:
+            with open("result_%s.txt"%domainname, "a") as f:
                 result = mailname + " FAIL server gg.....%s\n" % proxy
                 f.write(result)
             nokcnt += 1
@@ -127,49 +128,49 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
             # sleep(1200)
             break  # 结束进程
         elif do == 4:  # 网络差，打不开网页
-            with open("result.txt", "a") as f:
+            with open("result_%s.txt"%domainname, "a") as f:
                 result = mailname + " FAIL 网络超时\n"
                 f.write(result)
             print("网络超时，等待10秒")
             sleep(10)
             nokcnt += 1
         elif do == 5:
-            with open("mail.txt", "w") as f:
+            with open("%s.txt"%domainname, "w") as f:
                 sn = str(int(sn) + 1)
                 f.write(sn)
-            with open("result.txt", "a") as f:
+            with open("result_%s.txt"%domainname, "a") as f:
                 result = mailname + " FAIL 未点击开始使用\n"
                 f.write(result)
             nokcnt += 1
         elif do == 6:
-            with open("mail.txt", "w") as f:
+            with open("%s.txt"%domainname, "w") as f:
                 sn = str(int(sn) + 1)
                 f.write(sn)
-            with open("result.txt", "a") as f:
+            with open("result_%s.txt"%domainname, "a") as f:
                 result = mailname + " PASS\n"
                 f.write(result)
             okcnt += 1
         elif do == 7:
-            with open("mail.txt", "w") as f:
+            with open("%s.txt"%domainname, "w") as f:
                 sn = str(int(sn) + 1)
                 f.write(sn)
-            with open("result.txt", "a") as f:
+            with open("result_%s.txt"%domainname, "a") as f:
                 result = mailname + " FAIL 获取邮件token失败\n"
                 f.write(result)
             nokcnt += 1
         elif do == 8:
-            with open("mail.txt", "w") as f:
+            with open("%s.txt"%domainname, "w") as f:
                 sn = str(int(sn) + 1)
                 f.write(sn)
-            with open("result.txt", "a") as f:
+            with open("result_%s.txt"%domainname, "a") as f:
                 result = mailname + " icloud已停止响应\n"
                 f.write(result)
             nokcnt += 1
         elif do == 9:
-            with open("mail.txt", "w") as f:
+            with open("%s.txt"%domainname, "w") as f:
                 sn = str(int(sn) + 1)
                 f.write(sn)
-            with open("result.txt", "a") as f:
+            with open("result_%s.txt"%domainname, "a") as f:
                 result = mailname + " 此邮箱已经注册\n"
                 f.write(result)
             nokcnt += 1
@@ -198,8 +199,8 @@ if __name__ == '__main__':
             'answer2': '万华化学',
             'question3': '143',
             'answer3': '三聚环保'}
-    count = 15
+    count = 16
     for i in range(10):
         need_money(mailname_pre, domain, mailpasswd, body, count)
-        print("等待2小时")
-        sleep(7200)
+        print("等待4小时")
+        sleep(14400)
