@@ -34,6 +34,7 @@ def get_out_ip(proxy):
 
 def need_money(mailname_pre, domain, mailpasswd, body, count):
     ###############################参数设置######################################################
+    domainname = domain.split("@")[1]
     timestart = time.time()
     okcnt = 0
     nokcnt = 0
@@ -43,29 +44,33 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
     if localIP() == "192.168.0.62":
         # proxies = []
         proxies = ['',
-                   'socks://192.168.0.61:1081', 'socks://192.168.0.61:1082', 'socks://192.168.0.61:1083',
-                   'socks://192.168.0.61:1084', 'socks://192.168.0.61:1085', 'socks://192.168.0.61:1086',
+                   'socks://192.168.0.61:1081', 'socks://192.168.0.61:1082',
+                   'socks://192.168.0.61:1083',
+                   'socks://192.168.0.61:1084', 'socks://192.168.0.61:1085',
+                   'socks://192.168.0.61:1086',
                    'socks://192.168.0.61:1087', 'socks://192.168.0.61:1088'
                    ]
     elif localIP() == "192.168.0.63":
         # proxies = []
         proxies = ['socks://192.168.0.61:1089',
-                   'socks://192.168.0.61:1090', 'socks://192.168.0.61:1091', 'socks://192.168.0.61:1092',
-                   'socks://192.168.0.61:1093', 'socks://192.168.0.61:1094', 'socks://192.168.0.61:1095'
+                   'socks://192.168.0.61:1090', 'socks://192.168.0.61:1091',
+                   'socks://192.168.0.61:1092',
+                   'socks://192.168.0.61:1093', 'socks://192.168.0.61:1094',
+                   'socks://192.168.0.61:1095'
                    ]
     elif localIP() == "20.20.1.3":
         # proxies = []
         proxies = ['socks://192.168.0.61:1081', 'socks://192.168.0.61:1082',
-                   'socks://192.168.0.61:1083','socks://192.168.0.61:1084'
+                   'socks://192.168.0.61:1083', 'socks://192.168.0.61:1084'
                    ]
     elif localIP() == "20.20.1.4":
         # proxies = []
-        proxies = ['socks://192.168.0.61:1085','socks://192.168.0.61:1086',
-                   'socks://192.168.0.61:1087','socks://192.168.0.61:1088'
+        proxies = ['socks://192.168.0.61:1085', 'socks://192.168.0.61:1086',
+                   'socks://192.168.0.61:1087', 'socks://192.168.0.61:1088'
                    ]
     else:
-        proxies = ['socks://192.168.0.61:1089','socks://192.168.0.61:1090',
-                   'socks://192.168.0.61:1091','socks://192.168.0.61:1092']
+        proxies = ['socks://192.168.0.61:1089', 'socks://192.168.0.61:1090',
+                   'socks://192.168.0.61:1091', 'socks://192.168.0.61:1092']
     for i in range(0, count):
         if x == 0 and y == 0:
             print("新的代理周期")
@@ -92,31 +97,31 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
             lastround = time.time()
         proxy = proxies[y]
         print(proxy)
-        with open("mail.txt", "r") as f:  # 读取当前尝试id
+        with open("%s.txt" % domainname, "r") as f:  # 读取当前尝试id
             sn = f.readline()
         # 请设置邮箱信息
         mailname = mailname_pre + sn.zfill(4) + domain
         do = create_cloudid(mailname, mailpasswd, body, proxy)
         if do == 1:  # 顺利完成
-            with open("mail.txt", "w") as f:
+            with open("%s.txt" % domainname, "w") as f:
                 sn = str(int(sn) + 1)
                 f.write(sn)
-            with open("result.txt", "a") as f:
+            with open("result_%s.txt"%domainname, "a") as f:
                 result = mailname + " PASS\n"
                 f.write(result)
             okcnt += 1
         elif do == 2:  # 验证码3次失败
-            with open("result.txt", "a") as f:
+            with open("result_%s.txt"%domainname, "a") as f:
                 result = mailname + " FAIL 验证码尝试多次失败\n"
                 f.write(result)
-            with open("mail.txt", "w") as f:  # 跳过此sn，开始下一个
+            with open("%s.txt" % domainname, "w") as f:  # 跳过此sn，开始下一个
                 sn = str(int(sn) + 1)
                 f.write(sn)
             nokcnt_yzm += 3
             if nokcnt_yzm > 18:
                 break
         elif do == 3:  # 服务器报未知错误
-            with open("result.txt", "a") as f:
+            with open("result_%s.txt"%domainname, "a") as f:
                 result = mailname + " FAIL server gg.....%s\n" % proxy
                 f.write(result)
             nokcnt += 1
@@ -127,49 +132,49 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
             # sleep(1200)
             break  # 结束进程
         elif do == 4:  # 网络差，打不开网页
-            with open("result.txt", "a") as f:
+            with open("result_%s.txt"%domainname, "a") as f:
                 result = mailname + " FAIL 网络超时\n"
                 f.write(result)
             print("网络超时，等待10秒")
             sleep(10)
             nokcnt += 1
         elif do == 5:
-            with open("mail.txt", "w") as f:
+            with open("%s.txt" % domainname, "w") as f:
                 sn = str(int(sn) + 1)
                 f.write(sn)
-            with open("result.txt", "a") as f:
+            with open("result_%s.txt"%domainname, "a") as f:
                 result = mailname + " FAIL 未点击开始使用\n"
                 f.write(result)
             nokcnt += 1
         elif do == 6:
-            with open("mail.txt", "w") as f:
+            with open("%s.txt" % domainname, "w") as f:
                 sn = str(int(sn) + 1)
                 f.write(sn)
-            with open("result.txt", "a") as f:
+            with open("result_%s.txt"%domainname, "a") as f:
                 result = mailname + " PASS\n"
                 f.write(result)
             okcnt += 1
         elif do == 7:
-            with open("mail.txt", "w") as f:
+            with open("%s.txt" % domainname, "w") as f:
                 sn = str(int(sn) + 1)
                 f.write(sn)
-            with open("result.txt", "a") as f:
+            with open("result_%s.txt"%domainname, "a") as f:
                 result = mailname + " FAIL 获取邮件token失败\n"
                 f.write(result)
             nokcnt += 1
         elif do == 8:
-            with open("mail.txt", "w") as f:
+            with open("%s.txt" % domainname, "w") as f:
                 sn = str(int(sn) + 1)
                 f.write(sn)
-            with open("result.txt", "a") as f:
+            with open("result_%s.txt"%domainname, "a") as f:
                 result = mailname + " icloud已停止响应\n"
                 f.write(result)
             nokcnt += 1
         elif do == 9:
-            with open("mail.txt", "w") as f:
+            with open("%s.txt" % domainname, "w") as f:
                 sn = str(int(sn) + 1)
                 f.write(sn)
-            with open("result.txt", "a") as f:
+            with open("result_%s.txt"%domainname, "a") as f:
                 result = mailname + " 此邮箱已经注册\n"
                 f.write(result)
             nokcnt += 1
@@ -177,13 +182,14 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
 
     timeend = time.time()
     timecost = timeend - timestart
-    print(("总耗时%.f秒，总成功%d次，总失败%d次,验证码导致的失败%d次") % (timecost, okcnt, nokcnt, nokcnt_yzm))
+    print(("总耗时%.f秒，总成功%d次，总失败%d次,验证码导致的失败%d次") % (
+    timecost, okcnt, nokcnt, nokcnt_yzm))
 
 
 if __name__ == '__main__':
-    mailname_pre = 'xmxqb_'
-    domain = '@nbsky55.com'
-    mailpasswd = 'Xmx&qb3'
+    mailname_pre = 'nbzr_'
+    domain = '@iloveyxx.cc'
+    mailpasswd = 'Lslq9527'
     # mailname_pre = 'just'
     # domain = '@loveyxx.com'
     # mailpasswd = 'Lslq9527'
@@ -198,8 +204,8 @@ if __name__ == '__main__':
             'answer2': '万华化学',
             'question3': '143',
             'answer3': '三聚环保'}
-    count = 15
+    count = 16
     for i in range(10):
         need_money(mailname_pre, domain, mailpasswd, body, count)
-        print("等待2小时")
-        sleep(7200)
+        print("等待4小时")
+        sleep(14400)

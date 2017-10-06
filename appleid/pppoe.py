@@ -70,14 +70,14 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
             lastround = time.time()
         proxy = proxies[y]
         print(proxy)
-        with open("mail.txt", "r") as f:  # 读取当前尝试id
+        with open("%s.txt"%domain, "r") as f:  # 读取当前尝试id
             sn = f.readline()
         # 请设置邮箱信息
         # mailname = mailname_pre + sn.zfill(4) + domain
         mailname='test005@loveyxx.com'
         do = create_cloudid(mailname, mailpasswd, body, proxy)
         if do == 1:  # 顺利完成
-            with open("mail.txt", "w") as f:
+            with open("%s.txt"%domain, "w") as f:
                 sn = str(int(sn) + 1)
                 f.write(sn)
             with open("result.txt", "a") as f:
@@ -88,7 +88,7 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
             with open("result.txt", "a") as f:
                 result = mailname + " FAIL 验证码尝试多次失败\n"
                 f.write(result)
-            with open("mail.txt", "w") as f:  # 跳过此sn，开始下一个
+            with open("%s.txt"%domain, "w") as f:  # 跳过此sn，开始下一个
                 sn = str(int(sn) + 1)
                 f.write(sn)
             nokcnt_yzm += 3
@@ -114,7 +114,7 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
             sleep(10)
             nokcnt += 1
         elif do == 5:
-            with open("mail.txt", "w") as f:
+            with open("%s.txt"%domain, "w") as f:
                 sn = str(int(sn) + 1)
                 f.write(sn)
             with open("result.txt", "a") as f:
@@ -122,7 +122,7 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
                 f.write(result)
             nokcnt += 1
         elif do == 6:
-            with open("mail.txt", "w") as f:
+            with open("%s.txt"%domain, "w") as f:
                 sn = str(int(sn) + 1)
                 f.write(sn)
             with open("result.txt", "a") as f:
@@ -130,7 +130,7 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
                 f.write(result)
             okcnt += 1
         elif do == 7:
-            with open("mail.txt", "w") as f:
+            with open("%s.txt"%domain, "w") as f:
                 sn = str(int(sn) + 1)
                 f.write(sn)
             with open("result.txt", "a") as f:

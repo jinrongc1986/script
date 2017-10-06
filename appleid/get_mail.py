@@ -21,10 +21,13 @@ imp.reload(sys)
 dir_ = os.getcwd()
 
 set_debuglevel = 0
-pops = {'126.com': 'pop.126.com', '163.com': 'pop.163.com', 'qq.com': 'pop.qq.com', 'sina.com': 'pop.sina.com',
-        'nbsky55.com': 'mail.nbsky55.com', 'loveyxx.com': 'mail.loveyxx.com', 'iloveyxx.com': 'mail.iloveyxx.com'}
+pops = {'126.com': 'pop.126.com', '163.com': 'pop.163.com',
+        'qq.com': 'pop.qq.com', 'sina.com': 'pop.sina.com',
+        'nbsky55.com': 'mail.nbsky55.com', 'loveyxx.com': 'mail.loveyxx.com',
+        'iloveyxx.com': 'mail.iloveyxx.com',
+        'iloveyxx.cc': 'mail.iloveyxx.com'}
 
-imap = {'yandex.com':'imap.yandex.com'}
+imap = {'yandex.com': 'imap.yandex.com'}
 
 
 #
@@ -49,7 +52,7 @@ def get_mail(email, password, limit=1, ssl=True):
     # 输入邮件地址, 口令和POP3服务器地址:
     email = email  # input('Email: ')
     password = password  # input('Password: ')
-    if mtype=="pop3":
+    if mtype == "pop3":
 
         pop3_server = pop3_server  # input('POP3 server: ') # pop.126.com   pop.163.com
         try:
@@ -106,7 +109,7 @@ def get_mail(email, password, limit=1, ssl=True):
         # except:
         # 	pass
         return msgAll
-    elif mtype=="imap":
+    elif mtype == "imap":
         try:
             server = imaplib.IMAP4_SSL(imap_server)
             server.login(email, password)  # 登录个人帐号
@@ -116,11 +119,11 @@ def get_mail(email, password, limit=1, ssl=True):
             return msgAll
 
         # list()返回所有邮件的编号:
-        status,count=server.select("INBOX")
+        status, count = server.select("INBOX")
         index = int(count[0].decode("utf-8"))
         page = (index - limit) if (index - limit) > 0 else 0
         for x in range(index, page, -1):  # 循环获取所有邮件
-            i=str(x).encode(encoding="utf-8")
+            i = str(x).encode(encoding="utf-8")
             try:
                 typ, data = server.fetch(i, '(RFC822)')
                 mailText = data[0][1].decode("utf-8")
@@ -133,7 +136,7 @@ def get_mail(email, password, limit=1, ssl=True):
         return msgAll
 
 
-def get_mail_token(email, password,limit=1, ssl=True, dt=60):
+def get_mail_token(email, password, limit=1, ssl=True, dt=60):
     pop3_server = ''
     imap_server = 'imap.yandex.com'
     st = email.split('@')[1]
@@ -145,7 +148,6 @@ def get_mail_token(email, password,limit=1, ssl=True, dt=60):
         pop3_server = pops[st]
     if st == "nbsky55.com":
         ssl = False
-
 
     # 输入邮件地址, 口令和POP3服务器地址:
     email = email  # input('Email: ')
@@ -205,10 +207,12 @@ def get_mail_token(email, password,limit=1, ssl=True, dt=60):
                         if st == "nbsky55.com":
                             if '+0800' in message.decode('utf-8'):
                                 # print (message)
-                                mailtime = message.decode('utf-8').split(',')[1]
+                                mailtime = message.decode('utf-8').split(',')[
+                                    1]
                                 # mailtime = message.decode('utf-8').split(';')[1]
                                 # print (mailtime)
-                                timeArray = time.strptime(mailtime, " %d %b %Y %H:%M:%S %z")
+                                timeArray = time.strptime(mailtime,
+                                                          " %d %b %Y %H:%M:%S %z")
                                 # timeArray = time.strptime(mailtime, " %a, %d %b %Y %H:%M:%S %z (%Z)")
                                 timemap = time.mktime(timeArray)
                                 timenow = time.time()
@@ -221,14 +225,16 @@ def get_mail_token(email, password,limit=1, ssl=True, dt=60):
                                 else:
                                     flag = True
                                     # print ("没有最新时间的邮件，时间差值为：%.f" %difference)
-                        else :
+                        else:
                             if '(UTC)' in message.decode('utf-8'):
-                                print (message)
+                                print(message)
                                 # mailtime = message.decode('utf-8').split(',')[1]
-                                mailtime = message.decode('utf-8').split(';')[1]
+                                mailtime = message.decode('utf-8').split(';')[
+                                    1]
                                 # print (mailtime)
                                 # timeArray = time.strptime(mailtime, " %d %b %Y %H:%M:%S %z")
-                                timeArray = time.strptime(mailtime, " %a, %d %b %Y %H:%M:%S %z (%Z)")
+                                timeArray = time.strptime(mailtime,
+                                                          " %a, %d %b %Y %H:%M:%S %z (%Z)")
                                 timemap = time.mktime(timeArray)
                                 timenow = time.time()
                                 difference = timenow - 8 * 3600 - timemap  # 考虑时区
@@ -287,22 +293,23 @@ def get_mail_token(email, password,limit=1, ssl=True, dt=60):
 
             # list()返回所有邮件的编号:
             server.select("INBOX")
-            typ, data = server.search(None,'ALL')
+            typ, data = server.search(None, 'ALL')
             msgList = data[0].split()
             last = msgList[len(msgList) - 1]
-            typ, data = server.fetch(last,'(RFC822)')
+            typ, data = server.fetch(last, '(RFC822)')
             # print (data)
             try:
                 messages = data[0][1].decode('utf-8').split('\r\n')
                 for message in messages:
                     if '+0300' in message:
-                        print (message)
+                        print(message)
                         mailtime = message.split(',')[1]
                         # print (mailtime)
-                        timeArray = time.strptime(mailtime, " %d %b %Y %H:%M:%S %z")
+                        timeArray = time.strptime(mailtime,
+                                                  " %d %b %Y %H:%M:%S %z")
                         timemap = time.mktime(timeArray)
                         timenow = time.time()
-                        difference = timenow - 5*3600 - timemap  # 考虑时区
+                        difference = timenow - 5 * 3600 - timemap  # 考虑时区
                         # print(difference)
                         if difference < dt:
                             print("成功获取最新的邮件，时间差值为：%.f" % difference)
@@ -312,7 +319,7 @@ def get_mail_token(email, password,limit=1, ssl=True, dt=60):
                             flag = True
                             # print ("没有最新时间的邮件，时间差值为：%.f" %difference)
 
-                # 稍后解析出邮件:
+                            # 稍后解析出邮件:
             except Exception as e:
                 print(e)
             if not flag:
@@ -454,7 +461,8 @@ def check_mail(threadNum, threadNo):
             # print("=%s=%s=" %(line.split('&')[0].strip(), line.split('&')[1].strip()))
 
             check[threadNo] = 0
-            msg = get_mail(line.split('&')[0].strip(), line.split('&')[1].strip(), 100)
+            msg = get_mail(line.split('&')[0].strip(),
+                           line.split('&')[1].strip(), 100)
             for i in msg:
                 if ('From' in i):
                     print(i['From']['addr'])
@@ -489,7 +497,9 @@ def get_apple_code(mail, password, limit=10):
                 if ('content' in i) and i['content']:
                     # print(i['content'])
                     try:
-                        re_ = re.compile(r'<td class="paragraph verification-code".*?>(.*?)</td>', re.S)
+                        re_ = re.compile(
+                            r'<td class="paragraph verification-code".*?>(.*?)</td>',
+                            re.S)
                         code = re.findall(re_, i['content'])
                         if code and len(code) > 0:
                             codes.append(code[0])
@@ -513,6 +523,7 @@ def check_start_mail(mailname, mailpasswd, depth=3, ssl=True):
             pass
     if flag == False:
         return flag
+
 
 def check_welcome_mail(mailname, mailpasswd, depth=3, ssl=True):
     msg = get_mail(mailname, mailpasswd, depth, ssl)
@@ -570,6 +581,6 @@ if __name__ == "__main__":
     # mailpasswd = 'Xmx&qb3'
     # mailname = 'just0693@loveyxx.com'
     # mailpasswd = 'Lslq9527'
-    token = get_mail_token(mailname, mailpasswd, 5, ssl=True,dt=3600)
+    token = get_mail_token(mailname, mailpasswd, 5, ssl=True, dt=3600)
     # print(token)
     # print (check_welcome_mail(mailname,mailpasswd,2))

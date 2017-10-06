@@ -13,6 +13,7 @@ from urllib import request
 import showapi
 import lianzhong_api
 from user_agent import generate_user_agent
+import pdb
 import json
 
 
@@ -421,9 +422,10 @@ def create_cloudid(mailname, mailpasswd, body, proxy='', dttime=5):
         #     EC.presence_of_element_located((By.XPATH,
         #                                     '//step-verify-code/idms-step/div/div/div/div[2]/div/div/div[2]/security-code/div/idms-error-wrapper/div/idms-error/div/div/span')))
 
+        xpath = "//security-code/div/idms-error-wrapper\
+                /div/idms-error/div/div/span"
         WebDriverWait(driver, 2, 0.5).until(
-            EC.presence_of_element_located(
-                (By.XPATH, "//span[contains(text(), '发生未知错误。')]")))
+            EC.presence_of_element_located((By.XPATH,xpath)))
         print("gg...未知错误")
         driver.close()
         driver.quit()
@@ -436,10 +438,12 @@ def create_cloudid(mailname, mailpasswd, body, proxy='', dttime=5):
             EC.visibility_of_element_located(
                 (By.XPATH, "//button[@id='send-code']")))
     except:
+        sleep(5)
         try:
+            xpath = "//security-code/div/idms-error-wrapper\
+                            /div/idms-error/div/div/span"
             WebDriverWait(driver, 2, 0.5).until(
-                EC.presence_of_element_located(
-                    (By.XPATH, "//span[contains(text(), '发生未知错误。')]")))
+                EC.presence_of_element_located((By.XPATH, xpath)))
             print("gg...未知错误")
             driver.close()
             driver.quit()
@@ -448,6 +452,7 @@ def create_cloudid(mailname, mailpasswd, body, proxy='', dttime=5):
             pass
         # 服务器超时
         print("页面未跳转")
+        pdb.set_trace()
         driver.close()
         driver.quit()
         return 8  # 页面未跳转
@@ -467,9 +472,10 @@ def create_cloudid(mailname, mailpasswd, body, proxy='', dttime=5):
             flag = double_click_c(driver, xpath, msg)
             if not flag:
                 try:
+                    xpath = "//security-code/div/idms-error-wrapper\
+                                    /div/idms-error/div/div/span"
                     WebDriverWait(driver, 2, 0.5).until(
-                        EC.presence_of_element_located(
-                            (By.XPATH, "//span[contains(text(), '发生未知错误。')]")))
+                        EC.presence_of_element_located((By.XPATH, xpath)))
                     print("gg...未知错误")
                     driver.close()
                     driver.quit()
