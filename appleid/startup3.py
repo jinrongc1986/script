@@ -64,14 +64,13 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
         proxies = ['socks://192.168.0.61:1085','socks://192.168.0.61:1086',
                    'socks://192.168.0.61:1087','socks://192.168.0.61:1088'
                    ]
-    elif domainname == "iloveyxx.cc":
+    elif domainname == "iwenling.com":
         proxies = ['', 'socks://192.168.0.61:1093',
                    'socks://192.168.0.61:1094', 'socks://192.168.0.61:1095 '
                    ]
     else:
-        proxies = ['','socks://192.168.0.61:1093',
-                   'socks://192.168.0.61:1094','socks://192.168.0.61:1095 '
-                   ]
+        proxies = ['socks://192.168.0.61:1089', 'socks://192.168.0.61:1090',
+                   'socks://192.168.0.61:1091', 'socks://192.168.0.61:1092']
     for i in range(0, count):
         if x == 0 and y == 0:
             print("新的代理周期")
