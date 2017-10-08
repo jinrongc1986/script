@@ -192,7 +192,7 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
 
 if __name__ == '__main__':
     mailname_pre = 'nbzr_'
-    domain = '@iloveyxx.com'
+    domain = '@iwenling.com'
     mailpasswd = 'Lslq9527'
     # mailname_pre = 'just'
     # domain = '@loveyxx.com'
