@@ -68,6 +68,10 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
         proxies = ['socks://192.168.0.61:1085', 'socks://192.168.0.61:1086',
                    'socks://192.168.0.61:1087', 'socks://192.168.0.61:1088'
                    ]
+    elif domainname == "iloveyxx.cc":
+        proxies = ['', 'socks://192.168.0.61:1093',
+                   'socks://192.168.0.61:1094', 'socks://192.168.0.61:1095 '
+                   ]
     else:
         proxies = ['socks://192.168.0.61:1089', 'socks://192.168.0.61:1090',
                    'socks://192.168.0.61:1091', 'socks://192.168.0.61:1092']
@@ -188,7 +192,7 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
 
 if __name__ == '__main__':
     mailname_pre = 'nbzr_'
-    domain = '@iloveyxx.cc'
+    domain = '@iloveyxx.com'
     mailpasswd = 'Lslq9527'
     # mailname_pre = 'just'
     # domain = '@loveyxx.com'
