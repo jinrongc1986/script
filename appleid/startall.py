@@ -78,13 +78,13 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
             lastround = time.time()
         proxy = proxies[y]
         print(proxy)
-        with open("%s.txt" % domainname, "r") as f:  # 读取当前尝试id
+        with open("dm_%s.txt" % domainname, "r") as f:  # 读取当前尝试id
             sn = f.readline()
         # 请设置邮箱信息
         mailname = mailname_pre + sn.zfill(4) + domain
         do = create_cloudid(mailname, mailpasswd, body, proxy)
         if do == 1:  # 顺利完成
-            with open("%s.txt" % domainname, "w") as f:
+            with open("dm_%s.txt" % domainname, "w") as f:
                 sn = str(int(sn) + 1)
                 f.write(sn)
             with open("result_%s.txt" % domainname, "a") as f:
@@ -95,7 +95,7 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
             with open("result_%s.txt" % domainname, "a") as f:
                 result = mailname + " FAIL 验证码尝试多次失败\n"
                 f.write(result)
-            with open("%s.txt" % domainname, "w") as f:  # 跳过此sn，开始下一个
+            with open("dm_%s.txt" % domainname, "w") as f:  # 跳过此sn，开始下一个
                 sn = str(int(sn) + 1)
                 f.write(sn)
             nokcnt_yzm += 3
@@ -119,7 +119,7 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
             sleep(10)
             nokcnt += 1
         elif do == 5:
-            with open("%s.txt" % domainname, "w") as f:
+            with open("dm_%s.txt" % domainname, "w") as f:
                 sn = str(int(sn) + 1)
                 f.write(sn)
             with open("result_%s.txt" % domainname, "a") as f:
@@ -127,7 +127,7 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
                 f.write(result)
             nokcnt += 1
         elif do == 6:
-            with open("%s.txt" % domainname, "w") as f:
+            with open("dm_%s.txt" % domainname, "w") as f:
                 sn = str(int(sn) + 1)
                 f.write(sn)
             with open("result_%s.txt" % domainname, "a") as f:
@@ -135,7 +135,7 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
                 f.write(result)
             okcnt += 1
         elif do == 7:
-            with open("%s.txt" % domainname, "w") as f:
+            with open("dm_%s.txt" % domainname, "w") as f:
                 sn = str(int(sn) + 1)
                 f.write(sn)
             with open("result_%s.txt" % domainname, "a") as f:
@@ -143,7 +143,7 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
                 f.write(result)
             nokcnt += 1
         elif do == 8:
-            with open("%s.txt" % domainname, "w") as f:
+            with open("dm_%s.txt" % domainname, "w") as f:
                 sn = str(int(sn) + 1)
                 f.write(sn)
             with open("result_%s.txt" % domainname, "a") as f:
@@ -151,7 +151,7 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
                 f.write(result)
             nokcnt += 1
         elif do == 9:
-            with open("%s.txt" % domainname, "w") as f:
+            with open("dm_%s.txt" % domainname, "w") as f:
                 sn = str(int(sn) + 1)
                 f.write(sn)
             with open("result_%s.txt" % domainname, "a") as f:
@@ -167,7 +167,7 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
 
 
 if __name__ == '__main__':
-    domainlist=['@ihzcloud.com','@iwenling.com','iwzcloud.com']
+    domainlist=['@iwzcloud.com','@iwenling.com','@ihzcloud.com','@nbsky55.com']
     mailname_pre = 'nbzr_'
     mailpasswd = 'Lslq9527'
     # mailname_pre = 'just'
@@ -199,5 +199,6 @@ if __name__ == '__main__':
                 print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
                 print("120秒后重新开始")
                 sleep(120)
-        print("所有域名遍历完成，等待10小时")
+        print("所有域名遍历完成，等待10小时。\n当前时刻：")
+        print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
         sleep(36000)
