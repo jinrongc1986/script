@@ -167,7 +167,7 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
 
 
 if __name__ == '__main__':
-    domainlist=['@iwzcloud.com','@iwenling.com','@ihzcloud.com','@nbsky55.com']
+    domainlist=['@inbcloud.com','@nbsky55.com','@ihzcloud.com','@iwzcloud.com','@iwenling.com']
     mailname_pre = 'nbzr_'
     mailpasswd = 'Lslq9527'
     # mailname_pre = 'just'
@@ -187,6 +187,9 @@ if __name__ == '__main__':
     for i in range(10):
         print("第%d轮域名遍历"%(i+1))
         for domain in domainlist:
+            if domain == '@nbsky55.com':
+                mailname_pre = 'xmxqb_'
+                mailpasswd = 'Xmx&qb3'
             lastround = time.time()
             need_money(mailname_pre, domain, mailpasswd, body, count)
             thisround = time.time()
@@ -199,6 +202,6 @@ if __name__ == '__main__':
                 print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
                 print("120秒后重新开始")
                 sleep(120)
-        print("所有域名遍历完成，等待10小时。\n当前时刻：")
+        print("所有域名遍历完成，等待4小时。\n当前时刻：")
         print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
-        sleep(36000)
+        sleep(14400)
