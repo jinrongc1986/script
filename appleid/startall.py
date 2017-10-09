@@ -183,7 +183,7 @@ if __name__ == '__main__':
             'answer2': '万华化学',
             'question3': '143',
             'answer3': '三聚环保'}
-    count = 30
+    count = 20
     for i in range(10):
         print("第%d轮域名遍历"%(i+1))
         for domain in domainlist:
@@ -191,10 +191,10 @@ if __name__ == '__main__':
             need_money(mailname_pre, domain, mailpasswd, body, count)
             thisround = time.time()
             roundtime = thisround - lastround
-            print("此次代理周期为%.f" % roundtime)
+            print("此域名周期为%.f" % roundtime)
             timeleft = roundtime - 4000
             if timeleft < 0:
-                print("代理周期结束，为确保代理可用，暂停%.f" % abs(timeleft))
+                print("此域名周期结束，为确保代理可用，暂停%.f" % abs(timeleft))
                 sleep(abs(timeleft) - 120)
                 print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
                 print("120秒后重新开始")
