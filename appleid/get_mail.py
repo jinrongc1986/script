@@ -27,7 +27,8 @@ pops = {'126.com': 'pop.126.com', '163.com': 'pop.163.com',
         'iloveyxx.com': 'mail.iloveyxx.com',
         'iloveyxx.cc': 'mail.iloveyxx.com',
         'iwenling.com':'mail.iloveyxx.com',
-        'ihzcloud.com':'mail.iloveyxx.com'}
+        'ihzcloud.com':'mail.iloveyxx.com',
+        'inbcloud.com':'mail.iloveyxx.com'}
 
 imap = {'yandex.com': 'imap.yandex.com'}
 
