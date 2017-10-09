@@ -183,7 +183,7 @@ if __name__ == '__main__':
             'answer2': '万华化学',
             'question3': '143',
             'answer3': '三聚环保'}
-    count = 20
+    count = 30
     for i in range(10):
         print("第%d轮域名遍历"%(i+1))
         for domain in domainlist:
