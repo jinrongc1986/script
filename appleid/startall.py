@@ -167,7 +167,8 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
 
 
 if __name__ == '__main__':
-    domainlist=['@nbsky55.com','@inbcloud.com','@ihzcloud.com','@iwzcloud.com','@iwenling.com']
+    domainlist=['@zjzju.com','@zjhdu.com','@zjnbu.com','@inbcloud.com',
+                '@ihzcloud.com','@iwzcloud.com','@iwenling.com','@nbsky55.com']
     mailname_pre = 'nbzr_'
     mailpasswd = 'Lslq9527'
     # mailname_pre = 'just'
@@ -190,6 +191,9 @@ if __name__ == '__main__':
             if domain == '@nbsky55.com':
                 mailname_pre = 'xmxqb_'
                 mailpasswd = 'Xmx&qb3'
+            else:
+                mailname_pre = 'nbzr_'
+                mailpasswd = 'Lslq9527'
             lastround = time.time()
             need_money(mailname_pre, domain, mailpasswd, body, count)
             thisround = time.time()

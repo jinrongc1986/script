@@ -23,13 +23,17 @@ dir_ = os.getcwd()
 set_debuglevel = 0
 pops = {'126.com': 'pop.126.com', '163.com': 'pop.163.com',
         'qq.com': 'pop.qq.com', 'sina.com': 'pop.sina.com',
-        'nbsky55.com': 'mail.nbsky55.com', 'loveyxx.com': 'mail.loveyxx.com',
+        'nbsky55.com': 'mail.nbsky55.com',
+        'loveyxx.com': 'mail.iloveyxx.com',
         'iloveyxx.com': 'mail.iloveyxx.com',
         'iloveyxx.cc': 'mail.iloveyxx.com',
-        'iwenling.com':'mail.iloveyxx.com',
-        'ihzcloud.com':'mail.iloveyxx.com',
-        'inbcloud.com':'mail.iloveyxx.com',
-        'iwzcloud.com':'mail.iloveyxx.com'}
+        'iwenling.com': 'mail.iloveyxx.com',
+        'ihzcloud.com': 'mail.iloveyxx.com',
+        'inbcloud.com': 'mail.iloveyxx.com',
+        'iwzcloud.com': 'mail.iloveyxx.com',
+        'zjhdu.com': 'mail.iloveyxx.com',
+        'zjnbu.com': 'mail.iloveyxx.com',
+        'zjzju.com': 'mail.iloveyxx.com'}
 
 imap = {'yandex.com': 'imap.yandex.com'}
 
