@@ -42,10 +42,10 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
     x = 0
     y = 0
     if localIP() == "192.168.0.62":
-        # proxies = []
+        # proxies = ['socks://192.168.0.61:1081', 'socks://192.168.0.61:1082', 'socks://192.168.0.61:1083',
+        #            'socks://192.168.0.61:1084', 'socks://192.168.0.61:1085',]
         proxies = [
-                   'socks://192.168.0.61:1081', 'socks://192.168.0.61:1082', 'socks://192.168.0.61:1083',
-                   'socks://192.168.0.61:1084', 'socks://192.168.0.61:1085', 'socks://192.168.0.61:1086',
+                   'socks://192.168.0.61:1086',
                    'socks://192.168.0.61:1087', 'socks://192.168.0.61:1088','socks://192.168.0.61:1089',
                    'socks://192.168.0.61:1090', 'socks://192.168.0.61:1091','socks://192.168.0.61:1092',
                    'socks://192.168.0.61:1093', 'socks://192.168.0.61:1094','socks://192.168.0.61:1095'
@@ -167,7 +167,7 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
 
 
 if __name__ == '__main__':
-    domainlist=['@inbcloud.com','@nbsky55.com','@ihzcloud.com','@iwzcloud.com','@iwenling.com']
+    domainlist=['@nbsky55.com','@inbcloud.com','@ihzcloud.com','@iwzcloud.com','@iwenling.com']
     mailname_pre = 'nbzr_'
     mailpasswd = 'Lslq9527'
     # mailname_pre = 'just'
@@ -195,7 +195,7 @@ if __name__ == '__main__':
             thisround = time.time()
             roundtime = thisround - lastround
             print("此域名周期为%.f" % roundtime)
-            timeleft = roundtime - 4000
+            timeleft = roundtime - 2000
             if timeleft < 0:
                 print("此域名周期结束，为确保代理可用，暂停%.f" % abs(timeleft))
                 sleep(abs(timeleft) - 120)
