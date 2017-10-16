@@ -65,15 +65,15 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
             thisround = time.time()
             roundtime = thisround - lastround
             print("此次代理周期为%.f" % roundtime)
-            timeleft = roundtime - 4000
+            timeleft = roundtime - 2000
             if timeleft < 0:
                 print("代理周期结束，为确保代理可用，暂停%.f" % abs(timeleft))
-                sleep(abs(timeleft) - 120)
+                sleep(abs(timeleft))
                 print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
                 print("120秒后重新开始")
                 sleep(120)
-            print("新的代理周期准备1800秒")
-            sleep(1800)
+            print("新的代理周期准备600秒")
+            sleep(600)
             print("新的代理周期开始")
             lastround = time.time()
         proxy = proxies[y]
@@ -167,8 +167,9 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
 
 
 if __name__ == '__main__':
-    domainlist=['@zjzju.com','@zjhdu.com','@zjnbu.com','@inbcloud.com',
-                '@ihzcloud.com','@iwzcloud.com','@iwenling.com','@nbsky55.com']
+    domainlist=['@zjhdu.com','@zjnbu.com','@inbcloud.com','@zjzju.com',
+                '@ihzcloud.com','@iwzcloud.com','@iwenling.com','@nbsky55.com',
+                '@loveyxx.com']
     mailname_pre = 'nbzr_'
     mailpasswd = 'Lslq9527'
     # mailname_pre = 'just'
@@ -202,10 +203,12 @@ if __name__ == '__main__':
             timeleft = roundtime - 2000
             if timeleft < 0:
                 print("此域名周期结束，为确保代理可用，暂停%.f" % abs(timeleft))
-                sleep(abs(timeleft) - 120)
+                sleep(abs(timeleft))
                 print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
-                print("120秒后重新开始")
+                print("120秒后开始下一个域名注册")
                 sleep(120)
+            else:
+                print("开始下一个域名注册")
         print("所有域名遍历完成，等待4小时。\n当前时刻：")
         print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
         sleep(14400)
