@@ -21,8 +21,10 @@ imp.reload(sys)
 dir_ = os.getcwd()
 
 set_debuglevel = 0
-pops = {'126.com': 'pop.126.com', '163.com': 'pop.163.com',
-        'qq.com': 'pop.qq.com', 'sina.com': 'pop.sina.com',
+pops = {'126.com': 'pop.126.com',
+        '163.com': 'pop.163.com',
+        'qq.com': 'pop.qq.com',
+        'sina.com': 'pop.sina.com',
         'nbsky55.com': 'mail.nbsky55.com',
         'loveyxx.com': 'mail.iloveyxx.com',
         'iloveyxx.com': 'mail.iloveyxx.com',
@@ -570,25 +572,40 @@ def check_welcome_mail(mailname, mailpasswd, depth=3, ssl=True):
 
 
 if __name__ == "__main__":
-    # cnt = 0
-    # mailprefix = "nbzr"
-    # maildomain = "@yandex.com"
-    # mailpasswd = "Lslq9527"
-    # for i in range(1, 51):
-    #     mailname = mailprefix + str(i).zfill(4) + maildomain
-    #     # flag = check_start_mail(mailname, mailpasswd, depth=8, ssl=True)
-    #     flag = check_welcome_mail(mailname, mailpasswd, depth=2, ssl=True)
-    #     if flag == False:
-    #         print(mailname)
-    #         cnt = cnt + 1
-    #     print(i)
-    # print('total error mail:%d' % cnt)
-    mailname = 'nbzr0006@yandex.com'
-    mailpasswd = 'Lslq9527'
+    cnt = 0
+    domains=[
+        'loveyxx.com',
+        'iloveyxx.com',
+        'inbcloud.com',
+        'ihzcloud.com',
+        'iwzcloud.com',
+        'iwenling.com',
+        'zjnbu.com',
+        'zjhdu.com',
+        'zjzju.com']
+    # domains = ["yandex.com"]
+    for maildomain in domains:
+        if maildomain == 'nbsky55.com':
+            mailname_pre = 'xmxqb_'
+            mailpasswd = 'Xmx&qb3'
+        else:
+            mailname_pre = 'nbzr_'
+            mailpasswd = 'Lslq9527'
+        for i in range(1, 101):
+            mailname = mailname_pre + str(i).zfill(4) + '@' + maildomain
+            # flag = check_start_mail(mailname, mailpasswd, depth=8, ssl=True)
+            flag = check_welcome_mail(mailname, mailpasswd, depth=2, ssl=True)
+            if flag == False:
+                print(mailname)
+                cnt = cnt + 1
+            # print(i)
+        print('total error mail:%d' % cnt)
+    # mailname = 'nbzr0006@yandex.com'
+    # mailpasswd = 'Lslq9527'
     # mailname = 'xmxqb_3003@nbsky55.com'
     # mailpasswd = 'Xmx&qb3'
     # mailname = 'just0693@loveyxx.com'
     # mailpasswd = 'Lslq9527'
-    token = get_mail_token(mailname, mailpasswd, 5, ssl=True, dt=3600)
+    # token = get_mail_token(mailname, mailpasswd, 5, ssl=True, dt=3600)
     # print(token)
     # print (check_welcome_mail(mailname,mailpasswd,2))
