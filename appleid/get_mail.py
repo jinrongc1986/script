@@ -574,15 +574,16 @@ def check_welcome_mail(mailname, mailpasswd, depth=3, ssl=True):
 if __name__ == "__main__":
     cnt = 0
     domains=[
-        'loveyxx.com',
-        'iloveyxx.com',
         'inbcloud.com',
         'ihzcloud.com',
         'iwzcloud.com',
         'iwenling.com',
         'zjnbu.com',
         'zjhdu.com',
-        'zjzju.com']
+        'zjzju.com',
+        'loveyxx.com',
+        'iloveyxx.com'
+        ]
     # domains = ["yandex.com"]
     for maildomain in domains:
         if maildomain == 'nbsky55.com':
@@ -593,13 +594,13 @@ if __name__ == "__main__":
             mailpasswd = 'Lslq9527'
         for i in range(1, 101):
             mailname = mailname_pre + str(i).zfill(4) + '@' + maildomain
-            # flag = check_start_mail(mailname, mailpasswd, depth=8, ssl=True)
-            flag = check_welcome_mail(mailname, mailpasswd, depth=2, ssl=True)
+            flag = check_start_mail(mailname, mailpasswd, depth=8, ssl=True)
+            # flag = check_welcome_mail(mailname, mailpasswd, depth=2, ssl=True)
             if flag == False:
                 print(mailname)
                 cnt = cnt + 1
             # print(i)
-        print('total error mail:%d' % cnt)
+    print('total error mail:%d' % cnt)
     # mailname = 'nbzr0006@yandex.com'
     # mailpasswd = 'Lslq9527'
     # mailname = 'xmxqb_3003@nbsky55.com'
