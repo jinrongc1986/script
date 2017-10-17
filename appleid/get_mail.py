@@ -584,7 +584,7 @@ if __name__ == "__main__":
         'loveyxx.com',
         'iloveyxx.com'
         ]
-    # domains = ["yandex.com"]
+    # domains = ["'nbsky55.com'"]
     for maildomain in domains:
         if maildomain == 'nbsky55.com':
             mailname_pre = 'xmxqb_'
