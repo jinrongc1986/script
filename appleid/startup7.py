@@ -42,11 +42,8 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
     x = 0
     y = 0
     if localIP() == "192.168.0.62":
-        # proxies = ['socks://192.168.0.61:1081', 'socks://192.168.0.61:1082',
-        #            'socks://192.168.0.61:1083','socks://192.168.0.61:1084',]
-        proxies = [
-                    'socks://192.168.0.61:1083',
-                   ]
+        # proxies = [ 'socks://192.168.0.61:1082', 'socks://192.168.0.61:1084',]
+        proxies = ['']
     elif localIP() == "192.168.0.63":
         # proxies = []
         proxies = ['socks://192.168.0.61:1089',
@@ -189,11 +186,11 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
 
 if __name__ == '__main__':
     mailname_pre = 'nbzr_'
-    domain = '@inbcloud.com'
+    domain = '@iloveyxx.com'
     mailpasswd = 'Lslq9527'
-    mailname_pre = 'xmxqb_'
-    domain = '@nbsky55.com'
-    mailpasswd = 'Xmx&qb3'
+    # mailname_pre = 'xmxqb_'
+    # domain = '@nbsky55.com'
+    # mailpasswd = 'Xmx&qb3'
     body = {'last_name': 'Zrcredit',
             'first_name': '贷',
             'country': 'CHN',

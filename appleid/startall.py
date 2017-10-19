@@ -42,11 +42,12 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
     x = 0
     y = 0
     if localIP() == "192.168.0.62":
-        # proxies = []
-        proxies = ['socks://192.168.0.61:1081', 'socks://192.168.0.61:1082', 'socks://192.168.0.61:1083',
-                   'socks://192.168.0.61:1084', 'socks://192.168.0.61:1085','socks://192.168.0.61:1086',
-                   'socks://192.168.0.61:1087', 'socks://192.168.0.61:1088','socks://192.168.0.61:1089',
-                   'socks://192.168.0.61:1090'
+        # proxies = ['socks://192.168.0.61:1082', 'socks://192.168.0.61:1084',]
+        proxies = [
+                   'socks://192.168.0.61:1086', 'socks://192.168.0.61:1087', 'socks://192.168.0.61:1088',
+                   'socks://192.168.0.61:1089', 'socks://192.168.0.61:1090', 'socks://192.168.0.61:1091',
+                   'socks://192.168.0.61:1092', 'socks://192.168.0.61:1093', 'socks://192.168.0.61:1094',
+                   'socks://192.168.0.61:1095'
                    ]
     else:
         proxies = ['']
@@ -165,16 +166,16 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
 
 
 if __name__ == '__main__':
-    domainlist=['@loveyxx.com',
-                '@iloveyxx.com',
-                '@nbsky55.com',
-                '@zjhdu.com',
-                '@zjnbu.com',
-                '@inbcloud.com',
-                '@zjzju.com',
-                '@ihzcloud.com',
-                '@iwzcloud.com',
-                '@iwenling.com']
+    domainlist = ['@loveyxx.com',
+                  '@iloveyxx.com',
+                  '@nbsky55.com',
+                  '@zjhdu.com',
+                  '@zjnbu.com',
+                  '@inbcloud.com',
+                  '@zjzju.com',
+                  '@ihzcloud.com',
+                  '@iwzcloud.com',
+                  '@iwenling.com']
     # domainlist=['@loveyxx.com']
     body = {'last_name': 'Zrcredit',
             'first_name': '贷',
@@ -189,7 +190,7 @@ if __name__ == '__main__':
             'answer3': '三聚环保'}
     count = 20
     for i in range(10):
-        print("第%d轮域名遍历"%(i+1))
+        print("第%d轮域名遍历" % (i + 1))
         for domain in domainlist:
             if domain == '@nbsky55.com':
                 mailname_pre = 'xmxqb_'
