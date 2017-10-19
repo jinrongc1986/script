@@ -166,6 +166,7 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
 
 if __name__ == '__main__':
     domainlist=['@loveyxx.com',
+                '@iloveyxx.com',
                 '@nbsky55.com',
                 '@zjhdu.com',
                 '@zjnbu.com',
