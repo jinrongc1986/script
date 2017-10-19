@@ -42,21 +42,19 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
     x = 0
     y = 0
     if localIP() == "192.168.0.62":
-        # proxies = ['socks://192.168.0.61:1082', 'socks://192.168.0.61:1084',]
+        # proxies = []
         proxies = [
-                   'socks://192.168.0.61:1086', 'socks://192.168.0.61:1087', 'socks://192.168.0.61:1088',
-                   'socks://192.168.0.61:1089', 'socks://192.168.0.61:1090', 'socks://192.168.0.61:1091',
-                   'socks://192.168.0.61:1092', 'socks://192.168.0.61:1093', 'socks://192.168.0.61:1094',
-                   'socks://192.168.0.61:1095'
-                   ]
+            'socks://192.168.0.61:1081', 'socks://192.168.0.61:1082', 'socks://192.168.0.61:1084',
+            'socks://192.168.0.61:1091', 'socks://192.168.0.61:1092', 'socks://192.168.0.61:1094'
+        ]
     else:
         proxies = ['']
     for i in range(0, count):
         if x == 0 and y == 0:
             print("新的代理周期")
             lastround = time.time()
-        if x == 2:
-            print("次数已超过2次，切换代理")
+        if x == 3:
+            print("次数已超过3次，切换代理")
             x = 0
             y += 1
         if y == len(proxies):  # 总代理数量
@@ -166,16 +164,18 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
 
 
 if __name__ == '__main__':
-    domainlist = ['@loveyxx.com',
-                  '@iloveyxx.com',
-                  '@nbsky55.com',
-                  '@zjhdu.com',
-                  '@zjnbu.com',
-                  '@inbcloud.com',
-                  '@zjzju.com',
-                  '@ihzcloud.com',
-                  '@iwzcloud.com',
-                  '@iwenling.com']
+    domainlist = [
+        '@loveyxx.com',
+        '@nbsky55.com',
+        '@ihzcloud.com',
+        '@iwzcloud.com',
+        '@inbcloud.com',
+        '@iwenling.com',
+        '@zjhdu.com',
+        '@zjnbu.com',
+        '@zjzju.com',
+        '@iloveyxx.com',
+    ]
     # domainlist=['@loveyxx.com']
     body = {'last_name': 'Zrcredit',
             'first_name': '贷',
