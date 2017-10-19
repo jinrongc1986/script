@@ -42,13 +42,11 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
     x = 0
     y = 0
     if localIP() == "192.168.0.62":
-        # proxies = ['socks://192.168.0.61:1081', 'socks://192.168.0.61:1082', 'socks://192.168.0.61:1083',
-        #            'socks://192.168.0.61:1084', 'socks://192.168.0.61:1085',]
-        proxies = [
-                   'socks://192.168.0.61:1086',
+        # proxies = []
+        proxies = ['socks://192.168.0.61:1081', 'socks://192.168.0.61:1082', 'socks://192.168.0.61:1083',
+                   'socks://192.168.0.61:1084', 'socks://192.168.0.61:1085','socks://192.168.0.61:1086',
                    'socks://192.168.0.61:1087', 'socks://192.168.0.61:1088','socks://192.168.0.61:1089',
-                   'socks://192.168.0.61:1090', 'socks://192.168.0.61:1091','socks://192.168.0.61:1092',
-                   'socks://192.168.0.61:1093', 'socks://192.168.0.61:1094','socks://192.168.0.61:1095'
+                   'socks://192.168.0.61:1090'
                    ]
     else:
         proxies = ['']
@@ -167,13 +165,16 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
 
 
 if __name__ == '__main__':
-    domainlist=['@zjhdu.com','@zjnbu.com','@inbcloud.com','@zjzju.com',
-                '@ihzcloud.com','@iwzcloud.com','@iwenling.com','@nbsky55.com',
-                '@loveyxx.com']
-    mailname_pre = 'nbzr_'
-    mailpasswd = 'Lslq9527'
-    # mailname_pre = 'just'
-    # mailpasswd = 'Lslq9527'
+    domainlist=['@loveyxx.com',
+                '@nbsky55.com',
+                '@zjhdu.com',
+                '@zjnbu.com',
+                '@inbcloud.com',
+                '@zjzju.com',
+                '@ihzcloud.com',
+                '@iwzcloud.com',
+                '@iwenling.com']
+    # domainlist=['@loveyxx.com']
     body = {'last_name': 'Zrcredit',
             'first_name': '贷',
             'country': 'CHN',
