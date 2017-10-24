@@ -68,7 +68,8 @@ def get_yzm(driver, imgname):
     try:
         request.urlretrieve(imgurl, imgname)
         url = imgurl.split(',')[1]
-        result = showapi.main(url)
+        # result = showapi.main(url)
+        result = showapi.showapi_yzm(url)
     except:
         print("获取验证码失败")
         return False
