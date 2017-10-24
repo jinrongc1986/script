@@ -44,8 +44,9 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
     if localIP() == "192.168.0.62":
         # proxies = []
         proxies = [
-            'socks://192.168.0.61:1081', 'socks://192.168.0.61:1082', 'socks://192.168.0.61:1084',
-            'socks://192.168.0.61:1091', 'socks://192.168.0.61:1092', 'socks://192.168.0.61:1094'
+            'socks://192.168.0.61:1094',
+            'socks://192.168.0.61:1081', 'socks://192.168.0.61:1084', '',
+            'socks://192.168.0.61:1092', 'socks://192.168.0.61:1091', 'socks://192.168.0.61:1082'
         ]
     else:
         proxies = ['']
@@ -165,8 +166,6 @@ def need_money(mailname_pre, domain, mailpasswd, body, count):
 
 if __name__ == '__main__':
     domainlist = [
-        '@loveyxx.com',
-        '@nbsky55.com',
         '@ihzcloud.com',
         '@iwzcloud.com',
         '@inbcloud.com',
@@ -175,6 +174,7 @@ if __name__ == '__main__':
         '@zjnbu.com',
         '@zjzju.com',
         '@iloveyxx.com',
+        '@nbsky55.com',
     ]
     # domainlist=['@loveyxx.com']
     body = {'last_name': 'Zrcredit',
@@ -203,7 +203,7 @@ if __name__ == '__main__':
             thisround = time.time()
             roundtime = thisround - lastround
             print("此域名周期为%.f" % roundtime)
-            timeleft = roundtime - 2000
+            timeleft = roundtime - 3600
             if timeleft < 0:
                 print("此域名周期结束，为确保代理可用，暂停%.f" % abs(timeleft))
                 sleep(abs(timeleft))
@@ -212,6 +212,6 @@ if __name__ == '__main__':
                 sleep(120)
             else:
                 print("开始下一个域名注册")
-        print("所有域名遍历完成，等待4小时。\n当前时刻：")
+        print("所有域名遍历完成，等待2小时。\n当前时刻：")
         print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
-        sleep(14400)
+        sleep(7200)
