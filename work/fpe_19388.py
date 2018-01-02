@@ -25,7 +25,7 @@ def exec_insert():
     
 
 if __name__=='__main__':
-    arg = {
+    arg1 = {
         'pkt':'GET /112.13.107.240/6976C980B314D71E7DF002456/03000A01005A44A08A720641FCADAB3E1D057F-8306-26B2-D91D-53040F1A09B3.mp4?ali_redirect_domain=vali-dns.cp31.ott.cibntv.net&amp;ccode=0502&amp;duration=212&amp;expire=18000&amp;psid=7155cbe6d271ee9d24f171ac02e2201f&amp;showid=6aefbfbdefbfbdd2b321&amp;ups_client_netip=7010452c&amp;ups_ts=1514516217&amp;ups_userid=&amp;utid=U98KEsMMvggCAW8AXbpLi9cT&amp;vid=XMzI2ODY2MTA1Mg%3D%3D&amp;vkey=A713a5f113cb9e84d837484de6c69f51e HTTP/1.1\
 Host: 192.168.2.21\
 Connection: keep-alive\
@@ -39,6 +39,6 @@ Accept-Language: zh-CN,zh;q=0.9\
 Cookie: PHPSESSID=mhb9m4l0spcm39pb6pl2r82r40\
 Range: bytes=98304-\
 '
-
         }
-    pkt_in(arg)
+    arg2 = {"url":"/112.13.107.240/6976C980B314D71E7DF002456/03000A01005A44A08A720641FCADAB3E1D057F-8306-26B2-D91D-53040F1A09B3.mp4?ali_redirect_domain=vali-dns.cp31.ott.cibntv.net&amp;ccode=0502&amp;duration=212&amp;expire=18000&amp;psid=7155cbe6d271ee9d24f171ac02e2201f&amp;showid=6aefbfbdefbfbdd2b321&amp;ups_client_netip=7010452c&amp;ups_ts=1514516217&amp;ups_userid=&amp;utid=U98KEsMMvggCAW8AXbpLi9cT&amp;vid=XMzI2ODY2MTA1Mg%3D%3D&amp;vkey=A713a5f113cb9e84d837484de6c69f51e","range":"0-"}
+    pkt_in(arg1)
