@@ -10,6 +10,10 @@ def pkt_in(arg):
     pkt_in_rpc=g_xmlrpc_proxy.pkt_in(arg)
     print (pkt_in_rpc)
 
+def proxyed(arg):
+    proxyed_rpc=g_xmlrpc_proxy.proxyed(arg)
+    print (proxyed_rpc)
+
 def exec_insert():
     try :
         sys.argv[1]
@@ -26,19 +30,11 @@ def exec_insert():
 
 if __name__=='__main__':
     arg1 = {
-        'pkt':'GET /112.13.107.240/6976C980B314D71E7DF002456/03000A01005A44A08A720641FCADAB3E1D057F-8306-26B2-D91D-53040F1A09B3.mp4?ali_redirect_domain=vali-dns.cp31.ott.cibntv.net&amp;ccode=0502&amp;duration=212&amp;expire=18000&amp;psid=7155cbe6d271ee9d24f171ac02e2201f&amp;showid=6aefbfbdefbfbdd2b321&amp;ups_client_netip=7010452c&amp;ups_ts=1514516217&amp;ups_userid=&amp;utid=U98KEsMMvggCAW8AXbpLi9cT&amp;vid=XMzI2ODY2MTA1Mg%3D%3D&amp;vkey=A713a5f113cb9e84d837484de6c69f51e HTTP/1.1\
-Host: 192.168.2.21\
-Connection: keep-alive\
-Pragma: no-cache\
-Cache-Control: no-cache\
-Accept-Encoding: identity;q=1, *;q=0\
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36\
-Accept: */*\
-Referer: http://v.youku.com/v_show/id_XMzI2ODY2MTA1Mg==.html?spm=a2hww.20027244.m_250036.5~5!2~5~5!6~5~5~A&amp;f=51419626\
-Accept-Language: zh-CN,zh;q=0.9\
-Cookie: PHPSESSID=mhb9m4l0spcm39pb6pl2r82r40\
-Range: bytes=98304-\
-'
+        "pkt":"GET /20180103154407/0469d8b7580dc654fe75d85dee4c569d/ymusic/9313/cfac/35ad/332d8257716efd86d075809e61cfd5d5.mp3 HTTP/1.1\r\nHost: m10.music.126.net\r\nConnection: keep-alive\r\nPragma: no-cache\r\nCache-Control: no-cache\r\nAccept-Encoding: identity;q=1, *;q=0\r\nUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36\r\nAccept: */*\r\nAccept-Language: zh-CN,zh;q=0.9\r\nRange: bytes=0-\r\n","src_ip":"30.30.33.2"
         }
-    arg2 = {"url":"/112.13.107.240/6976C980B314D71E7DF002456/03000A01005A44A08A720641FCADAB3E1D057F-8306-26B2-D91D-53040F1A09B3.mp4?ali_redirect_domain=vali-dns.cp31.ott.cibntv.net&amp;ccode=0502&amp;duration=212&amp;expire=18000&amp;psid=7155cbe6d271ee9d24f171ac02e2201f&amp;showid=6aefbfbdefbfbdd2b321&amp;ups_client_netip=7010452c&amp;ups_ts=1514516217&amp;ups_userid=&amp;utid=U98KEsMMvggCAW8AXbpLi9cT&amp;vid=XMzI2ODY2MTA1Mg%3D%3D&amp;vkey=A713a5f113cb9e84d837484de6c69f51e","range":"0-"}
-    pkt_in(arg1)
+    arg2 = {"url":"http://m10.music.126.net/20180103154407/0469d8b7580dc654fe75d85dee4c569d/ymusic/9313/cfac/35ad/332d8257716efd86d075809e61cfd5d5.mp3","range":"0-","src_ip":"30.30.32.2"} #不能用，暂不实现
+    arg3 = {
+        "pkt":"GET /molbin/iss-loc/amcore/content/00010005/000522/smldat.cab HTTP/1.1\r\nHost: download.mcafee.com\r\nConnection: keep-alive\r\nPragma: no-cache\r\nCache-Control: no-cache\r\nAccept-Encoding: identity;q=1, *;q=0\r\nUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36\r\nAccept: */*\r\nAccept-Language: zh-CN,zh;q=0.9\r\n","src_ip":"30.30.33.2"}
+    proxyed_arg = {"url":"http://m8c.music.126.net/20180115143631/a770e6c019c5524769d87ad85e9d7ca0/ymusic/ae4b/4be3/6991/e3bcfa28cb569cc2e235051205b8ef97.mp","mode":"1","callback":"30.30.32.2"} #不能用，暂不实现
+    #pkt_in(arg1)
+    proxyed(proxyed_arg)
