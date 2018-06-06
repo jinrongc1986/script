@@ -1,0 +1,5 @@
+1.get new cnc domain infomation from ftp server(192.168.1.222)
+2.update cnc_http cnc_demand cnc_live domain list
+3.zone_list_new.json is for our cds (fdns_conf)
+4.domain_list_new is for our customer (dns configuration)
+5.end

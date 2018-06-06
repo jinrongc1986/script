@@ -2,6 +2,7 @@
 from collections import defaultdict
 import json
 import time
+import os
 from ftplib import FTP
 
 def getfile():
@@ -104,4 +105,13 @@ if __name__=='__main__':
     data['version']=version_new
     f = open('./zone_list_new.json', 'w')
     json.dump(data, f, indent=4)         
+    f.close()
+    os.remove('./domain_list_new')
+    f = open('./domain_list_new','a')
+    domain_list=[]
+    for domains in [cnc_http,cnc_demand,cnc_live]:
+        for key in domains:
+            if key not in domain_list:
+                domain_list.append(key)
+                f.write(key+'\n')
     f.close()
