@@ -37,8 +37,8 @@ Base.metadata.create_all(engine)
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
-workbook = xlrd.open_workbook("test.xlsx")
-sheet = workbook.sheet_by_name("test")
+workbook = xlrd.open_workbook(u"统计数据12_14.xlsx")
+sheet = workbook.sheet_by_name(u"原始数据12_14")
 
 index_list = sheet.row_values(0)
 sn_index = index_list.index("SN")
@@ -69,9 +69,12 @@ for row in range(1, nrows):
     http_cache = int(row_values[http_cache_index])
     demand_cache = int(row_values[demand_cache_index])
     live_cache = int(row_values[live_cache_index])
-    info = Ipservice(sn=sn, date=date, http_ip=http_ip, demand_ip=demand_ip, live_ip=live_ip, all_ip=all_ip,
-                     http_service=http_service, demand_service=demand_service, live_service=live_service,
-                     http_cache=http_cache, demand_cache=demand_cache, live_cache=live_cache)
+    info = Ipservice(sn=sn, date=date, http_ip=http_ip, demand_ip=demand_ip,
+                     live_ip=live_ip, all_ip=all_ip,
+                     http_service=http_service, demand_service=demand_service,
+                     live_service=live_service,
+                     http_cache=http_cache, demand_cache=demand_cache,
+                     live_cache=live_cache)
     session.add(info)
     session.commit()
 session.close()
